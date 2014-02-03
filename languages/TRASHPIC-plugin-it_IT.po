@@ -1,0 +1,123 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: trashpic\n"
+"POT-Creation-Date: 2014-02-03 09:08+0100\n"
+"PO-Revision-Date: 2014-02-03 09:53+0100\n"
+"Last-Translator: coma <coma@19.coop>\n"
+"Language-Team: Diciannove <info@19.coop>\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: /home/paolo/Workspace/smile-website/content/plugins/"
+"trashpic\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: settings.php:88
+msgid "insufficient_permissions"
+msgstr ""
+
+#: trashpic.php:46
+msgid "report_number"
+msgstr "Numero segnalazione"
+
+#: trashpic.php:47 templates/trashpic-report_metabox.php:70
+msgid "approved"
+msgstr "Segnalazione approvata"
+
+#: trashpic.php:48 templates/trashpic-report_metabox.php:48
+msgid "investigated"
+msgstr ""
+
+#: trashpic.php:64 templates/trashpic-report_metabox.php:41
+#: templates/trashpic-report_metabox.php:54
+#: templates/trashpic-report_metabox.php:76
+msgid "yes"
+msgstr "Si"
+
+#: trashpic.php:66 templates/trashpic-report_metabox.php:39
+#: templates/trashpic-report_metabox.php:52
+#: templates/trashpic-report_metabox.php:74
+msgid "no"
+msgstr "No"
+
+#: trashpic.php:137
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: templates/settings.php:2
+msgid "trashpic_setting_title"
+msgstr "Trashpic"
+
+#: templates/trashpic-report_metabox.php:7
+msgid "latitude"
+msgstr "Latitudine"
+
+#: templates/trashpic-report_metabox.php:15
+msgid "longitude"
+msgstr "Longitudine"
+
+#: templates/trashpic-report_metabox.php:23
+msgid "picture"
+msgstr ""
+
+#: templates/trashpic-report_metabox.php:34
+msgid "smile_phone"
+msgstr ""
+
+#: templates/trashpic-report_metabox.php:59
+msgid "note"
+msgstr ""
+
+#: post-types/trashpic_report.php:66
+msgid ""
+"This is a sample post type meant only to illustrate a preferred structure of "
+"plugin development"
+msgstr ""
+
+#: post-types/trashpic_report.php:79
+msgid "litter_type_tax_name"
+msgstr ""
+
+#: post-types/trashpic_report.php:80
+msgid "litter_type_tax_name_singular"
+msgstr ""
+
+#: post-types/trashpic_report.php:81
+msgid "search_litter_type"
+msgstr ""
+
+#: post-types/trashpic_report.php:82
+msgid "all_litter_type"
+msgstr ""
+
+#: post-types/trashpic_report.php:83
+msgid "parent_litter_type"
+msgstr ""
+
+#: post-types/trashpic_report.php:84
+msgid "parent_litter_type_colon"
+msgstr ""
+
+#: post-types/trashpic_report.php:85
+msgid "edit_litter_type"
+msgstr ""
+
+#: post-types/trashpic_report.php:86
+msgid "update_litter_type"
+msgstr ""
+
+#: post-types/trashpic_report.php:87
+msgid "add_new_litter_type"
+msgstr ""
+
+#: post-types/trashpic_report.php:88
+msgid "new_litter_type_name"
+msgstr ""
+
+#: post-types/trashpic_report.php:89
+msgid "litter_type_menu_name"
+msgstr "Categorie di rifiuti"
