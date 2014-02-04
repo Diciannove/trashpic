@@ -10,6 +10,7 @@
             <input type="text" id="latitude" name="latitude" value="<?php echo @get_post_meta($post->ID, 'latitude', true); ?>" />
         </td>
     </tr>
+    
     <tr valign="top">
         <th class="trashpic_phase1">
             <label for="longitude"><?echo _e('longitude','TRASHPIC-plugin')?></label>
@@ -23,6 +24,19 @@
             <label for="longitude"><?echo _e('picture','TRASHPIC-plugin')?></label>
         </th>
         <td class="trashpic_phase1">
+        <?php
+        $img = @get_post_meta($post->ID, 'picture', true);
+        if($img['url']) {
+						echo "<img src='".$img['url']."' width='500' />";	
+				}?>
+        </td>
+    </tr>
+    <tr valign="top">
+        <th class="trashpic_phase1">
+            <label for="picture"><?echo _e('picture','TRASHPIC-plugin')?></label>
+        </th>
+        <td class="trashpic_phase1">
+            <input type="file" id="picture" name="picture"  />
         </td>
     </tr>
     

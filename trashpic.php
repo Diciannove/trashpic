@@ -15,9 +15,9 @@ if (!function_exists('is_admin')) {
 	header('HTTP/1.1 403 Forbidden');
 	exit();
 }
-
-
-load_plugin_textdomain('TRASHPIC-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages');
+load_plugin_textdomain('TRASHPIC-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
+//wp_die(  WP_PLUGIN_DIR . '/trashpic/languages');
+//load_plugin_textdomain('TRASHPIC-plugin',  WP_PLUGIN_DIR . '/trashpic/languages/');
 
 
 define( 'TRASHPIC_VERSION', '0.0.1' );
@@ -134,7 +134,7 @@ if(class_exists('Trashpic'))
 		// Add the settings link to the plugins page
 		function plugin_settings_link($links)
 		{
-			$settings_link = '<a href="options-general.php?page=trashpic">'.__('Settings','TRASHPIC-plugin').'</a>';
+			$settings_link = '<a href="options-general.php?page=trashpic">Settings'.__('Settings','TRASHPIC-plugin').'</a>';
 			array_unshift($links, $settings_link);
 			return $links;
 		}
@@ -155,7 +155,9 @@ if(class_exists('Trashpic'))
 		}		
 		
 		$plugin = plugin_basename(__FILE__);
-		add_filter("plugin_action_links_$plugin", 'plugin_settings_link');
+		//$plugin = WP_PLUGIN_DIR . '/trashpic/'.__FILE__;
+    //wp_die($plugin);
+				add_filter("plugin_action_links_$plugin", 'plugin_settings_link');
 		add_action( 'wp_enqueue_scripts', 'register_plugin_styles' );
 		
 	}

@@ -20,6 +20,7 @@ if(!class_exists('Trashpic_Report'))
 			'smile_phone',
 			'approved',
 			'note',
+			'picture'			
 		);
 
     /**
@@ -31,11 +32,14 @@ if(!class_exists('Trashpic_Report'))
 
     	add_action('init', array(&$this, 'init'));
     	add_action('admin_init', array(&$this, 'admin_init'));
-    	
+    	add_action('post_edit_form_tag', array(&$this, 'update_edit_form') );
     	 
     } // END public function __construct()
 
     
+    public function update_edit_form() {
+    	echo ' enctype="multipart/form-data"';
+    } // end update_edit_form
     
     /**
 		 * hook into WP's init action hook
@@ -117,7 +121,19 @@ if(!class_exists('Trashpic_Report'))
     	if($_POST['post_type'] == self::POST_TYPE && current_user_can('edit_post', $post_id))  {
     		
 	      foreach($this->_meta as $field_name)  {
-     			// Update the post's meta field
+	      	
+	      	if($field_name=="picture"){
+	      		$upload = wp_upload_bits($_FILES[$field_name]['name'], null, file_get_contents($_FILES[$field_name]['tmp_name']));
+	      		
+	      		//wp_die($field_name.print_r($_FILES));
+	      		if(isset($upload['error']) && $upload['error'] != 0) {
+	      			wp_die('There was an error uploading your file. The error is: ' . $upload['error']);
+	      		} else {
+	      			update_post_meta($post_id, $field_name, $upload);
+	      		} // end if/else
+	      		
+	      	}else 
+	      	// Update the post's meta field
      			update_post_meta($post_id, $field_name, $_POST[$field_name]);
      		}
      	} else {
