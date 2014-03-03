@@ -36,7 +36,9 @@ if(!class_exists('Trashpic_Settings')) {
          register_setting('trashpic-group', 'trashpic_default_latitude');
     	   register_setting('trashpic-group', 'trashpic_default_longitude');
          register_setting('trashpic-group', 'trashpic_default_zoom_level');
-         register_setting('trashpic-group', 'trashpic_default_polygon');
+         register_setting('trashpic-group', 'trashpic_polygon');
+         register_setting('trashpic-group', 'trashpic_polygon_in_map');
+         register_setting('trashpic-group', 'trashpic_polygon_in_report');
          register_setting('trashpic-group', 'trashpic_only_registered_users');
           
          // add your settings section
@@ -75,19 +77,41 @@ if(!class_exists('Trashpic_Settings')) {
          										'description'=>'default: '.$trashpic_default_options['trashpic_default_zoom_level']));
 
          add_settings_field(
-         										'trashpic_default_polygon',
-         										 __('default_polygon','TRASHPIC-plugin'),
+         										'trashpic_polygon',
+         										 __('trashpic_polygon','TRASHPIC-plugin'),
          										 array(&$this, 'settings_field_textarea'),
          										'trashpic',
          										'trashpic-section',
-         										array('field' => 'trashpic_default_polygon',
+         										array('field' => 'trashpic_polygon',
          										'description'=>''));
+         
+         add_settings_field(
+         										'trashpic_polygon_in_map',
+         										 __('trashpic_polygon_in_map','TRASHPIC-plugin'),
+         										 array(&$this, 'settings_field_radio'),
+									          'trashpic',
+         										'trashpic-section',
+										         array('field' => 'trashpic_polygon_in_map',
+         										'description' => '',
+         										'predef' => $trashpic_default_options['trashpic_polygon_in_map'],
+         										'options' => $this->sino ,
+         										'description'=>'default: '.$trashpic_default_options['trashpic_polygon_in_map']));
+         add_settings_field(
+									         'trashpic_polygon_in_report',
+									         __('trashpic_polygon_in_report','TRASHPIC-plugin'),
+									         array(&$this, 'settings_field_radio'),
+									         'trashpic',
+									         'trashpic-section',
+									         array('field' => 'trashpic_polygon_in_report',
+									         'description' => '',
+									         'predef' => $trashpic_default_options['trashpic_polygon_in_report'],
+									         'options' => $this->sino ,
+									         'description'=>'default: '.$trashpic_default_options['trashpic_polygon_in_report']));
           
          
          add_settings_field(
          										'trashpic_only_registered_users',
          										__('only_registered_users','TRASHPIC-plugin'),
-									          
          										array(&$this, 'settings_field_radio'),
          									  'trashpic',
                             'trashpic-section',

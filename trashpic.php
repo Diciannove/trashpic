@@ -2,7 +2,7 @@
 /*
 Plugin Name: TrashPic
 Plugin URI: http://www.life-smile.eu
-Version: 0.0.2
+Version: 0.3
 Author: Paolo Selis - Lorenzo Novaro
 Author URI: http://19.coop
 Description: Monitoring system
@@ -32,7 +32,9 @@ define( 'TRASHPIC_URL_CSS', TRASHPIC_URL . '/css' );
 $trashpic_default_options = array('trashpic_default_latitude' =>44.16621,
 		                              'trashpic_default_longitude' => 8.27123,
 													        'trashpic_default_zoom_level' => 13,
-																	'trashpic_only_registered_users' => 1
+																	'trashpic_only_registered_users' => 1,
+																	'trashpic_polygon_in_map' => 1,
+																	'trashpic_polygon_in_report' => 1
 );
 
 
@@ -256,7 +258,7 @@ if(class_exists('Trashpic'))
 		}
 		
 		
-		
+		/*
 		$test = '[
 		 {"lon": 8.23432, "lat": 44.19632},
 		 {"lon": 8.23741, "lat": 44.18968},
@@ -267,8 +269,8 @@ if(class_exists('Trashpic'))
 		 {"lon": 8.28410, "lat": 44.18106},
 		 {"lon": 8.25595, "lat": 44.20124}
 	   ]';
-		 	
-		 print_r(json_decode($test));
+		 	*/
+		 //print_r(json_decode($test));
 		 	
 		
 		add_action('pre_get_posts', 'my_special_list');
@@ -316,10 +318,7 @@ if(class_exists('Trashpic'))
 	function trashpic_map_shortcode( $atts ) {
 	
 		
-	  //$par_js = json_encode( $par );
-	  //$content =  "<input type='hidden' id='trashpic_setting' name='trashpic_setting' value='".$par_js."' />";
-  
-		$content .= '<div class="gllpLatlonPicker"><div class="gllpMap" id="map"></div></div>';
+		$content .= '<fieldset><div class="gllpMap olMap" id="map"></div></fieldset>';
 		return $content;
 	
 	}
@@ -333,8 +332,15 @@ if(class_exists('Trashpic'))
 	 * @return unknown
 	 */
 	function trashpic_submit_report_shortcode( $atts ) {
-	
-		$content = "".TRASHPIC_URL_JS.'/OpenLayers.js';
+
+		
+		if(get_trashpic_option( 'trashpic_only_registered_users')){
+			// se l'utente non è loggato, allora nulla*/
+			if ( !is_user_logged_in() ) return __('only_registered_users','TRASHPIC-plugin') ;
+		}
+		
+		
+		//$content = "".TRASHPIC_URL_JS.'/OpenLayers.js';
 		ob_start();
 		include(TRASHPIC_DIR."/report_shortcode/report_form.php");
 		$content .= ob_get_clean();
@@ -348,19 +354,26 @@ if(class_exists('Trashpic'))
 	 * ma per evitare che venano inclusi in tutte le pagine
 	 * verific che ci sia il mio shortcode
 	*/
+	
+	
+
+	
+	
 	function trashpic_submit_report_shortcode_include() {
 		global $post;
-		global $trashpic;
 		if ( strstr( $post->post_content, '[trashpic_report]' ) ) {
 			wp_enqueue_style( 'trashpic-report-style', TRASHPIC_URL_CSS.'/trashpic-report.css' );
 			wp_enqueue_script('OpenLayers', TRASHPIC_URL_JS.'/OpenLayers.js', array('jquery') );
 			wp_enqueue_script('jquery-position-picker', TRASHPIC_URL_JS.'/jquery-position-picker.js', array('OpenLayers'),'1.0.0', true );
-
+			if(get_trashpic_option( 'trashpic_polygon_in_report'))
+			$polygon = json_decode(get_trashpic_option( 'trashpic_polygon'));
+				
+			
 			$par = array (
 					'latitude' => get_trashpic_option( 'trashpic_default_latitude') ,
 					'longitude' => get_trashpic_option( 'trashpic_default_longitude') ,
 					'zoom' => get_trashpic_option( 'trashpic_default_zoom_level') ,
-						
+					'polygon' => $polygon
 			);
 				
 			
@@ -372,11 +385,32 @@ if(class_exists('Trashpic'))
 			wp_enqueue_script('OpenLayers', TRASHPIC_URL_JS.'/OpenLayers.js', array('jquery') );
 			wp_enqueue_script('trashpic_map', TRASHPIC_URL_JS.'/trashpic_map.js', array('OpenLayers'),'1.0.0', true );
 			
+			
+			
+			$posts = get_posts(array(
+					'post_type'   => 'trashpic-report',
+					'post_status' => 'publish',
+					'meta_query' => array( array('key' => 'approved','value'=>1)),
+					'posts_per_page' => -1,
+					'fields' => 'ids'
+			)
+			);
+			
+			foreach($posts as $p){
+				$tpost[] = array("id"=>$p,"lat"=>get_post_meta($p,"latitude",true),"lon"=>get_post_meta($p,"longitude",true) );
+			}
+			
+			
+			if(get_trashpic_option( 'trashpic_polygon_in_map'))
+				$polygon = json_decode(get_trashpic_option( 'trashpic_polygon'));
 				
 			$par = array (
 					'latitude' => get_trashpic_option( 'trashpic_default_latitude') ,
 					'longitude' => get_trashpic_option( 'trashpic_default_longitude') ,
 					'zoom' => get_trashpic_option( 'trashpic_default_zoom_level') ,
+					'polygon' => $polygon,
+					'tmarkers' => $tpost
+						
 					
 			);
 				
@@ -412,10 +446,11 @@ if(class_exists('Trashpic'))
 	
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'trashpic_report' ){
 	
-			/* se l'utente non è loggato, allora nulla*/
-			//if ( !is_user_logged_in() )
-			//	return;
-			
+			if(get_trashpic_option( 'trashpic_only_registered_users')){
+				// se l'utente non è loggato, allora nulla*/
+				if ( !is_user_logged_in() ) return;
+			}
+
 			$upload_overrides = array( 'test_form' => FALSE );
 			$file_array = array(
 					'name'      => $_FILES['file']['name'],
@@ -450,8 +485,8 @@ if(class_exists('Trashpic'))
 	
 			/* eseguo i controlli sui campi che mi interessano */
 			if (empty($postTitle)) $error_array[]='Please add a title.';
-			if (empty($latitude))  $error_array[] ='La latitudine è un campo obbligatorio';
-			if (empty($longitude))  $error_array[] ='La longitudine è un campo obbligatorio';
+			if (empty($latitude))  $error_array[] = __('error_longitude_mandatory','TRASHPIC-plugin');
+			if (empty($longitude))  $error_array[] =__('error_latitude_mandatory','TRASHPIC-plugin');
 				
 			if (count($error_array) == 0){
 	
@@ -465,7 +500,7 @@ if(class_exists('Trashpic'))
 	
 			 if($post_id) {
 			 	__update_post_meta( $post_id, 'latitude', $latitude);
-			 	__update_post_meta( $post_id, 'longitude', $latitude);
+			 	__update_post_meta( $post_id, 'longitude', $longitude);
 			 	__update_post_meta( $post_id, 'approved', '-1');
 			 	__update_post_meta_img( $post_id, 'picture', $_FILES);
 			 		
@@ -473,7 +508,7 @@ if(class_exists('Trashpic'))
 	
 				global $notice_array;
 				$notice_array = array();
-				$notice_array[] = "Thank you for posting. Your post is now live. ";
+				$notice_array[] = __('notice_success_new_report','TRASHPIC-plugin');
 				add_action('trashpic-notice', 'trashpic_notices');
 			} else {
 				add_action('trashpic-notice', 'trashpic_errors');
@@ -533,7 +568,7 @@ if(class_exists('Trashpic'))
 	
 		global $notice_array;
 		foreach($notice_array as $notice){
-			echo '<div class="trashpic-notice">Ciao' . $notice . '</div>';
+			echo '<div class="trashpic-notice">' . $notice . '</div>';
 		}
 	}
 	

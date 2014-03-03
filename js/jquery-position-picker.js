@@ -241,8 +241,24 @@ var OLLatLonPicker = (function () {
                 theme:null
             });
 
-            
-            
+
+            var style = { strokeColor: '#0000ff',
+              	     strokeOpacity: 1,
+           	     strokeWidth: 5,
+           	     fillOpacity: 0.5
+           	  };
+            var layer_style = OpenLayers.Util.extend({}, OpenLayers.Feature.Vector.style['default']);
+            layer_style.fillOpacity = 0.2;
+            layer_style.graphicOpacity = 1;
+
+            var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+            renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+ 
+ 		   var vectorLayer = new OpenLayers.Layer.Vector("Simple Geometry", {
+               style: layer_style,
+               renderers: renderer
+           });
+
             
             
             
@@ -318,47 +334,44 @@ var OLLatLonPicker = (function () {
             bindUpdateMapAction(center);
             bindSearchAddressAction();
             
+            var polygon = trashpic_setting.polygon;
             
             var pointsB = [];      //for Geometry.Point Objects
             var lonlatsB = [];      //for LonLat Objects
             
             // Define polygon area, using LonLat-Objects to create Polygon
-            var lonlatObject1 = new OpenLayers.LonLat(44.17649,8.22461);
-            var lonlatObject2 = new OpenLayers.LonLat(44.17834,8.27593);
-            var lonlatObject3 = new OpenLayers.LonLat(44.15741,8.27576);
-            var lonlatObject4 = new OpenLayers.LonLat(44.16418,8.33018);
             
-            //add LonLats to Array
-            lonlatsB.push(lonlatObject1);
-            lonlatsB.push(lonlatObject2);
-            lonlatsB.push(lonlatObject3);
-            lonlatsB.push(lonlatObject4);
-           alert(_self.vars.map.getProjectionObject());
-            //projecting LonLats to Points
-            for (var i=0; i<lonlatsB.length; i++) {
-             point = new OpenLayers.Geometry.Point(lonlatsB[i].lon, lonlatsB[i].lat);
-             
-             point.transform(
-              new OpenLayers.Projection("EPSG:4326"),         //from
-              _self.vars.map.getProjectionObject()                                    //to
-               );
-             alert(point.x);
-             pointsB.push(point);
+            for(var p in polygon){
+            	lonlatsB.push(new OpenLayers.LonLat(polygon[p].lon ,polygon[p].lat))
             }
-           // pointsB.push(pointsB[0]);
-
-            // create a polygon feature from a list of points
-            var linearRingB = new OpenLayers.Geometry.LinearRing(pointsB);
-            var polygon = new OpenLayers.Geometry.Polygon(linearRingB);
-            var polygonFeatureB = new OpenLayers.Feature.Vector(polygon, null, style_green);
-            //var vectorLayer = new OpenLayers.Layer.OSM();
-            var vectorLayer = new OpenLayers.Layer.Vector("Test");
-            
-            vectorLayer.addFeatures(polygonFeatureB);  
             
             
+            if(lonlatsB.length > 0 ){
+    	        for (var i=0; i<lonlatsB.length; i++) {
+    	         point = new OpenLayers.Geometry.Point(lonlatsB[i].lon, lonlatsB[i].lat);
+    	         
+    	         point.transform(
+    	          new OpenLayers.Projection("EPSG:4326"),         //from
+    	          _self.vars.map.getProjectionObject()                                    //to
+    	           );
+    	         //alert(point.x);
+    	         pointsB.push(point);
+    	        }
+    	        pointsB.push(pointsB[0]);
+    	
+    	        // create a polygon feature from a list of points
+    	        var linearRingB = new OpenLayers.Geometry.LinearRing(pointsB);
+    	        //var polygon = new OpenLayers.Geometry.Polygon([linearRingB]);
+    	        //var polygonFeatureB = new OpenLayers.Feature.Vector(polygon,null,style);
+    	
+    	        var polygonFeature = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Polygon([linearRingB]));
+    	        
+                _self.vars.map.addLayer(vectorLayer);
+    	        
+    	        vectorLayer.addFeatures([polygonFeature]);  
+            }
             
-            _self.vars.map.addLayer(vectorLayer);
             
                     
           
