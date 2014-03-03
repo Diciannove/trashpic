@@ -256,6 +256,21 @@ if(class_exists('Trashpic'))
 		}
 		
 		
+		
+		$test = '[
+		 {"lon": 8.23432, "lat": 44.19632},
+		 {"lon": 8.23741, "lat": 44.18968},
+		 {"lon": 8.22883, "lat": 44.18007},
+		 {"lon": 8.23329, "lat": 44.16998},
+		 {"lon": 8.27998, "lat": 44.14609},
+		 {"lon": 8.30127, "lat": 44.15520},
+		 {"lon": 8.28410, "lat": 44.18106},
+		 {"lon": 8.25595, "lat": 44.20124}
+	   ]';
+		 	
+		 print_r(json_decode($test));
+		 	
+		
 		add_action('pre_get_posts', 'my_special_list');
 		add_action('app_get_posts', 'my_special_list');
 		add_action('rif_get_posts', 'my_special_list');

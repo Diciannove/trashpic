@@ -36,6 +36,7 @@ if(!class_exists('Trashpic_Settings')) {
          register_setting('trashpic-group', 'trashpic_default_latitude');
     	   register_setting('trashpic-group', 'trashpic_default_longitude');
          register_setting('trashpic-group', 'trashpic_default_zoom_level');
+         register_setting('trashpic-group', 'trashpic_default_polygon');
          register_setting('trashpic-group', 'trashpic_only_registered_users');
           
          // add your settings section
@@ -72,7 +73,17 @@ if(!class_exists('Trashpic_Settings')) {
          										'trashpic-section',
          										array('field' => 'trashpic_default_zoom_level',
          										'description'=>'default: '.$trashpic_default_options['trashpic_default_zoom_level']));
+
+         add_settings_field(
+         										'trashpic_default_polygon',
+         										 __('default_polygon','TRASHPIC-plugin'),
+         										 array(&$this, 'settings_field_textarea'),
+         										'trashpic',
+         										'trashpic-section',
+         										array('field' => 'trashpic_default_polygon',
+         										'description'=>''));
           
+         
          add_settings_field(
          										'trashpic_only_registered_users',
          										__('only_registered_users','TRASHPIC-plugin'),
@@ -111,6 +122,19 @@ if(!class_exists('Trashpic_Settings')) {
             
         } // END public function settings_field_input_text($args)
 
+        public function settings_field_textarea($args)  {
+        	// Get the field name from the $args array
+        	$field = $args['field'];
+        	// Get the value of this setting
+        	$value = get_option($field);
+        	// echo a proper input type="text"
+        	echo sprintf('<textarea cols="50" rows="10" name="%s" id="%s"  >%s</textarea>', $field, $field, $value);
+        	if ( ! empty( $args['description'] ) )
+        		echo ' <p class="description">' . $args['description'] . '</p>';
+        
+        } // END public function settings_field_input_text($args)
+        
+        
 				public function settings_field_radio( $args ) {
 					
 							if ( empty( $args['field'] ) || ! is_array( $args['options'] ) )
