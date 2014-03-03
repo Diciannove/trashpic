@@ -21,12 +21,13 @@
     </tr>
     <tr valign="top">
         <th class="trashpic_phase1">
-            <label for="longitude"><?php echo _e('picture','TRASHPIC-plugin')?></label>
+            
         </th>
         <td class="trashpic_phase1">
         <?php
         $img = @get_post_meta($post->ID, 'picture', true);
         if($img['url']) {
+						echo $img['url'];
 						echo "<img src='".$img['url']."' width='500' />";	
 				}?>
         </td>
@@ -36,6 +37,9 @@
             <label for="picture"><?php echo _e('picture','TRASHPIC-plugin')?></label>
         </th>
         <td class="trashpic_phase1">
+        <a href="#" class="button insert-media add_media" data-editor="content" title="Add Media">
+    			<span class="wp-media-buttons-icon"></span> Add Media
+</a>
             <input type="file" id="picture" name="picture"  />
         </td>
     </tr>

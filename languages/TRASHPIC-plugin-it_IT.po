@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: trashpic\n"
-"POT-Creation-Date: 2014-02-03 09:08+0100\n"
-"PO-Revision-Date: 2014-02-04 12:45+0100\n"
+"POT-Creation-Date: 2014-03-03 09:08+0100\n"
+"PO-Revision-Date: 2014-03-03 09:11+0100\n"
 "Last-Translator: coma <coma@19.coop>\n"
 "Language-Team: Diciannove <info@19.coop>\n"
 "Language: it_IT\n"
@@ -16,35 +16,52 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: settings.php:88
-msgid "insufficient_permissions"
-msgstr "Permessi non sufficienti"
-
-#: trashpic.php:46
-msgid "report_number"
-msgstr "Numero segnalazione"
-
-#: trashpic.php:47 templates/trashpic-report_metabox.php:70
-msgid "approved"
-msgstr "Segnalazione approvata"
-
-#: trashpic.php:48 templates/trashpic-report_metabox.php:48
-msgid "investigated"
-msgstr "Indagato"
-
-#: trashpic.php:64 templates/trashpic-report_metabox.php:41
-#: templates/trashpic-report_metabox.php:54
-#: templates/trashpic-report_metabox.php:76
+#: settings.php:20 trashpic.php:82 templates/trashpic-report_metabox.php:59
+#: templates/trashpic-report_metabox.php:72
+#: templates/trashpic-report_metabox.php:94
 msgid "yes"
 msgstr "S&igrave;"
 
-#: trashpic.php:66 templates/trashpic-report_metabox.php:39
-#: templates/trashpic-report_metabox.php:52
-#: templates/trashpic-report_metabox.php:74
+#: settings.php:21 trashpic.php:84 templates/trashpic-report_metabox.php:57
+#: templates/trashpic-report_metabox.php:70
+#: templates/trashpic-report_metabox.php:92
 msgid "no"
 msgstr "No"
 
-#: trashpic.php:137
+#: settings.php:48
+msgid "default_latitude"
+msgstr "Centratura della mappa (Latitudine )"
+
+#: settings.php:56
+msgid "default_longitude"
+msgstr "Centratura della mappa (Longitudine)"
+
+#: settings.php:64
+msgid "default_zoom_level"
+msgstr "Livello di zoom al caricamento della mappa"
+
+#: settings.php:72
+msgid "only_registered_users"
+msgstr ""
+"Permetti che le segnalazioni vengano effettuate solo da utenti registrati"
+
+#: settings.php:138
+msgid "insufficient_permissions"
+msgstr "Permessi non sufficienti"
+
+#: trashpic.php:59
+msgid "report_number"
+msgstr "Numero segnalazione"
+
+#: trashpic.php:60 templates/trashpic-report_metabox.php:88
+msgid "approved"
+msgstr "Segnalazione approvata"
+
+#: trashpic.php:61 templates/trashpic-report_metabox.php:66
+msgid "investigated"
+msgstr "Indagato"
+
+#: trashpic.php:145
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -56,68 +73,74 @@ msgstr "Trashpic - Impostazioni"
 msgid "latitude"
 msgstr "Latitudine"
 
-#: templates/trashpic-report_metabox.php:15
+#: templates/trashpic-report_metabox.php:16
+#: report_shortcode/report_form.php:10
 msgid "longitude"
 msgstr "Longitudine"
 
-#: templates/trashpic-report_metabox.php:23
+#: templates/trashpic-report_metabox.php:37
+#: report_shortcode/report_form.php:28
 msgid "picture"
 msgstr "Immagine"
 
-#: templates/trashpic-report_metabox.php:34
+#: templates/trashpic-report_metabox.php:52
 msgid "smile_phone"
 msgstr ""
 
-#: templates/trashpic-report_metabox.php:59
+#: templates/trashpic-report_metabox.php:77
 msgid "note"
 msgstr "Note"
 
-#: post-types/trashpic_report.php:66
+#: report_shortcode/report_form.php:35
+msgid "send_report"
+msgstr "Invia la segnalazione"
+
+#: post-types/trashpic_report.php:70
 msgid ""
 "This is a sample post type meant only to illustrate a preferred structure of "
 "plugin development"
 msgstr ""
 
-#: post-types/trashpic_report.php:79
+#: post-types/trashpic_report.php:83
 msgid "litter_type_tax_name"
 msgstr "Tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:80
+#: post-types/trashpic_report.php:84
 msgid "litter_type_tax_name_singular"
 msgstr "Tipologia di rifiuto"
 
-#: post-types/trashpic_report.php:81
+#: post-types/trashpic_report.php:85
 msgid "search_litter_type"
 msgstr "Ricerca in base alla tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:82
+#: post-types/trashpic_report.php:86
 msgid "all_litter_type"
 msgstr ""
 
-#: post-types/trashpic_report.php:83
+#: post-types/trashpic_report.php:87
 msgid "parent_litter_type"
 msgstr ""
 
-#: post-types/trashpic_report.php:84
+#: post-types/trashpic_report.php:88
 msgid "parent_litter_type_colon"
 msgstr ""
 
-#: post-types/trashpic_report.php:85
+#: post-types/trashpic_report.php:89
 msgid "edit_litter_type"
 msgstr "Modifica tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:86
+#: post-types/trashpic_report.php:90
 msgid "update_litter_type"
 msgstr "aggiorna tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:87
+#: post-types/trashpic_report.php:91
 msgid "add_new_litter_type"
 msgstr "Aggiungi tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:88
+#: post-types/trashpic_report.php:92
 msgid "new_litter_type_name"
 msgstr "Nuova tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:89
+#: post-types/trashpic_report.php:93
 msgid "litter_type_menu_name"
 msgstr "Tipologie di rifiuti"
