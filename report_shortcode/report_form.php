@@ -11,19 +11,22 @@
    	  <input id="longitude" name="longitude" type="text" class="gllpLongitude"/>
    	  <input type="hidden" class="gllpZoom"/>
    	  <input type="hidden" class="gllpLocationName"/>
-			<?php if($latitudeError != '') { ?>
-			<br/>
-			<span class="error"><?php echo $latitudeError; ?></span>
-			<div class="clearfix"></div>
-			<?php } ?>
-			<?php if($longitudeError != '') { ?>
-			<br/>
-			<span class="error"><?php echo $longitudeError; ?></span>
-			<div class="clearfix"></div>
-			<?php } ?>
 								
  		</fieldset>
-					
+		<fieldset>
+   	  <label for="category"><?php esc_html_e('category', 'TRASHPIC-plugin') ?></label>
+        		<?php 
+        		global $trashpic_category;
+        		
+        		echo "<select id='category' name='category'>";
+        		echo "<option value=''></option>";
+        		foreach ($trashpic_category as $c=>$v){
+							 echo "<option value='".$c."'>".$v."</option>";
+						}
+						echo "</select>";
+        		?>
+   	  
+ 		</fieldset>
 		<fieldset>
 			<label for="files"><?php _e('picture', 'framework') ?></label>
 			<input type="file" name="picture" />

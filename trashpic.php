@@ -20,6 +20,21 @@ if (!function_exists('is_admin')) {
 load_plugin_textdomain('TRASHPIC-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
 
+$role = get_role( 'author' );
+$role->add_cap( 'trashpic' );
+
+
+
+
+global $wp_roles;
+
+
+//$ra = get_role( 'administrator');
+//print_r($ra);
+
+// add a new role, same arguments as add_role()
+//$wp_roles->add_role( $role, $display_name, $capabilities )
+
 
 /* Definisco alcuni valori che possono tornarmi utili*/
 define( 'TRASHPIC_VERSION', '0.0.2' );
@@ -36,6 +51,20 @@ $trashpic_default_options = array('trashpic_default_latitude' =>44.16621,
 																	'trashpic_polygon_in_map' => 1,
 																	'trashpic_polygon_in_report' => 1
 );
+
+
+
+$trashpic_category = array('LAT'=>__('Laterizi', 'TRASHPIC-plugin'),
+													 'MOB'=>__('Mobili', 'TRASHPIC-plugin'),
+													 'MAT'=>__('Materassi', 'TRASHPIC-plugin'),
+													 'ELE'=>__('Elettrodomestici', 'TRASHPIC-plugin'),
+													 'VEF'=>__('Vetri e finestre', 'TRASHPIC-plugin'),
+													 'PNE'=>__('Pneumatici', 'TRASHPIC-plugin'),
+													 'LEG'=>__('Legname lavorato', 'TRASHPIC-plugin'),
+													 'AUT'=>__('Carcasse di veicoli o parti', 'TRASHPIC-plugin'),
+													 'FER'=>__('Rottami ferrosi', 'TRASHPIC-plugin'),
+													 'PLA'=>__('Oggetti in plastica', 'TRASHPIC-plugin'),
+													 'ALT'=>__('Altro', 'TRASHPIC-plugin'));
 
 
 
@@ -67,6 +96,7 @@ function trashpic_report_columns($columns) {
 	$new_columns = array(
 			'cb' => '<input type="checkbox" />', 
 			'title' => __('report_number', 'TRASHPIC-plugin'),
+			'category' => __('category', 'TRASHPIC-plugin'),
 			'approved' => __('approved', 'TRASHPIC-plugin'),
 			'investigated' => __('investigated', 'TRASHPIC-plugin'),
 	);
@@ -78,12 +108,17 @@ add_filter('manage_trashpic-report_posts_columns' , 'trashpic_report_columns');
 /**
  * Cambio le etichette delle colonne approved e investigated 
  * della tabella amministrativa del post-type trashpic
- * @param unknown $column
+ * @param unknown $columnhttp://life-smile.eu/wp/trashpic-report/2014030397993/
  * @param unknown $post_id
  */
 function manage_trashpic_report_columns( $column, $post_id ){
 	global $post;
+	global $trashpic_category;
 	switch( $column ) {
+		case 'category' :
+			$col = get_post_meta( $post_id, $column, true );
+			echo $trashpic_category[$col];
+			break;
 		case 'investigated' :
 		case 'approved' :
 			/* Get the post meta. */
@@ -132,7 +167,27 @@ if(!class_exists('Trashpic'))
 		 */
 		public static function activate()
 		{
-			// Do nothing
+			
+			$result = add_role(
+					'trashpic_contributor',
+					__( 'trashpic Contributor' ),
+					array(
+							'read'   => true,  // true allows this capability
+							'read_trashpic-report'   => true,  // true allows this capability
+							'edit_trashpic-report'   => true,
+							'edit_trashpic-reports'   => true,
+							'delete_trashpic-report' => false, // Use false to explicitly deny
+					)
+			);
+			
+			
+			$role = get_role( 'administrator');
+			$role->add_cap('read_trashpic-report');
+			$role->add_cap('edit_trashpic-report');
+			$role->add_cap('edit_trashpic-reports');
+			$role->add_cap('delete_trashpic-report');
+				
+			
 		} // END public static function activate
 
 		/**
@@ -140,6 +195,15 @@ if(!class_exists('Trashpic'))
 		 */
 		public static function deactivate()
 		{
+			remove_role( 'trashpic_contributor' );
+
+			$role = get_role( 'administrator');
+			$role->remove_cap('read_trashpic-report');
+			$role->remove_cap('edit_trashpic-report');
+			$role->remove_cap('edit_trashpic-reports');
+			$role->remove_cap('delete_trashpic-report');
+				
+			
 			// Do nothing
 		} // END public static function deactivate
 		
@@ -280,7 +344,7 @@ if(class_exists('Trashpic'))
 		function my_special_list( $q ) {
 			if(is_admin()) $scr = get_current_screen();
 			if ( is_admin() && ( $scr->base === 'edit' ) && $q->is_main_query() ) {
-				// To target only a post type uncomment following line and adjust post type name
+				// To target onlhttp://life-smile.eu/wp/trashpic-report/2014030397993/y a post type uncomment following line and adjust post type name
 				// if ( $scr->post_type !== 'post' ) return;
 				// if you change the link in function above adjust next line accordingly
 				$pre = filter_input(INPUT_GET, 'pre', FILTER_SANITIZE_STRING);
@@ -363,8 +427,9 @@ if(class_exists('Trashpic'))
 		global $post;
 		if ( strstr( $post->post_content, '[trashpic_report]' ) ) {
 			wp_enqueue_style( 'trashpic-report-style', TRASHPIC_URL_CSS.'/trashpic-report.css' );
-			wp_enqueue_script('OpenLayers', TRASHPIC_URL_JS.'/OpenLayers.js', array('jquery') );
-			wp_enqueue_script('jquery-position-picker', TRASHPIC_URL_JS.'/jquery-position-picker.js', array('OpenLayers'),'1.0.0', true );
+			//wp_enqueue_script('OpenLayers', TRASHPIC_URL_JS.'/OpenLayers.js', array('jquery') );
+		  wp_enqueue_script('jquery-position-picker', TRASHPIC_URL_JS.'/jquery-position-picker.js', array('OpenLayers'),'1.0.0', true );
+			wp_enqueue_script('OpenLayers', 'http://openlayers.org/api/OpenLayers.js"', array('jquery') );
 			if(get_trashpic_option( 'trashpic_polygon_in_report'))
 			$polygon = json_decode(get_trashpic_option( 'trashpic_polygon'));
 				
@@ -382,7 +447,9 @@ if(class_exists('Trashpic'))
 		}
 		if ( strstr( $post->post_content, '[trashpic_map]' ) ) {
 			wp_enqueue_style( 'trashpic-report-style', TRASHPIC_URL_CSS.'/trashpic-report.css' );
-			wp_enqueue_script('OpenLayers', TRASHPIC_URL_JS.'/OpenLayers.js', array('jquery') );
+			//wp_enqueue_script('OpenLayers', TRASHPIC_URL_JS.'/OpenLayers.js', array('jquery') );
+			wp_enqueue_script('OpenLayers', 'http://openlayers.org/api/OpenLayers.js"', array('jquery') );
+			
 			wp_enqueue_script('trashpic_map', TRASHPIC_URL_JS.'/trashpic_map.js', array('OpenLayers'),'1.0.0', true );
 			
 			
@@ -397,7 +464,11 @@ if(class_exists('Trashpic'))
 			);
 			
 			foreach($posts as $p){
-				$tpost[] = array("id"=>$p,"lat"=>get_post_meta($p,"latitude",true),"lon"=>get_post_meta($p,"longitude",true) );
+				$img = @get_post_meta($p, 'picture', true);
+				$tpost[] = array("id"=>$p,"lat"=>get_post_meta($p,"latitude",true),
+						                      "lon"=>get_post_meta($p,"longitude",true),
+																	"img"=>$img['url']
+				 );
 			}
 			
 			
@@ -487,13 +558,15 @@ if(class_exists('Trashpic'))
 			if (empty($postTitle)) $error_array[]='Please add a title.';
 			if (empty($latitude))  $error_array[] = __('error_longitude_mandatory','TRASHPIC-plugin');
 			if (empty($longitude))  $error_array[] =__('error_latitude_mandatory','TRASHPIC-plugin');
+			if (empty($category))  $error_array[] =__('error_category_mandatory','TRASHPIC-plugin');
 				
 			if (count($error_array) == 0){
 	
 			 $post_information = array(
 			 		'post_title' => $postTitle,
 			 		'post_type' => 'trashpic-report',
-			   'post_status' => 'publish'
+			    'post_status' => 'publish'
+			 		
 			 );
 	
 			 $post_id = wp_insert_post($post_information);
@@ -501,6 +574,7 @@ if(class_exists('Trashpic'))
 			 if($post_id) {
 			 	__update_post_meta( $post_id, 'latitude', $latitude);
 			 	__update_post_meta( $post_id, 'longitude', $longitude);
+			 	__update_post_meta( $post_id, 'longitude', $category);
 			 	__update_post_meta( $post_id, 'approved', '-1');
 			 	__update_post_meta_img( $post_id, 'picture', $_FILES);
 			 		
@@ -571,6 +645,39 @@ if(class_exists('Trashpic'))
 			echo '<div class="trashpic-notice">' . $notice . '</div>';
 		}
 	}
+	
+	
+	/*
+	function include_template_files() {
+		global $wp;
+		$plugindir = dirname( __FILE__ );
+	
+		
+		if ('trashpic-report' == get_post_type() ){
+			echo entro;
+			$templatefilename = 'single-post-trashpic-report.php';
+			$template = $plugindir . '/theme_files/' . $templatefilename;
+			return $template;
+		}
+	}
+	add_filter( 'template_include', 'include_template_files' );	
+	
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

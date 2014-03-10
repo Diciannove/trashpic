@@ -1,29 +1,56 @@
-<table class="trashpic_metabox_table" cellpadding="0" cellspacing="0">
-    <tr valign="top">
-    	<th colspan="2" class="trashpic_phase1">A</th>
-    </tr>
-    <tr valign="top">
-        <th class="trashpic_phase1">
+<table class="form-table" cellpadding="0" cellspacing="0">
+<tbody>
+<tr valign="top">
+        <th >
             <label for="latitude"><?php echo _e('latitude','TRASHPIC-plugin')?></label>
         </th>
-        <td class="trashpic_phase1">
+        <td >
             <input type="text" id="latitude" name="latitude" value="<?php echo @get_post_meta($post->ID, 'latitude', true); ?>" />
         </td>
     </tr>
     
     <tr valign="top">
-        <th class="trashpic_phase1">
+        <th >
             <label for="longitude"><?php echo _e('longitude','TRASHPIC-plugin')?></label>
         </th>
-        <td class="trashpic_phase1">
+        <td >
             <input type="text" id="longitude" name="longitude" value="<?php echo @get_post_meta($post->ID, 'longitude', true); ?>" />
         </td>
     </tr>
+    <tr><td colspan="2"><hr/></td></tr>
+    
     <tr valign="top">
-        <th class="trashpic_phase1">
+        <th >
+            <label for="category"><?php echo _e('category','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+        		<?php 
+        		global $trashpic_category;
+        		$val = @get_post_meta($post->ID, 'category', true);
+        		
+        		echo "<select id='category' name='category'>";
+        		echo "<option value=''></option>";
+        		
+        		foreach ($trashpic_category as $c=>$v){
+							if($val==$c) echo "<option selected value='".$c."'>".$v."</option>";
+							else echo "<option value='".$c."'>".$v."</option>";
+						}
+						echo "</select>";
+        		?>
+        </td>
+    </tr>
+    
+    
+    
+    <tr><td colspan="2"><hr/></td></tr>
+    
+    
+    
+    <tr valign="top">
+        <th >
             
         </th>
-        <td class="trashpic_phase1">
+        <td >
         <?php
         $img = @get_post_meta($post->ID, 'picture', true);
         if($img['url']) {
@@ -33,25 +60,23 @@
         </td>
     </tr>
     <tr valign="top">
-        <th class="trashpic_phase1">
+        <th >
             <label for="picture"><?php echo _e('picture','TRASHPIC-plugin')?></label>
         </th>
-        <td class="trashpic_phase1">
+        <td >
         <a href="#" class="button insert-media add_media" data-editor="content" title="Add Media">
     			<span class="wp-media-buttons-icon"></span> Add Media
 </a>
             <input type="file" id="picture" name="picture"  />
         </td>
     </tr>
+        <tr><td colspan="2"><hr/></td></tr>
     
     <tr valign="top">
-    	<th colspan="2" class="trashpic_phase2">B</th>
-    </tr>
-    <tr valign="top">
-        <th class="trashpic_phase2">
+        <th >
             <label for="smile_phone"><?php echo _e('smile_phone','TRASHPIC-plugin')?></label>
         </th>
-        <td class="trashpic_phase2">
+        <td >
             
             <input type="radio" id="smile_phone1" name="smile_phone" value="0"    <?php echo @get_post_meta($post->ID, 'smile_phone', true) == '0' ? ' checked="checked"' : '' ?>" />
             <label for="smile_phone1"><?php echo _e('no','TRASHPIC-plugin')?></label>
@@ -62,10 +87,10 @@
     </tr>
     
     <tr valign="top">
-        <th class="trashpic_phase2">
+        <th >
             <label for="longitude"><?php echo _e('investigated','TRASHPIC-plugin')?></label>
         </th>
-        <td class="trashpic_phase2">
+        <td >
             <input type="radio" id="investigated1" name="investigated" value="0"    <?php echo @get_post_meta($post->ID, 'investigated', true) == '0' ? ' checked="checked"' : '' ?>" />
             <label for="investigated1"><?php echo _e('no','TRASHPIC-plugin')?></label>
             <input type="radio" id="investigated2" name="investigated" value="1"    <?php echo @get_post_meta($post->ID, 'investigated', true) == '1' ? 'checked="checked"' : '' ?>" />
@@ -73,25 +98,24 @@
         </td>
     </tr>
     <tr valign="top">
-        <th class="trashpic_phase2">
+        <th >
             <label for="note"><?php echo _e('note','TRASHPIC-plugin')?></label>
         </th>
-        <td class="trashpic_phase2">
+        <td >
             <textarea id="note" cols="46" colss="10" name="note"><?php echo @get_post_meta($post->ID, 'note', true); ?></textarea>
         </td>
     <tr>
+    <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">
-    	<th colspan="2" class="trashpic_phase3">C</th>
-    </tr>
-    <tr valign="top">
-        <th class="trashpic_phase3">
+        <th >
             <label for="approved"><?php echo _e('approved','TRASHPIC-plugin')?></label>
         </th>
-        <td class="trashpic_phase3">
+        <td >
             <input type="radio" id="approved1" name="approved" value="0"    <?php echo @get_post_meta($post->ID, 'approved', true) == '0' ? ' checked="checked"' : '' ?>" />
             <label for="approved1"><?php echo _e('no','TRASHPIC-plugin')?></label>
             <input type="radio" id="approved2" name="approved" value="1"    <?php echo @get_post_meta($post->ID, 'approved', true) == '1' ? 'checked="checked"' : '' ?>" />
             <label for="approved2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
          </td>
     </tr>
+    </tbody>
 </table>

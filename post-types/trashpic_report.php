@@ -20,7 +20,9 @@ if(!class_exists('Trashpic_Report'))
 			'smile_phone',
 			'approved',
 			'note',
-			'picture'			
+			'picture',
+			'category',
+							
 		);
 
     /**
@@ -59,6 +61,16 @@ if(!class_exists('Trashpic_Report'))
       */
     public function create_post_type()  {
     	
+    	$capabilities = array(
+    			'read_post' => 'read_trashpic-report',
+    			'delete_post' => 'edit_trashpic-report',
+    			'read_post' =>   'delete_trashpic-report',
+    			'edit_posts' => 'edit_trashpic-reports',
+    			'edit_post' => 'edit_trashpic-report',
+    	);
+    	
+    	 
+    	
      register_post_type(self::POST_TYPE,
      			              array(
                               'labels' => array(
@@ -67,8 +79,11 @@ if(!class_exists('Trashpic_Report'))
                                                 ),
                               'public' => true,
                               'has_archive' => true,
-                              'description' => __("This is a sample post type meant only to illustrate a preferred structure of plugin development"),
+                              'show_ui' => true,
+                              'rewrite' => array('slug' => 'portfolio', 'with_front' => true),
+                              'description' => __("report_post_type_description"),
                               'supports' => array('title'),
+                              'capabilities' => $capabilities,
                              )
                        );
      }

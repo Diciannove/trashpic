@@ -44,8 +44,9 @@ jQuery(document).ready(function () {
     renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
     
     	map = new OpenLayers.Map('map');
-		var mapnik = new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)");
-		map.addLayer(mapnik);
+    	map.addLayer(new OpenLayers.Layer.OSM());
+		//var mapnik = new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)");
+    	//map.addLayer(mapnik);
 
 		
 		
@@ -59,27 +60,8 @@ jQuery(document).ready(function () {
         var lonLat = new OpenLayers.LonLat( lon ,lat )
         .transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
 
-		
 
-       var markers = new OpenLayers.Layer.Markers( "Markers" );
-       map.addLayer(markers);		
-       var size = new OpenLayers.Size(21,25);
-       var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-       var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
-
-       
-       for(var m in tmarkers){
-    	   var newic = icon.clone()
-           markers.addMarker(   
-        		new OpenLayers.Marker(
-        		     new OpenLayers.LonLat(tmarkers[m].lon,tmarkers[m].lat).transform(
-        		    		                                 new OpenLayers.Projection("EPSG:4326"), 
-        		    		                                 map.getProjectionObject()),newic
-        		    		          )
-        		             );	 
-       }
-
-		
+        
         var pointsB = [];      //for Geometry.Point Objects
         var lonlatsB = [];      //for LonLat Objects
         
@@ -116,6 +98,82 @@ jQuery(document).ready(function () {
 	        
 	        vectorLayer.addFeatures([polygonFeature]);  
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+       var markers = new OpenLayers.Layer.Markers( "Markers" );
+       map.addLayer(markers);		
+       var size = new OpenLayers.Size(21,25);
+       var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+       var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+
+       
+       var popupHandler = function(marker,img){
+    	   return function(e){
+    		          var mylonLat = new OpenLayers.LonLat( marker.lonlat.lon ,marker.lonlat.lat )
+    		          .transform( map.getProjectionObject(),new OpenLayers.Projection("EPSG:4326"));
+
+    		   		  var text = "Lat: " +  mylonLat.lat.toFixed(4) + "</br>";
+    		   		  text += "Lon: " +  mylonLat.lon.toFixed(4) + "</br></br>";
+    		   		  if(img){
+    		   			  text += "<a target='_blank' class='fancybox' href='"+img+"'><img src='"+img+"' width='200' /></a>";
+    		   		  }	else text += "no img";
+    		   		  
+    	               popup = new OpenLayers.Popup.FramedCloud("chicken",
+    	                                                 marker.lonlat, new OpenLayers.Size(200, 200),
+    	                                                 text, null, true);
+
+    	              map.addPopup(popup);
+    	              
+    	   }
+    	 }        
+       
+       
+       for(var m in tmarkers){
+       
+    	  var newic = icon.clone()
+    	  var marker = new OpenLayers.Marker(new OpenLayers.LonLat(tmarkers[m].lon,tmarkers[m].lat).transform(
+    			          new OpenLayers.Projection("EPSG:4326"), 
+                            map.getProjectionObject()),
+                              newic
+    	  					 );
+    	 markers.addMarker(marker);
+    	 marker.events.register("mousedown", marker, popupHandler(marker,tmarkers[m].img));
+    	 
+        }
+
+       
+       	/*
+       var marker = new OpenLayers.Marker(lonLat,icon.clone());
+  
+    	   markers.addMarker(marker);
+
+    	   
+    	   marker.events.register("mousedown", marker, function(e){
+    		   popup = new OpenLayers.Popup.FramedCloud("chicken",
+                       marker.lonlat,
+                       new OpenLayers.Size(200, 200),
+                       "example popup",
+                       null, true);
+
+    		   map.addPopup(popup);
+    	  });
+       */
+       
+		
         
 		map.setCenter (lonLat, zoom);
 
