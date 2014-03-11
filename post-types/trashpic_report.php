@@ -14,12 +14,15 @@ if(!class_exists('Trashpic_Report'))
 		const POST_TYPE	= "trashpic-report";
 		
 		private $_meta	= array(
+			'label',
+			'link',
 		  'latitude',
 		  'longitude',
 			'investigated',
 			'smile_phone',
 			'approved',
 			'note',
+			'public_note',
 			'picture',
 			'category',
 							
@@ -61,6 +64,21 @@ if(!class_exists('Trashpic_Report'))
       */
     public function create_post_type()  {
     	
+    	
+    	$capabilities = array(
+    			'publish_posts' => 'publish_trashpic-report',
+    			'edit_posts' => 'edit_trashpic-report',
+    			'edit_others_posts' => 'edit_others_trashpic-report',
+    			'delete_posts' => 'delete_trashpic-report',
+    			'delete_others_posts' => 'delete_others_trashpic-report',
+    			'read_private_posts' => 'read_private_trashpic-report',
+    			'edit_post' => 'edit_trashpic-report',
+    			'delete_post' => 'delete_trashpic-report',
+    			'read_post' => 'read_trashpic-report',
+    			'edit_published_posts' => 'edit_published_trashpic-report',
+    			
+    	);
+    	/*
     	$capabilities = array(
     			'read_post' => 'read_trashpic-report',
     			'delete_post' => 'edit_trashpic-report',
@@ -68,7 +86,7 @@ if(!class_exists('Trashpic_Report'))
     			'edit_posts' => 'edit_trashpic-reports',
     			'edit_post' => 'edit_trashpic-report',
     	);
-    	
+    	*/
     	 
     	
      register_post_type(self::POST_TYPE,
@@ -80,11 +98,16 @@ if(!class_exists('Trashpic_Report'))
                               'public' => true,
                               'has_archive' => true,
                               'show_ui' => true,
+                              
                               'rewrite' => array('slug' => 'portfolio', 'with_front' => true),
                               'description' => __("report_post_type_description"),
                               'supports' => array('title'),
+     			              		  
+     			              		  'capability_type' => 'trashpic-report',
                               'capabilities' => $capabilities,
+     			              		
                              )
+
                        );
      }
 
@@ -115,6 +138,12 @@ if(!class_exists('Trashpic_Report'))
      			'show_admin_column' => true,
      			'query_var' => true,
      			'rewrite' => array( 'slug' => 'litter_type' ),
+     			'capabilities' => array (
+            'manage_terms' => 'edit_trashpic-report', //by default only admin
+            'edit_terms' => 'edit_trashpic-report',
+            'delete_terms' => 'edit_trashpic-report',
+            'assign_terms' => 'edit_trashpic-report',  // means administrator', 'editor', 'author', 'contributor'
+            )
      	);
      
      	register_taxonomy( 'litter_type', array( self::POST_TYPE ), $args );
@@ -137,17 +166,17 @@ if(!class_exists('Trashpic_Report'))
     		
 	      foreach($this->_meta as $field_name)  {
 	      	
-	      	if($field_name=="picture"){
-	      		$upload = wp_upload_bits($_FILES[$field_name]['name'], null, file_get_contents($_FILES[$field_name]['tmp_name']));
-	      		
-	      		//wp_die($field_name.print_r($_FILES));
-	      		if(isset($upload['error']) && $upload['error'] != 0) {
-	      			wp_die('There was an error uploading your file. The error is: ' . $upload['error']);
-	      		} else {
-	      			update_post_meta($post_id, $field_name, $upload);
-	      		} // end if/else
-	      		
-	      	}else 
+	      	
+	      	if($field_name=="picture" ){
+	      		if(!empty( $_FILES[$field_name]['name'] )){	
+	      			$upload = wp_upload_bits($_FILES[$field_name]['name'], null, file_get_contents($_FILES[$field_name]['tmp_name']));
+		      		if(isset($upload['error']) && $upload['error'] != 0) {
+		      			wp_die('upload_error'. $upload['error']);
+	  	    		} else {
+	    	  			update_post_meta($post_id, $field_name, $upload);
+	      			} 
+	      		}
+	      	}else  
 	      	// Update the post's meta field
      			update_post_meta($post_id, $field_name, $_POST[$field_name]);
      		}

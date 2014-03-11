@@ -1,6 +1,52 @@
 <table class="form-table" cellpadding="0" cellspacing="0">
 <tbody>
-<tr valign="top">
+
+   <tr valign="top">
+        <th >
+            <label for="label"><?php echo _e('report_label','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+            <input type="text" id="label" name="label" value="<?php echo @get_post_meta($post->ID, 'label', true); ?>" />
+        </td>
+    </tr>
+   <tr valign="top">
+        <th >
+            <label for="link"><?php echo _e('report_link','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+
+        <?php 
+        $val = @get_post_meta($post->ID, 'link', true);
+        global $post;
+        	$posts = get_posts(array(
+					'post_type'   => 'trashpic-report',
+					'post_status' => 'publish',
+					'meta_query' => array( array('key' => 'approved','value'=>1)),
+					'posts_per_page' => -1,
+					'fields' => 'ids'
+					)
+				);
+			echo "<select id='link' name='link'>";
+			echo "<option value=''></option>";
+			foreach($posts as $p){
+				$title = get_the_title($p);
+				$label = get_post_meta($p, 'label', true);
+				if($val==$p) echo "<option selected value='".$p."'>".$title ." ".$label."</option>";
+				else echo "<option value='".$p."'>".$title ." ".$label."</option>";
+				
+			}
+			echo "</select>";
+			
+			?>
+        
+        </td>
+    </tr>
+    
+    
+    <tr><td colspan="2"><hr/></td></tr>
+    
+    
+		<tr valign="top">
         <th >
             <label for="latitude"><?php echo _e('latitude','TRASHPIC-plugin')?></label>
         </th>
@@ -8,6 +54,8 @@
             <input type="text" id="latitude" name="latitude" value="<?php echo @get_post_meta($post->ID, 'latitude', true); ?>" />
         </td>
     </tr>
+    
+    
     
     <tr valign="top">
         <th >
@@ -54,7 +102,7 @@
         <?php
         $img = @get_post_meta($post->ID, 'picture', true);
         if($img['url']) {
-						echo $img['url'];
+						//echo $img['url'];
 						echo "<img src='".$img['url']."' width='500' />";	
 				}?>
         </td>
@@ -64,14 +112,10 @@
             <label for="picture"><?php echo _e('picture','TRASHPIC-plugin')?></label>
         </th>
         <td >
-        <a href="#" class="button insert-media add_media" data-editor="content" title="Add Media">
-    			<span class="wp-media-buttons-icon"></span> Add Media
-</a>
             <input type="file" id="picture" name="picture"  />
         </td>
     </tr>
-        <tr><td colspan="2"><hr/></td></tr>
-    
+    <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">
         <th >
             <label for="smile_phone"><?php echo _e('smile_phone','TRASHPIC-plugin')?></label>
@@ -97,6 +141,16 @@
             <label for="investigated2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
         </td>
     </tr>
+
+    <tr valign="top">
+        <th >
+            <label for="public_note"><?php echo _e('public_note','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+            <textarea id="public_note" cols="46" colss="5" name="public_note"><?php echo @get_post_meta($post->ID, 'public_note', true); ?></textarea>
+        </td>
+    <tr>
+    <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">
         <th >
             <label for="note"><?php echo _e('note','TRASHPIC-plugin')?></label>

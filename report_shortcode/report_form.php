@@ -5,7 +5,7 @@
 		<fieldset class="gllpLatlonPicker">
    	  <div class="gllpMap olMap"></div>
    	  <br/>
-   	  <label for="latitude"><?php esc_html_e('latitude', 'TRASHPIC-plugin') ?></label>
+   	  <label for="latitude"><?php _e('latitude', 'TRASHPIC-plugin') ?></label>
    	  <input id="latitude" name="latitude"   type="text" class="gllpLatitude"/>
    	  <label for="longitude"><?php _e('longitude', 'TRASHPIC-plugin') ?></label>
    	  <input id="longitude" name="longitude" type="text" class="gllpLongitude"/>
@@ -14,7 +14,7 @@
 								
  		</fieldset>
 		<fieldset>
-   	  <label for="category"><?php esc_html_e('category', 'TRASHPIC-plugin') ?></label>
+   	  <label for="category"><?php _e('category', 'TRASHPIC-plugin') ?></label>
         		<?php 
         		global $trashpic_category;
         		
@@ -28,9 +28,17 @@
    	  
  		</fieldset>
 		<fieldset>
-			<label for="files"><?php _e('picture', 'framework') ?></label>
+			<label for="files"><?php _e('picture', 'TRASHPIC-plugin') ?></label>
+			
 			<input type="file" name="picture" />
 		</fieldset>
+		
+		<fieldset>
+		  <label for="public_note"><?php echo _e('public_note','TRASHPIC-plugin')?></label>
+      <textarea id="public_note" cols="46" colss="5" name="public_note"></textarea>
+		</fieldset>
+		
+		
 		<fieldset>
 			<?php wp_nonce_field('post_nonce', 'post_nonce_field'); ?>
 			<input type="hidden" name="submitted" id="submitted" value="true" />
