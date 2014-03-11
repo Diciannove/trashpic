@@ -31,8 +31,10 @@
 			foreach($posts as $p){
 				$title = get_the_title($p);
 				$label = get_post_meta($p, 'label', true);
-				if($val==$p) echo "<option selected value='".$p."'>".$title ." ".$label."</option>";
-				else echo "<option value='".$p."'>".$title ." ".$label."</option>";
+				if($post->ID != $p){
+					if($val==$p) echo "<option selected value='".$p."'>".$title ." ".$label."</option>";
+					else echo "<option value='".$p."'>".$title ." ".$label."</option>";
+				}
 				
 			}
 			echo "</select>";
@@ -91,8 +93,17 @@
     
     
     <tr><td colspan="2"><hr/></td></tr>
+    <tr valign="top">
+        <th >
+            <label for="public_note"><?php echo _e('public_note','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+            <textarea id="public_note" cols="46" colss="5" name="public_note"><?php echo @get_post_meta($post->ID, 'public_note', true); ?></textarea>
+        </td>
+    <tr>
     
     
+    <tr><td colspan="2"><hr/></td></tr>
     
     <tr valign="top">
         <th >
@@ -142,23 +153,6 @@
         </td>
     </tr>
 
-    <tr valign="top">
-        <th >
-            <label for="public_note"><?php echo _e('public_note','TRASHPIC-plugin')?></label>
-        </th>
-        <td >
-            <textarea id="public_note" cols="46" colss="5" name="public_note"><?php echo @get_post_meta($post->ID, 'public_note', true); ?></textarea>
-        </td>
-    <tr>
-    <tr><td colspan="2"><hr/></td></tr>
-    <tr valign="top">
-        <th >
-            <label for="note"><?php echo _e('note','TRASHPIC-plugin')?></label>
-        </th>
-        <td >
-            <textarea id="note" cols="46" colss="10" name="note"><?php echo @get_post_meta($post->ID, 'note', true); ?></textarea>
-        </td>
-    <tr>
     <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">
         <th >
@@ -171,5 +165,16 @@
             <label for="approved2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
          </td>
     </tr>
+    <tr><td colspan="2"><hr/></td></tr>
+    <tr valign="top">
+        <th >
+            <label for="note"><?php echo _e('note','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+            <textarea id="note" cols="46" colss="10" name="note"><?php echo @get_post_meta($post->ID, 'note', true); ?></textarea>
+        </td>
+    <tr>
+    
+    
     </tbody>
 </table>

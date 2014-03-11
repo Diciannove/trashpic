@@ -133,9 +133,9 @@ jQuery(document).ready(function () {
     		   		  }	else text += "no img";
     		   		  
     	               popup = new OpenLayers.Popup.FramedCloud("chicken",
-    	                                                 marker.lonlat, new OpenLayers.Size(200, 200),
+    	                                                 marker.lonlat, new OpenLayers.Size(530, 530),
     	                                                 text, null, true);
-
+    	              
     	              map.addPopup(popup);
     	              
     	   }

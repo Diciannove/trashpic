@@ -9,7 +9,9 @@ div.trashpic-error{margin-left:0px;margin-bottom:10px;margin-top:10px;padding-to
 #left-div fieldset {width: 870px;}
 .error{color:#FF0000}
 
-
+#chicken_contentDiv{
+	overflow:hidden;
+}
 
 div.olMap {
     z-index: 0;

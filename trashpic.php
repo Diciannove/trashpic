@@ -339,7 +339,6 @@ if(class_exists('Trashpic'))
 			return $location;
 		}		
 		
-		add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 		
 		
 function restrict_manage_authors() {
@@ -388,17 +387,26 @@ function wpse45436_posts_filter( $query ){
 
 
 function remove_edit_post_views( $views ) {
+			$pre = filter_input(INPUT_GET, 'pre', FILTER_SANITIZE_STRING);
+			$all = filter_input(INPUT_GET, 'all_posts', FILTER_SANITIZE_STRING);
+			
+			if(!$all && !$pre ) $pre = 'pre';
+			
 			//unset($views['all']);
 			unset($views['publish']);
 			unset($views['pending']);
 			unset($views['trash']);
+			unset($views['mine']);
+				
 			
-			$views['pre'] = '<a class="'.$class.'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=pre">Da approvare</a>';
-			$views['app'] = '<a class="'.$class.'" href="'.admin_url().'edit.php?post_type=trashpic-report&app=app">Approvate</a>';
-			$views['rif'] = '<a class="'.$class.'" href="'.admin_url().'edit.php?post_type=trashpic-report&rif=rif">Rifiutate</a>';
+			
+			$views['pre'] = '<a class="'.(($pre == 'pre') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=pre">Da approvare</a>';
+			$views['app'] = '<a class="'.(($pre == 'app') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=app">Approvate</a>';
+			$views['rif'] = '<a class="'.(($pre == 'rif') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=rif">Rifiutate</a>';
 			return $views;
 }
-		
+add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
+
 		
 		/*
 		$test = '[
@@ -413,19 +421,27 @@ function remove_edit_post_views( $views ) {
 	   ]';
 		 	*/
 		 //print_r(json_decode($test));
-		 	
+		//add_action('get_posts', 'my_special_test');
+		//function my_special_list( $q ) {
+		//	if(is_admin()) $scr = get_current_screen();
+		//}
 		
 		add_action('pre_get_posts', 'my_special_list');
-		add_action('app_get_posts', 'my_special_list');
-		add_action('rif_get_posts', 'my_special_list');
+		//add_action('app_get_posts', 'my_special_list');
+		//add_action('rif_get_posts', 'my_special_list');
 		
 		function my_special_list( $q ) {
+			//echo "entro";
+			
 			if(is_admin()) $scr = get_current_screen();
 			if ( is_admin() && ( $scr->base === 'edit' ) && $q->is_main_query() ) {
 				// To target onlhttp://life-smile.eu/wp/trashpic-report/2014030397993/y a post type uncomment following line and adjust post type name
 				// if ( $scr->post_type !== 'post' ) return;
 				// if you change the link in function above adjust next line accordingly
 				$pre = filter_input(INPUT_GET, 'pre', FILTER_SANITIZE_STRING);
+				$all = filter_input(INPUT_GET, 'all_posts', FILTER_SANITIZE_STRING);
+				if(!$all && !$pre ) $pre = 'pre';
+				
 				
 				if ( $pre === 'pre' ) {
 					// adjust meta query to fit your needs
@@ -433,7 +449,7 @@ function remove_edit_post_views( $views ) {
 					$q->set( 'meta_query', array($meta_query) );
 				}
 				
-				$pre = filter_input(INPUT_GET, 'app', FILTER_SANITIZE_STRING);
+				//$app = filter_input(INPUT_GET, 'app', FILTER_SANITIZE_STRING);
 				
 				if ( $pre === 'app' ) {
 					// adjust meta query to fit your needs
@@ -441,7 +457,7 @@ function remove_edit_post_views( $views ) {
 					$q->set( 'meta_query', array($meta_query) );
 				}
 				
-				$pre = filter_input(INPUT_GET, 'rif', FILTER_SANITIZE_STRING);
+				//$pre = filter_input(INPUT_GET, 'rif', FILTER_SANITIZE_STRING);
 				
 				if ( $pre === 'rif' ) {
 					// adjust meta query to fit your needs
@@ -542,11 +558,19 @@ function remove_edit_post_views( $views ) {
 			);
 			
 			foreach($posts as $p){
-				$img = @get_post_meta($p, 'picture', true);
-				$tpost[] = array("id"=>$p,"lat"=>get_post_meta($p,"latitude",true),
-						                      "lon"=>get_post_meta($p,"longitude",true),
-																	"img"=>$img['url']
-				 );
+				$img  = @get_post_meta($p, 'picture', true);
+				$link = @get_post_meta($p, 'link', true);
+				
+				if(!$link){
+						$tpost[$p] = array("id"=>$p,
+					   			             "lat"=>get_post_meta($p,"latitude",true),
+					                     "lon"=>get_post_meta($p,"longitude",true),
+											      	 "img"=>$img['url']);
+						$tpost[$p]['n'] = 1;
+				} else {
+					$tpost[$p]['n'] += 1;
+				}
+				
 			}
 			
 			
