@@ -4,7 +4,7 @@ div.trashpic-error{margin-left:0px;margin-bottom:10px;margin-top:10px;padding-to
 
 
 /* If the map DIV doesn't have a size set up, it won't appear on the page */
-.gllpMap	{ width: 870px; height: 600px; }
+.gllpMap	{ width: 870px; height: 450px; }
 .form_external fieldset {width:100%;}
 #left-div fieldset {width: 870px;}
 .error{color:#FF0000}

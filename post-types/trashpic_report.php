@@ -117,6 +117,8 @@ if(!class_exists('Trashpic_Report'))
       * Create taxonomies
       */
      public function create_taxonomies() {
+     	
+     	
      	$labels = array(
      			'name' => __( 'litter_type_tax_name', 'TRASHPIC-plugin' ),
      			'singular_name' => __( 'litter_type_tax_name_singular', 'TRASHPIC-plugin'),
@@ -147,6 +149,42 @@ if(!class_exists('Trashpic_Report'))
      	);
      
      	register_taxonomy( 'litter_type', array( self::POST_TYPE ), $args );
+     	
+
+     	$labels = array(
+     			'name' => __( 'attribute_tax_name', 'TRASHPIC-plugin' ),
+     			'singular_name' => __( 'attribute_tax_name_singular', 'TRASHPIC-plugin'),
+     			'search_items' => __( 'search_attribute_type', 'TRASHPIC-plugin' ),
+     			'all_items' => __( 'all_attribute_type', 'TRASHPIC-plugin' ),
+     			'parent_item' => __( 'parent_attribute_type', 'TRASHPIC-plugin' ),
+     			'parent_item_colon' => __( 'parent_attribute_colon', 'TRASHPIC-plugin' ),
+     			'edit_item' => __( 'edit_attribute', 'TRASHPIC-plugin' ),
+     			'update_item' => __( 'update_attribute', 'TRASHPIC-plugin' ),
+     			'add_new_item' => __( 'add_new_attribute', 'TRASHPIC-plugin'  ),
+     			'new_item_name' => __( 'new_attribute_name', 'TRASHPIC-plugin' ),
+     			'menu_name' => __( 'attribute_menu_name', 'TRASHPIC-plugin' ),
+     	);
+     	 
+     	$args = array(
+     			'hierarchical' => false,
+     			'labels' => $labels,
+     			'show_ui' => true,
+     			'show_admin_column' => true,
+     			'query_var' => true,
+     			'rewrite' => array( 'slug' => 'attribute' ),
+     			'capabilities' => array (
+     					'manage_terms' => 'edit_trashpic-report', //by default only admin
+     					'edit_terms' => 'edit_trashpic-report',
+     					'delete_terms' => 'edit_trashpic-report',
+     					'assign_terms' => 'edit_trashpic-report',  // means administrator', 'editor', 'author', 'contributor'
+     			)
+     	);
+     	 
+     	register_taxonomy( 'attribute', array( self::POST_TYPE ), $args );
+     	
+     	
+     	
+     	
      } // END public function create_taxonomies()     
      
      

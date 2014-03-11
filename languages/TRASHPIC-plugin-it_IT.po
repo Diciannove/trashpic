@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: trashpic\n"
-"POT-Creation-Date: 2014-03-11 10:05+0100\n"
-"PO-Revision-Date: 2014-03-11 10:06+0100\n"
+"POT-Creation-Date: 2014-03-11 10:42+0100\n"
+"PO-Revision-Date: 2014-03-11 10:42+0100\n"
 "Last-Translator: coma <coma@19.coop>\n"
 "Language-Team: Diciannove <info@19.coop>\n"
 "Language: it_IT\n"
@@ -193,46 +193,99 @@ msgstr "Invia la segnalazione"
 msgid "report_post_type_description"
 msgstr ""
 
-#: post-types/trashpic_report.php:121
+#: post-types/trashpic_report.php:123
 msgid "litter_type_tax_name"
 msgstr "Tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:122
+#: post-types/trashpic_report.php:124
 msgid "litter_type_tax_name_singular"
 msgstr "Tipologia di rifiuto"
 
-#: post-types/trashpic_report.php:123
+#: post-types/trashpic_report.php:125
 msgid "search_litter_type"
 msgstr "Ricerca in base alla tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:124
+#: post-types/trashpic_report.php:126
 msgid "all_litter_type"
 msgstr ""
 
-#: post-types/trashpic_report.php:125
+#: post-types/trashpic_report.php:127
 msgid "parent_litter_type"
 msgstr ""
 
-#: post-types/trashpic_report.php:126
+#: post-types/trashpic_report.php:128
 msgid "parent_litter_type_colon"
 msgstr ""
 
-#: post-types/trashpic_report.php:127
+#: post-types/trashpic_report.php:129
 msgid "edit_litter_type"
 msgstr "Modifica tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:128
+#: post-types/trashpic_report.php:130
 msgid "update_litter_type"
 msgstr "aggiorna tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:129
+#: post-types/trashpic_report.php:131
 msgid "add_new_litter_type"
 msgstr "Aggiungi tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:130
+#: post-types/trashpic_report.php:132
 msgid "new_litter_type_name"
 msgstr "Nuova tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:131
+#: post-types/trashpic_report.php:133
 msgid "litter_type_menu_name"
+msgstr "Tipologie di rifiuti"
+
+#: post-types/trashpic_report.php:155
+#, fuzzy
+msgid "attribute_tax_name"
+msgstr "Tipologia di rifiuti"
+
+#: post-types/trashpic_report.php:156
+#, fuzzy
+msgid "attribute_tax_name_singular"
+msgstr "Tipologia di rifiuto"
+
+#: post-types/trashpic_report.php:157
+#, fuzzy
+msgid "search_attribute_type"
+msgstr "Ricerca in base alla tipologia di rifiuti"
+
+#: post-types/trashpic_report.php:158
+msgid "all_attribute_type"
+msgstr ""
+
+#: post-types/trashpic_report.php:159
+#, fuzzy
+msgid "parent_attribute_type"
+msgstr "aggiorna tipologia di rifiuti"
+
+#: post-types/trashpic_report.php:160
+msgid "parent_attribute_colon"
+msgstr ""
+
+#: post-types/trashpic_report.php:161
+#, fuzzy
+msgid "edit_attribute"
+msgstr "Modifica tipologia di rifiuti"
+
+#: post-types/trashpic_report.php:162
+#, fuzzy
+msgid "update_attribute"
+msgstr "aggiorna tipologia di rifiuti"
+
+#: post-types/trashpic_report.php:163
+#, fuzzy
+msgid "add_new_attribute"
+msgstr "Aggiungi tipologia di rifiuti"
+
+#: post-types/trashpic_report.php:164
+#, fuzzy
+msgid "new_attribute_name"
+msgstr "Nuova tipologia di rifiuti"
+
+#: post-types/trashpic_report.php:165
+#, fuzzy
+msgid "attribute_menu_name"
 msgstr "Tipologie di rifiuti"
