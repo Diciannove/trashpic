@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: trashpic\n"
-"POT-Creation-Date: 2014-03-11 10:42+0100\n"
-"PO-Revision-Date: 2014-03-11 10:42+0100\n"
+"POT-Creation-Date: 2014-03-11 13:28+0100\n"
+"PO-Revision-Date: 2014-03-11 13:30+0100\n"
 "Last-Translator: coma <coma@19.coop>\n"
 "Language-Team: Diciannove <info@19.coop>\n"
 "Language: it_IT\n"
@@ -16,15 +16,15 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: settings.php:20 trashpic.php:126 templates/trashpic-report_metabox.php:128
-#: templates/trashpic-report_metabox.php:141
-#: templates/trashpic-report_metabox.php:171
+#: settings.php:20 trashpic.php:126 templates/trashpic-report_metabox.php:139
+#: templates/trashpic-report_metabox.php:152
+#: templates/trashpic-report_metabox.php:165
 msgid "yes"
 msgstr "S&igrave;"
 
-#: settings.php:21 trashpic.php:128 templates/trashpic-report_metabox.php:126
-#: templates/trashpic-report_metabox.php:139
-#: templates/trashpic-report_metabox.php:169
+#: settings.php:21 trashpic.php:128 templates/trashpic-report_metabox.php:137
+#: templates/trashpic-report_metabox.php:150
+#: templates/trashpic-report_metabox.php:163
 msgid "no"
 msgstr "No"
 
@@ -52,7 +52,7 @@ msgstr ""
 msgid "trashpic_polygon_in_report"
 msgstr ""
 
-#: settings.php:114 trashpic.php:481
+#: settings.php:114 trashpic.php:506
 msgid "only_registered_users"
 msgstr ""
 "Permetti che le segnalazioni vengano effettuate solo da utenti registrati"
@@ -109,16 +109,16 @@ msgstr ""
 msgid "report_number"
 msgstr "Numero segnalazione"
 
-#: trashpic.php:98 templates/trashpic-report_metabox.php:72
+#: trashpic.php:98 templates/trashpic-report_metabox.php:74
 #: report_shortcode/report_form.php:17
 msgid "category"
 msgstr "Categoria pubblica"
 
-#: trashpic.php:99 templates/trashpic-report_metabox.php:165
+#: trashpic.php:99 templates/trashpic-report_metabox.php:159
 msgid "approved"
 msgstr "Segnalazione approvata"
 
-#: trashpic.php:100 templates/trashpic-report_metabox.php:135
+#: trashpic.php:100 templates/trashpic-report_metabox.php:146
 msgid "investigated"
 msgstr "Indagato"
 
@@ -130,19 +130,31 @@ msgstr ""
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: trashpic.php:351
+#: trashpic.php:356
 msgid "all_category_filter"
 msgstr ""
 
-#: trashpic.php:658
+#: trashpic.php:410
+msgid "view_filter_pending"
+msgstr "Segnalazioni da gestire"
+
+#: trashpic.php:411
+msgid "view_filter_approved"
+msgstr "Segnalazioni approvate"
+
+#: trashpic.php:412
+msgid "view_filter_refused"
+msgstr "Segnalazioni non approvate"
+
+#: trashpic.php:691
 msgid "error_longitude_mandatory"
 msgstr "Errore: La longitudine &egrave; obbligatoria"
 
-#: trashpic.php:659
+#: trashpic.php:692
 msgid "error_latitude_mandatory"
 msgstr "Errore: La latitudine &egrave; obbligatoria"
 
-#: trashpic.php:686
+#: trashpic.php:719
 msgid "notice_success_new_report"
 msgstr ""
 
@@ -158,30 +170,30 @@ msgstr "Assegna un etichetta a questo report"
 msgid "report_link"
 msgstr "Collega questo report con un altro"
 
-#: templates/trashpic-report_metabox.php:51 report_shortcode/report_form.php:8
+#: templates/trashpic-report_metabox.php:53 report_shortcode/report_form.php:8
 msgid "latitude"
 msgstr "Latitudine"
 
-#: templates/trashpic-report_metabox.php:62
+#: templates/trashpic-report_metabox.php:64
 #: report_shortcode/report_form.php:10
 msgid "longitude"
 msgstr "Longitudine"
 
-#: templates/trashpic-report_metabox.php:112
-#: report_shortcode/report_form.php:31
-msgid "picture"
-msgstr "Immagine"
-
-#: templates/trashpic-report_metabox.php:121
-msgid "smile_phone"
-msgstr "Tramite call center"
-
-#: templates/trashpic-report_metabox.php:147
+#: templates/trashpic-report_metabox.php:98
 #: report_shortcode/report_form.php:37
 msgid "public_note"
 msgstr "Nota segnalatore"
 
-#: templates/trashpic-report_metabox.php:156
+#: templates/trashpic-report_metabox.php:123
+#: report_shortcode/report_form.php:31
+msgid "picture"
+msgstr "Immagine"
+
+#: templates/trashpic-report_metabox.php:132
+msgid "smile_phone"
+msgstr "Tramite call center"
+
+#: templates/trashpic-report_metabox.php:171
 msgid "note"
 msgstr "Note"
 

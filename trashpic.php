@@ -333,9 +333,15 @@ if(class_exists('Trashpic'))
 		*/
 		function wpse_124132_redirect_post_location( $location ) {
 		
-			if ( isset( $_POST['save'] )  )
-				return admin_url( "edit.php?post_type=trashpic-report" );
-		
+			if ( isset( $_POST['save'] )  ){
+				
+				if($_POST['approved']=='1') $par = "&pre=app";
+				if($_POST['approved']=='0') $par = "&pre=rif";
+				
+				return admin_url( "edit.php?post_type=trashpic-report".$par);
+			}
+				
+				
 			return $location;
 		}		
 		
@@ -389,8 +395,9 @@ function wpse45436_posts_filter( $query ){
 function remove_edit_post_views( $views ) {
 			$pre = filter_input(INPUT_GET, 'pre', FILTER_SANITIZE_STRING);
 			$all = filter_input(INPUT_GET, 'all_posts', FILTER_SANITIZE_STRING);
+			$post_status = filter_input(INPUT_GET, 'post_status', FILTER_SANITIZE_STRING);
 			
-			if(!$all && !$pre ) $pre = 'pre';
+			if(!$all && !$pre && !$post_status) $pre = 'pre';
 			
 			//unset($views['all']);
 			unset($views['publish']);
@@ -400,9 +407,9 @@ function remove_edit_post_views( $views ) {
 				
 			
 			
-			$views['pre'] = '<a class="'.(($pre == 'pre') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=pre">Da approvare</a>';
-			$views['app'] = '<a class="'.(($pre == 'app') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=app">Approvate</a>';
-			$views['rif'] = '<a class="'.(($pre == 'rif') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=rif">Rifiutate</a>';
+			$views['pre'] = '<a class="'.(($pre == 'pre') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=pre">'.__('view_filter_pending','TRASHPIC-plugin').'</a>';
+			$views['app'] = '<a class="'.(($pre == 'app') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=app">'.__('view_filter_approved','TRASHPIC-plugin').'</a>';
+			$views['rif'] = '<a class="'.(($pre == 'rif') ? 'current':'').'" href="'.admin_url().'edit.php?post_type=trashpic-report&pre=rif">'.__('view_filter_refused','TRASHPIC-plugin').'</a>';
 			return $views;
 }
 add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
@@ -440,7 +447,9 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 				// if you change the link in function above adjust next line accordingly
 				$pre = filter_input(INPUT_GET, 'pre', FILTER_SANITIZE_STRING);
 				$all = filter_input(INPUT_GET, 'all_posts', FILTER_SANITIZE_STRING);
-				if(!$all && !$pre ) $pre = 'pre';
+				$post_status = filter_input(INPUT_GET, 'post_status', FILTER_SANITIZE_STRING);
+					
+				if(!$all && !$pre && !$post_status) $pre = 'pre';
 				
 				
 				if ( $pre === 'pre' ) {

@@ -205,6 +205,9 @@ if(!class_exists('Trashpic_Report'))
 	      foreach($this->_meta as $field_name)  {
 	      	
 	      	
+	      	
+	      	
+	      	
 	      	if($field_name=="picture" ){
 	      		if(!empty( $_FILES[$field_name]['name'] )){	
 	      			$upload = wp_upload_bits($_FILES[$field_name]['name'], null, file_get_contents($_FILES[$field_name]['tmp_name']));
@@ -214,9 +217,14 @@ if(!class_exists('Trashpic_Report'))
 	    	  			update_post_meta($post_id, $field_name, $upload);
 	      			} 
 	      		}
-	      	}else  
+	      	} else  {
 	      	// Update the post's meta field
-     			update_post_meta($post_id, $field_name, $_POST[$field_name]);
+	      		if($field_name=="approved"){
+	      			if( $_POST["approved"]=="") $_POST["approved"] = "-1";
+	      		}
+	      		
+     					update_post_meta($post_id, $field_name, $_POST[$field_name]);
+	      	}
      		}
      	} else {
      		
