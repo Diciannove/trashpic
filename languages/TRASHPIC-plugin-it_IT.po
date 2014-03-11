@@ -241,7 +241,7 @@ msgstr "Nuova tipologia di rifiuti"
 
 #: post-types/trashpic_report.php:133
 msgid "litter_type_menu_name"
-msgstr "Gestione tipologie di rifiuti"
+msgstr "Gestione tipologie"
 
 #: post-types/trashpic_report.php:155
 msgid "attribute_tax_name"
