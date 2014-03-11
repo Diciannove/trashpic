@@ -30,7 +30,7 @@ msgstr "No"
 
 #: settings.php:54
 msgid "default_latitude"
-msgstr "Centratura della mappa (Latitudine )"
+msgstr "Centratura della mappa (Latitudine)"
 
 #: settings.php:63
 msgid "default_longitude"
@@ -42,7 +42,7 @@ msgstr "Livello di zoom al caricamento della mappa"
 
 #: settings.php:81
 msgid "trashpic_polygon"
-msgstr ""
+msgstr "Poligono area di segnalazione"
 
 #: settings.php:90
 msgid "trashpic_polygon_in_map"
@@ -59,7 +59,7 @@ msgstr ""
 
 #: settings.php:196
 msgid "insufficient_permissions"
-msgstr "Permessi non sufficienti"
+msgstr "Permessi insufficienti"
 
 #: trashpic.php:56
 msgid "Laterizi"
@@ -112,7 +112,7 @@ msgstr "Numero segnalazione"
 #: trashpic.php:98 templates/trashpic-report_metabox.php:72
 #: report_shortcode/report_form.php:17
 msgid "category"
-msgstr ""
+msgstr "Categoria pubblica"
 
 #: trashpic.php:99 templates/trashpic-report_metabox.php:165
 msgid "approved"
@@ -136,11 +136,11 @@ msgstr ""
 
 #: trashpic.php:658
 msgid "error_longitude_mandatory"
-msgstr ""
+msgstr "Errore: La longitudine &egrave; obbligatoria"
 
 #: trashpic.php:659
 msgid "error_latitude_mandatory"
-msgstr ""
+msgstr "Errore: La latitudine &egrave; obbligatoria"
 
 #: trashpic.php:686
 msgid "notice_success_new_report"
@@ -174,12 +174,12 @@ msgstr "Immagine"
 
 #: templates/trashpic-report_metabox.php:121
 msgid "smile_phone"
-msgstr ""
+msgstr "Tramite call center"
 
 #: templates/trashpic-report_metabox.php:147
 #: report_shortcode/report_form.php:37
 msgid "public_note"
-msgstr ""
+msgstr "Nota segnalatore"
 
 #: templates/trashpic-report_metabox.php:156
 msgid "note"
@@ -207,11 +207,11 @@ msgstr "Ricerca in base alla tipologia di rifiuti"
 
 #: post-types/trashpic_report.php:126
 msgid "all_litter_type"
-msgstr ""
+msgstr "Tutte le tipologie di rifiuto"
 
 #: post-types/trashpic_report.php:127
 msgid "parent_litter_type"
-msgstr ""
+msgstr "Tipologia padre"
 
 #: post-types/trashpic_report.php:128
 msgid "parent_litter_type_colon"
@@ -238,17 +238,14 @@ msgid "litter_type_menu_name"
 msgstr "Tipologie di rifiuti"
 
 #: post-types/trashpic_report.php:155
-#, fuzzy
 msgid "attribute_tax_name"
-msgstr "Tipologia di rifiuti"
+msgstr "Attributi"
 
 #: post-types/trashpic_report.php:156
-#, fuzzy
 msgid "attribute_tax_name_singular"
-msgstr "Tipologia di rifiuto"
+msgstr "Attributo"
 
 #: post-types/trashpic_report.php:157
-#, fuzzy
 msgid "search_attribute_type"
 msgstr "Ricerca in base alla tipologia di rifiuti"
 
@@ -257,26 +254,22 @@ msgid "all_attribute_type"
 msgstr ""
 
 #: post-types/trashpic_report.php:159
-#, fuzzy
 msgid "parent_attribute_type"
-msgstr "aggiorna tipologia di rifiuti"
+msgstr "attributo padre"
 
 #: post-types/trashpic_report.php:160
 msgid "parent_attribute_colon"
 msgstr ""
 
 #: post-types/trashpic_report.php:161
-#, fuzzy
 msgid "edit_attribute"
-msgstr "Modifica tipologia di rifiuti"
+msgstr "Modifica atttributo"
 
 #: post-types/trashpic_report.php:162
-#, fuzzy
 msgid "update_attribute"
-msgstr "aggiorna tipologia di rifiuti"
+msgstr "aggiorna attributo"
 
 #: post-types/trashpic_report.php:163
-#, fuzzy
 msgid "add_new_attribute"
 msgstr "Aggiungi tipologia di rifiuti"
 
