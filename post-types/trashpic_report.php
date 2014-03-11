@@ -25,7 +25,6 @@ if(!class_exists('Trashpic_Report'))
 			'public_note',
 			'picture',
 			'category',
-							
 		);
 
     /**
@@ -41,7 +40,9 @@ if(!class_exists('Trashpic_Report'))
     	 
     } // END public function __construct()
 
-    
+    /**
+     * 
+     */
     public function update_edit_form() {
     	echo ' enctype="multipart/form-data"';
     } // end update_edit_form
@@ -56,6 +57,8 @@ if(!class_exists('Trashpic_Report'))
      	add_action('save_post', array(&$this, 'save_post'));
      	
      	
+     	add_filter('manage_trashpic-report_posts_columns' , array(&$this, 'trashpic_report_columns'));
+     	add_action( 'manage_trashpic-report_posts_custom_column', array(&$this, 'manage_trashpic_report_columns') , 10, 2 );
      } // END public function init()
 
      
@@ -78,15 +81,6 @@ if(!class_exists('Trashpic_Report'))
     			'edit_published_posts' => 'edit_published_trashpic-report',
     			
     	);
-    	/*
-    	$capabilities = array(
-    			'read_post' => 'read_trashpic-report',
-    			'delete_post' => 'edit_trashpic-report',
-    			'read_post' =>   'delete_trashpic-report',
-    			'edit_posts' => 'edit_trashpic-reports',
-    			'edit_post' => 'edit_trashpic-report',
-    	);
-    	*/
     	 
     	
      register_post_type(self::POST_TYPE,
@@ -186,6 +180,62 @@ if(!class_exists('Trashpic_Report'))
      	
      	
      } // END public function create_taxonomies()     
+     
+     
+     
+     
+     /**
+      * Aggiungo/modifico le colonne che mi servono nell'area amministrativa
+      *  del post-type trashpic
+      * @param unknown $columns
+      */
+     public function trashpic_report_columns($columns) {
+     
+     	/* Tolgo il titolo e la data */
+     	unset(
+     			$columns['date'],
+     			$columns['title'],
+     			$columns['title'],
+     			$columns['cb']
+     	);
+     
+     	$new_columns = array(
+     			'cb' => '<input type="checkbox" />',
+     			'title' => __('report_number', 'TRASHPIC-plugin'),
+     			'category' => __('category', 'TRASHPIC-plugin'),
+     			'approved' => __('approved', 'TRASHPIC-plugin'),
+     			'investigated' => __('investigated', 'TRASHPIC-plugin'),
+     	);
+     	return array_merge( $new_columns,$columns);
+     }
+     
+     
+      
+     /**
+      * Cambio le etichette delle colonne approved e investigated
+      * della tabella amministrativa del post-type trashpic
+      * @param unknown $columnhttp://life-smile.eu/wp/trashpic-report/2014030397993/
+      * @param unknown $post_id
+      */
+     public function manage_trashpic_report_columns( $column, $post_id ){
+     	global $post;
+     	global $trashpic_category;
+     	switch( $column ) {
+     		case 'category' :
+     			$col = get_post_meta( $post_id, $column, true );
+     			echo $trashpic_category[$col];
+     			break;
+     		case 'investigated' :
+     		case 'approved' :
+     			/* Get the post meta. */
+     			$col = get_post_meta( $post_id, $column, true );
+     			if ( $col == '1' )
+     				echo _e('yes','TRASHPIC-plugin');
+     			else
+     				echo _e('no','TRASHPIC-plugin');
+     			break;
+     	}
+     }
      
      
       

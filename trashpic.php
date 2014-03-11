@@ -2,7 +2,7 @@
 /*
 Plugin Name: TrashPic
 Plugin URI: http://www.life-smile.eu
-Version: 0.4
+Version: 0.5
 Author: Paolo Selis - Lorenzo Novaro
 Author URI: http://19.coop
 Description: Monitoring system
@@ -20,22 +20,8 @@ if (!function_exists('is_admin')) {
 load_plugin_textdomain('TRASHPIC-plugin', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/');
 
 
-$role = get_role( 'author' );
-$role->add_cap( 'trashpic' );
-
-
-global $wp_roles;
-
-
-//$ra = get_role( 'trashpic_contributor');
-//print_r($ra);
-
-// add a new role, same arguments as add_role()
-//$wp_roles->add_role( $role, $display_name, $capabilities )
-
-
 /* Definisco alcuni valori che possono tornarmi utili*/
-define( 'TRASHPIC_VERSION', '0.0.2' );
+define( 'TRASHPIC_VERSION', '0.5' );
 define( 'TRASHPIC_RELEASE_DATE', date_i18n( 'F j, Y', '1375505016' ) );
 define( 'TRASHPIC_DIR', WP_PLUGIN_DIR . '/trashpic' );
 define( 'TRASHPIC_URL', WP_PLUGIN_URL . '/trashpic' );
@@ -48,10 +34,7 @@ $trashpic_default_options = array('trashpic_default_latitude' =>44.16621,
 													        'trashpic_default_zoom_level' => 13,
 																	'trashpic_only_registered_users' => 1,
 																	'trashpic_polygon_in_map' => 1,
-																	'trashpic_polygon_in_report' => 1
-);
-
-
+																	'trashpic_polygon_in_report' => 1);
 
 $trashpic_category = array('LAT'=>__('Laterizi', 'TRASHPIC-plugin'),
 													 'MOB'=>__('Mobili', 'TRASHPIC-plugin'),
@@ -73,119 +56,64 @@ if (version_compare($wp_version,"2.5.1","<")){
 }
 
 
-
-/**
- * Aggiungo/modifico le colonne che mi servono nell'area amministrativa
- *  del post-type trashpic
- * @param unknown $columns
- */
-
-function trashpic_report_columns($columns) {
-
-	/* Tolgo il titolo e la data */
-	unset(
-			$columns['date'],
-			$columns['title'],
-			$columns['title'],
-			$columns['cb']
-);
-	
-	
-	
-	$new_columns = array(
-			'cb' => '<input type="checkbox" />', 
-			'title' => __('report_number', 'TRASHPIC-plugin'),
-			'category' => __('category', 'TRASHPIC-plugin'),
-			'approved' => __('approved', 'TRASHPIC-plugin'),
-			'investigated' => __('investigated', 'TRASHPIC-plugin'),
-	);
-	return array_merge( $new_columns,$columns);
-}
-
-add_filter('manage_trashpic-report_posts_columns' , 'trashpic_report_columns');
-
-/**
- * Cambio le etichette delle colonne approved e investigated 
- * della tabella amministrativa del post-type trashpic
- * @param unknown $columnhttp://life-smile.eu/wp/trashpic-report/2014030397993/
- * @param unknown $post_id
- */
-function manage_trashpic_report_columns( $column, $post_id ){
-	global $post;
-	global $trashpic_category;
-	switch( $column ) {
-		case 'category' :
-			$col = get_post_meta( $post_id, $column, true );
-			echo $trashpic_category[$col];
-			break;
-		case 'investigated' :
-		case 'approved' :
-			/* Get the post meta. */
-			$col = get_post_meta( $post_id, $column, true );
-			if ( $col == '1' )
-				echo _e('yes','TRASHPIC-plugin');
-			else
-				echo _e('no','TRASHPIC-plugin');
-			break;
-	}
-}
-add_action( 'manage_trashpic-report_posts_custom_column', 'manage_trashpic_report_columns', 10, 2 );
-
-
-
-
 if(!class_exists('Trashpic'))
 {
-	class Trashpic
-	{
+	class Trashpic {
 		
-		
+		/**
+		 * 
+		 * @var unknown
+		 */
 		private $Trashpic_Settings;
-		private $default_option;
+
 		
 		/**
 		 * Costruttore dell'ogetto principale del plug-in
 		 */
 		public function __construct() 	{
-			// Initialize Settings
+
+			/**
+			 * 
+			 */
 			require_once(sprintf("%s/settings.php", dirname(__FILE__)));
 			$this->Trashpic_Settings = new Trashpic_Settings();
 
-			// Register custom post types
+			/**
+			 * 
+			 */
 			require_once(sprintf("%s/post-types/trashpic_report.php", dirname(__FILE__)));
 			$Trashpic_Report = new Trashpic_Report();
 			
-				
+			/**
+			 * 
+			 */
+			require_once(sprintf("%s/contextual_help/trashpic_help.php", dirname(__FILE__)));
+			add_action( 'load-post.php', array( 'trashpic_help', 'init' ) );
+			add_action( 'load-post-new.php', array( 'trashpic_help', 'init' ) );
+			add_action( 'load-edit.php', array( 'trashpic_help', 'init' ) );
+			add_action( 'load-edit-tags.php', array( 'trashpic_help', 'init' ) );
 			
 		} 
-		// END public function __construct
 
 		/**
 		 * Activate the plugin
 		 */
-		public static function activate()
-		{
+		public static function activate() {
 			
-			$result = add_role(
-					'trashpic_contributor',
-					__( 'trashpic Contributor' ),
-					array (
-								 'publish_trashpic-report' => true,
-								 'edit_trashpic-report' => true,
-								 'edit_others_trashpic-report' => true,
-								 'delete_trashpic-report' => true,
-								 'delete_others_trashpic-report' => true,
-								 'read_private_trashpic-report' => true,
-								 'edit_trashpic-report' => true,
-								 'delete_trashpic-report' => true,
-								 'read_trashpic-report' => true,
-							   'edit_published_trashpic-report' => true,
-								 // more standard capabilities here
-								'read' => true,
-								 
-								)
-			);
 			
+			$tr_role['publish_trashpic-report'] = true;
+			$tr_role['edit_trashpic-report'] = true;
+			$tr_role['edit_others_trashpic-report'] = true;
+			$tr_role['delete_trashpic-report'] = true;
+			$tr_role['delete_others_trashpic-report'] = true;
+			$tr_role['read_private_trashpic-report'] = true;
+			$tr_role['edit_trashpic-report'] = true;
+			$tr_role['delete_trashpic-report'] = true;
+			$tr_role['read_trashpic-report'] = true;
+			$tr_role['edit_published_trashpic-report'] = true;
+			$tr_role['read'] = true;
+			
+			add_role( 'trashpic_contributor', __( 'trashpic Contributor' ),$tr_role);
 			
 			$role = get_role( 'administrator');
 			$role->add_cap('read_trashpic-report');
@@ -194,24 +122,21 @@ if(!class_exists('Trashpic'))
 			$role->add_cap('delete_trashpic-report');
 				
 			
-		} // END public static function activate
+		} 
 
 		/**
 		 * Deactivate the plugin
 		 */
-		public static function deactivate()
-		{
-			remove_role( 'trashpic_contributor' );
+		public static function deactivate() {
 
+			remove_role( 'trashpic_contributor' );
 			$role = get_role( 'administrator');
 			$role->remove_cap('read_trashpic-report');
 			$role->remove_cap('edit_trashpic-report');
 			$role->remove_cap('edit_trashpic-reports');
 			$role->remove_cap('delete_trashpic-report');
 				
-			
-			// Do nothing
-		} // END public static function deactivate
+		} 
 		
 		
 		public function getSettings(){
@@ -239,11 +164,6 @@ if(class_exists('Trashpic'))
 	if(isset($trashpic))
 	{
 		
-		require_once(sprintf("%s/contextual_help/trashpic_help.php", dirname(__FILE__)));
-		add_action( 'load-post.php', array( 'trashpic_help', 'init' ) );
-		add_action( 'load-post-new.php', array( 'trashpic_help', 'init' ) );
-		add_action( 'load-edit.php', array( 'trashpic_help', 'init' ) );
-		add_action( 'load-edit-tags.php', array( 'trashpic_help', 'init' ) );
 		
 		
 		// Add the settings link to the plugins page
@@ -571,14 +491,14 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 				$link = @get_post_meta($p, 'link', true);
 				
 				if(!$link){
-						$tpost[$p] = array("id"=>$p,
-					   			             "lat"=>get_post_meta($p,"latitude",true),
-					                     "lon"=>get_post_meta($p,"longitude",true),
-											      	 "img"=>$img['url']);
-						$tpost[$p]['n'] = 1;
-				} else {
-					$tpost[$p]['n'] += 1;
-				}
+
+					$tpost[$p]["id"]  = $p;
+					$tpost[$p]["lat"] = get_post_meta($p,"latitude",true);
+					$tpost[$p]["lon"] = get_post_meta($p,"longitude",true);
+					$tpost[$p]["img"] = $img['url'];
+					$tpost[$p]['n']  += 1;
+						
+				} else $tpost[$link]['n']  += 1;
 				
 			}
 			
@@ -613,15 +533,10 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 	}
 	
 	
-	
-	
-	
-	
 	/**
 	 * Intercetto il submit del form e faccio il salvataggio
 	*/
 	function add_trashpic_report(){
-	
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'trashpic_report' ){
 	
 			if(get_trashpic_option( 'trashpic_only_registered_users')){
@@ -642,31 +557,19 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 					'error'	    => $_FILES['file']['error'],
 					'size'     	=> $_FILES['file']['size'],
 			);
-			
+
+				
 			if ( !empty( $file_array['name'] ) ) {
 				$uploaded_file = wp_handle_upload( $file_array, $upload_overrides );
-				// checks the file type and stores in in a variable
 				$wp_filetype = wp_check_filetype( basename( $uploaded_file['file'] ), null );
 
-			
-				if ( $uploaded_file ) {
-					$wp_filetype = wp_check_filetype( basename( $uploaded_file['file'] ), null );
-					//$wp_filetype = $uploaded_file['type'];
-					$filename = $uploaded_file['file'];
-					$wp_upload_dir = wp_upload_dir();
-					$attachment = array(
-							'guid' => $wp_upload_dir['url'] . '/' . basename( $filename ),
-							'post_mime_type' => $wp_filetype,
-							'post_title' => preg_replace('/\.[^.]+$/', '', basename($filename)),
-							'post_content' => '',
-							'post_status' => 'inherit'
-					);
+				if($uploaded_file){
+					echo $file_array['name'];
 					
-					$attach_id = wp_insert_attachment( $attachment, $filename);
-					require_once( ABSPATH . 'wp-admin/includes/image.php' );
-					$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-					wp_update_attachment_metadata( $attach_id, $attach_data );
+					die();
 				}
+			
+				
 				
 			}
 			
@@ -752,7 +655,31 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 		if(isset($upload['error']) && $upload['error'] != 0) {
 			wp_die('There was an error uploading your file. The error is: ' . $upload['error']);
 		} // end if/else
-	
+
+		if ( $upload ) {
+			$wp_filetype = wp_check_filetype( basename( $upload['file'] ), null );
+			//$wp_filetype = $uploaded_file['type'];
+			$filename = $upload['file'];
+			$wp_upload_dir = wp_upload_dir();
+			
+			
+			$attachment = array(
+					'guid' => $wp_upload_dir['url'] . '/' . basename( $filename ),
+					'post_mime_type' => $wp_filetype['type'],
+					'post_title' => preg_replace('/\.[^.]+$/', '', basename($filename)),
+					'post_content' => '',
+					'post_status' => 'inherit'
+			);
+				
+			$attach_id = wp_insert_attachment( $attachment, $filename);
+			require_once( ABSPATH . 'wp-admin/includes/image.php' );
+			$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+			wp_update_attachment_metadata( $attach_id, $attach_data );
+		}
+		
+		
+		
+		
 		if ( ! get_post_meta( $post_id, $field_name ) )	{
 			add_post_meta( $post_id, $field_name, $upload );
 		} else 	{
@@ -781,81 +708,6 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 	}
 	
 	
-	/*
-	function include_template_files() {
-		global $wp;
-		$plugindir = dirname( __FILE__ );
-	
-		
-		if ('trashpic-report' == get_post_type() ){
-			echo entro;
-			$templatefilename = 'single-post-trashpic-report.php';
-			$template = $plugindir . '/theme_files/' . $templatefilename;
-			return $template;
-		}
-	}
-	add_filter( 'template_include', 'include_template_files' );	
-	
-	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ?>

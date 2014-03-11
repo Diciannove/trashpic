@@ -12,15 +12,6 @@ jQuery(document).ready(function () {
     //alert(trashpic_setting);
     
    // var books = JSON.parse( trashpic_setting );
-
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -48,8 +39,6 @@ jQuery(document).ready(function () {
 		//var mapnik = new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)");
     	//map.addLayer(mapnik);
 
-		
-		
 		
 		var vectorLayer = new OpenLayers.Layer.Vector("Simple Geometry", {
                style: layer_style,
@@ -100,20 +89,6 @@ jQuery(document).ready(function () {
         }
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
        var markers = new OpenLayers.Layer.Markers( "Markers" );
        map.addLayer(markers);		
        var size = new OpenLayers.Size(21,25);
@@ -121,7 +96,7 @@ jQuery(document).ready(function () {
        var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
 
        
-       var popupHandler = function(marker,img){
+       var popupHandler = function(marker,img,num){
     	   return function(e){
     		          var mylonLat = new OpenLayers.LonLat( marker.lonlat.lon ,marker.lonlat.lat )
     		          .transform( map.getProjectionObject(),new OpenLayers.Projection("EPSG:4326"));
@@ -131,8 +106,11 @@ jQuery(document).ready(function () {
     		   		  if(img){
     		   			  text += "<a target='_blank' class='fancybox' href='"+img+"'><img src='"+img+"' width='200' /></a>";
     		   		  }	else text += "no img";
+
+    		   		  if(num > 1)
+    		   		  text += "</br>Num: " +  num;
     		   		  
-    	               popup = new OpenLayers.Popup.FramedCloud("chicken",
+    	              popup = new OpenLayers.Popup.FramedCloud("chicken",
     	                                                 marker.lonlat, new OpenLayers.Size(530, 530),
     	                                                 text, null, true);
     	              
@@ -151,7 +129,7 @@ jQuery(document).ready(function () {
                               newic
     	  					 );
     	 markers.addMarker(marker);
-    	 marker.events.register("mousedown", marker, popupHandler(marker,tmarkers[m].img));
+    	 marker.events.register("mousedown", marker, popupHandler(marker,tmarkers[m].img,tmarkers[m].n));
     	 
         }
 
