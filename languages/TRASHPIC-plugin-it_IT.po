@@ -40,11 +40,11 @@ msgstr "Poligono area di segnalazione"
 
 #: settings.php:90
 msgid "trashpic_polygon_in_map"
-msgstr ""
+msgstr "Evidenzia il poligono nella pagina della mappa"
 
 #: settings.php:101
 msgid "trashpic_polygon_in_report"
-msgstr ""
+msgstr "Evidenzia il poligono nella pagina di segnalazione"
 
 #: settings.php:114 trashpic.php:506
 msgid "only_registered_users"
