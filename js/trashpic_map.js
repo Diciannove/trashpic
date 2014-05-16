@@ -9,6 +9,7 @@ jQuery(document).ready(function () {
     var zoom = trashpic_setting.zoom;
     var polygon = trashpic_setting.polygon;
     var tmarkers = trashpic_setting.tmarkers;
+    var map;
     //alert(trashpic_setting);
     
    // var books = JSON.parse( trashpic_setting );
@@ -93,7 +94,9 @@ jQuery(document).ready(function () {
        map.addLayer(markers);		
        var size = new OpenLayers.Size(21,25);
        var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-       var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+       var iconr = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+       var icong = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-green.png',size,offset);
+       var icony = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-gold.png',size,offset);
 
        
        var popupHandler = function(marker,img,num){
@@ -104,8 +107,8 @@ jQuery(document).ready(function () {
     		   		  var text = "Lat: " +  mylonLat.lat.toFixed(4) + "</br>";
     		   		  text += "Lon: " +  mylonLat.lon.toFixed(4) + "</br></br>";
     		   		  if(img){
-    		   			  text += "<a target='_blank' class='fancybox' href='"+img+"'><img src='"+img+"' width='200' /></a>";
-    		   		  }	else text += "no img";
+    		   			  text += "<a target='_blank' class='fancybox' href='" +img + "'><img src='"+img+"' width='200' /></a>";
+    		   		  }	else text += "";
 
     		   		  if(num > 1)
     		   		  text += "</br>Num: " +  num;
@@ -121,8 +124,15 @@ jQuery(document).ready(function () {
        
        
        for(var m in tmarkers){
-       
-    	  var newic = icon.clone()
+    	  
+    	   
+    	  if(tmarkers[m].solved == '1')
+    		  var newic = icong.clone();
+    	  else 	if (tmarkers[m].notified == '1')
+    		  var newic = icony.clone();
+    	  else 	 
+    		  var newic = iconr.clone();
+    		  
     	  var marker = new OpenLayers.Marker(new OpenLayers.LonLat(tmarkers[m].lon,tmarkers[m].lat).transform(
     			          new OpenLayers.Projection("EPSG:4326"), 
                             map.getProjectionObject()),

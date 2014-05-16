@@ -12,7 +12,6 @@ Description: Monitoring system
 // La pagina non può essere caricata direttamente
 if (!function_exists('is_admin')) {
 	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
 	exit();
 }
 
@@ -29,12 +28,14 @@ define( 'TRASHPIC_URL_JS', TRASHPIC_URL . '/js' );
 define( 'TRASHPIC_URL_CSS', TRASHPIC_URL . '/css' );
 define( 'TRASHPIC_URL_HELP_IMG', TRASHPIC_URL . '/contextual_help/img/' );
 
-$trashpic_default_options = array('trashpic_default_latitude' =>44.16621,
-		                              'trashpic_default_longitude' => 8.27123,
-													        'trashpic_default_zoom_level' => 13,
+$trashpic_default_options = array('trashpic_default_latitude' =>44.18484,
+		                              'trashpic_default_longitude' => 8.24338,
+													        'trashpic_default_zoom_level' => 11.5,
 																	'trashpic_only_registered_users' => 1,
 																	'trashpic_polygon_in_map' => 1,
-																	'trashpic_polygon_in_report' => 1);
+																	'trashpic_polygon_in_report' => 1,
+																	'trashpic_send_mail_on_report'=> 0
+);
 
 $trashpic_category = array('LAT'=>__('Laterizi', 'TRASHPIC-plugin'),
 													 'MOB'=>__('Mobili', 'TRASHPIC-plugin'),
@@ -334,6 +335,31 @@ function remove_edit_post_views( $views ) {
 }
 add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 
+
+
+add_action('posts_where_request', 'search');
+
+function search($where){
+	
+	if (is_search()) {
+		global $wpdb, $wp;
+		
+		//$where = str_replace('(wp_posts.post_title (LIKE', ' (wp_posts.post_title (LIKE',$where);
+		$where = preg_replace(
+				"/(olpa_posts.post_title (LIKE '%{$wp->query_vars['s']}%'))/i",
+				"$0 OR ($wpdb->postmeta.meta_key = 'label' AND $wpdb->postmeta.meta_value LIKE '%{$wp->query_vars['s']}%')",
+				$where
+	);
+//				echo $where;
+//		exit; 
+		add_filter('posts_join_request','search_join');
+	}
+	return $where;
+}
+function search_join($join){
+	global $wpdb;
+	return $join .= " LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) ";
+}
 		
 		/*
 		$test = '[
@@ -400,7 +426,7 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 		
 	}
 	
-	print_r(get_option( 'trashpic_default_latitude')  );
+	
 	
 	function trashpic_map_shortcode( $atts ) {
 	
@@ -423,7 +449,11 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 		
 		if(get_trashpic_option( 'trashpic_only_registered_users')){
 			// se l'utente non è loggato, allora nulla*/
-			if ( !is_user_logged_in() ) return __('only_registered_users','TRASHPIC-plugin') ;
+			if ( !is_user_logged_in() ){
+				$text = __('only_registered_users_public','TRASHPIC-plugin'). " (<a href='".wp_login_url(get_permalink())."'>".__('go_to_login_page','TRASHPIC-plugin')."</a>)" ;
+				return $text;
+			} 
+				
 		}
 		
 		
@@ -476,6 +506,8 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 			wp_enqueue_script('trashpic_map', TRASHPIC_URL_JS.'/trashpic_map.js', array('OpenLayers'),'1.0.0', true );
 			
 			
+			if(get_trashpic_option( 'trashpic_polygon_in_map'))
+				$polygon = json_decode(get_trashpic_option( 'trashpic_polygon'));
 			
 			$posts = get_posts(array(
 					'post_type'   => 'trashpic-report',
@@ -495,6 +527,8 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 					$tpost[$p]["id"]  = $p;
 					$tpost[$p]["lat"] = get_post_meta($p,"latitude",true);
 					$tpost[$p]["lon"] = get_post_meta($p,"longitude",true);
+					$tpost[$p]["solved"] = get_post_meta($p,"solved",true);
+					$tpost[$p]["notified"] = get_post_meta($p,"notified",true);
 					$tpost[$p]["img"] = $img['url'];
 					$tpost[$p]['n']  += 1;
 						
@@ -503,8 +537,6 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 			}
 			
 			
-			if(get_trashpic_option( 'trashpic_polygon_in_map'))
-				$polygon = json_decode(get_trashpic_option( 'trashpic_polygon'));
 				
 			$par = array (
 					'latitude' => get_trashpic_option( 'trashpic_default_latitude') ,
@@ -608,13 +640,83 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 			 $post_id = wp_insert_post($post_information);
 	
 			 if($post_id) {
+			 	
+			 	include(TRASHPIC_DIR."/pointLocation.php");
+			 		
+			 	/* Cerco di capire in quale comune si trova la segnalazione */
+			 	$pointLocation = new pointLocation();
+				global $wpdb; 			 		
+			 	
+				/* verifico che la segnalazione sia nell'area pilota*/
+				$pilotArea=false;
+				$polygons = $wpdb->get_results("SELECT id,name,email,map	FROM olpa_trashpic_map where name ='pilotArea' ");
+				//$point = "$latitude,$longitude";
+				$point = "$longitude,$latitude";
+				foreach ( $polygons as $p )
+				{
+					$pol = explode(" ", $p->map);
+					$ret = $pointLocation->pointInPolygon($point, $pol);
+					if($ret == 'inside') $pilotArea=true;
+				}
+				
+				/* verifico che la segnalazione si trovi in uno specifico comune */
+				$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name !='pilotArea' ");
+			 	$point = "$longitude,$latitude";
+			 	//echo $point."<br>";
+			 	foreach ( $polygons as $p )	{
+			 			$pol = explode(" ", $p->map);
+			 			$ret = $pointLocation->pointInPolygon($point, $pol);
+			 			if($ret == 'inside'){
+			 				$map = $p->name;
+			 				$id_area = $p->id;
+			 				break;
+			 			}
+			 	}
+			 	
+			 	if($pilotArea){
+			 		$location = "Area pilota - ";
+			 		$pilotarea = "1";
+			 	} else $pilotarea = "0";
+			 	
+			 	if($map){
+			 		$location .= $map;
+			 	} else $location = "ND";
+			 		
+			 		
+			 	__update_post_meta( $post_id, 'location', $location);
 			 	__update_post_meta( $post_id, 'latitude', $latitude);
 			 	__update_post_meta( $post_id, 'longitude', $longitude);
 			 	__update_post_meta( $post_id, 'category', $category);
 			 	__update_post_meta( $post_id, 'approved', '-1');
+			 	__update_post_meta( $post_id, 'solved', '0');
+			 	__update_post_meta( $post_id, 'notified', '0');
+			 	__update_post_meta( $post_id, 'pilotarea', $pilotarea);
+			 	__update_post_meta( $post_id, 'id_area', $id_area);
+			 		
+			 	
 			 	__update_post_meta( $post_id, 'public_note', $public_note);
 			 	__update_post_meta_img( $post_id, 'picture', $_FILES);
 			 		
+			 	/* mando la mail di avvenuto inserimento */
+			 	if(get_trashpic_option( 'trashpic_send_mail_on_report')){
+			 		
+			 		$to = explode(',',get_trashpic_option( 'trashpic_send_mail_on_report_address'));
+			 		$message  = __('mail_text_header','TRASHPIC-plugin')."\n";
+			 		$message .= __('report_number','TRASHPIC-plugin').": $postTitle \n";
+			 		$message .= "Link: http://life-smile.eu/wp/wp-admin/post.php?post=".$post_id."&action=edit&lang=it \n";
+			 		$message .= __('location','TRASHPIC-plugin').":  $location \n";
+			 		$message .= __('mail_text_footer','TRASHPIC-plugin')."\n\n";
+			 		$message .= __('mail_text_signature','TRASHPIC-plugin')."\n";
+			 		add_filter( 'wp_mail_content_type', 'set_html_content_type' );
+			 		wp_mail( $to, __('mail_subject_on_report','TRASHPIC-plugin'), $message );
+			 		
+			 		function set_html_content_type() {
+			 			return 'text/html';
+			 		}
+			 		
+
+			 	}
+			 			
 			 }
 	
 				global $notice_array;
@@ -628,6 +730,7 @@ add_action( 'views_edit-trashpic-report', 'remove_edit_post_views' );
 	}
 	
 	add_action('init','add_trashpic_report');
+	
 	
 	
 	/**

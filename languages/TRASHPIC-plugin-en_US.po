@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: trashpic\n"
-"POT-Creation-Date: 2014-03-11 10:42+0100\n"
-"PO-Revision-Date: 2014-03-11 10:42+0100\n"
+"POT-Creation-Date: 2014-05-16 11:57+0100\n"
+"PO-Revision-Date: 2014-05-16 12:03+0100\n"
 "Last-Translator: coma <coma@19.coop>\n"
 "Language-Team: Diciannove <info@19.coop>\n"
 "Language: en_US\n"
@@ -16,132 +16,147 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: settings.php:20 trashpic.php:126 templates/trashpic-report_metabox.php:128
-#: templates/trashpic-report_metabox.php:141
-#: templates/trashpic-report_metabox.php:171
+#: settings.php:20 templates/trashpic-report_metabox.php:160
+#: templates/trashpic-report_metabox.php:174
+#: templates/trashpic-report_metabox.php:187
+#: templates/trashpic-report_metabox.php:200
+#: post-types/trashpic_report.php:240
 msgid "yes"
 msgstr "Yes"
 
-#: settings.php:21 trashpic.php:128 templates/trashpic-report_metabox.php:126
-#: templates/trashpic-report_metabox.php:139
-#: templates/trashpic-report_metabox.php:169
+#: settings.php:21 templates/trashpic-report_metabox.php:158
+#: templates/trashpic-report_metabox.php:172
+#: templates/trashpic-report_metabox.php:185
+#: templates/trashpic-report_metabox.php:198
+#: post-types/trashpic_report.php:242
 msgid "no"
 msgstr "No"
 
-#: settings.php:54
+#: settings.php:56
 msgid "default_latitude"
 msgstr "Latitude"
 
-#: settings.php:63
+#: settings.php:65
 msgid "default_longitude"
 msgstr "Longitude"
 
-#: settings.php:72
+#: settings.php:74
 msgid "default_zoom_level"
 msgstr ""
 
-#: settings.php:81
+#: settings.php:83
 msgid "trashpic_polygon"
 msgstr ""
 
-#: settings.php:90
+#: settings.php:92
 msgid "trashpic_polygon_in_map"
 msgstr ""
 
-#: settings.php:101
+#: settings.php:103
 msgid "trashpic_polygon_in_report"
 msgstr ""
 
-#: settings.php:114 trashpic.php:481
+#: settings.php:116
 msgid "only_registered_users"
 msgstr ""
 
-#: settings.php:196
+#: settings.php:128
+msgid "send_mail_on_report"
+msgstr ""
+
+#: settings.php:140
+msgid "send_mail_on_report_address"
+msgstr ""
+
+#: settings.php:219
 msgid "insufficient_permissions"
 msgstr "Insufficient permissions"
 
-#: trashpic.php:56
+#: trashpic.php:40
 msgid "Laterizi"
 msgstr ""
 
-#: trashpic.php:57
+#: trashpic.php:41
 msgid "Mobili"
 msgstr ""
 
-#: trashpic.php:58
+#: trashpic.php:42
 msgid "Materassi"
 msgstr ""
 
-#: trashpic.php:59
+#: trashpic.php:43
 msgid "Elettrodomestici"
 msgstr ""
 
-#: trashpic.php:60
+#: trashpic.php:44
 msgid "Vetri e finestre"
 msgstr ""
 
-#: trashpic.php:61
+#: trashpic.php:45
 msgid "Pneumatici"
 msgstr ""
 
-#: trashpic.php:62
+#: trashpic.php:46
 msgid "Legname lavorato"
 msgstr ""
 
-#: trashpic.php:63
+#: trashpic.php:47
 msgid "Carcasse di veicoli o parti"
 msgstr ""
 
-#: trashpic.php:64
+#: trashpic.php:48
 msgid "Rottami ferrosi"
 msgstr ""
 
-#: trashpic.php:65
+#: trashpic.php:49
 msgid "Oggetti in plastica"
 msgstr ""
 
-#: trashpic.php:66
+#: trashpic.php:50
 msgid "Altro"
 msgstr ""
 
-#: trashpic.php:97
-msgid "report_number"
-msgstr "Report number"
-
-#: trashpic.php:98 templates/trashpic-report_metabox.php:72
-#: report_shortcode/report_form.php:17
-msgid "category"
-msgstr ""
-
-#: trashpic.php:99 templates/trashpic-report_metabox.php:165
-msgid "approved"
-msgstr "Approved"
-
-#: trashpic.php:100 templates/trashpic-report_metabox.php:135
-msgid "investigated"
-msgstr "Investigated"
-
-#: trashpic.php:171
+#: trashpic.php:117
 msgid "trashpic Contributor"
 msgstr ""
 
-#: trashpic.php:251
+#: trashpic.php:172
 msgid "Settings"
 msgstr "Settings"
 
-#: trashpic.php:351
+#: trashpic.php:277
 msgid "all_category_filter"
 msgstr ""
 
-#: trashpic.php:658
+#: trashpic.php:331
+msgid "view_filter_pending"
+msgstr ""
+
+#: trashpic.php:332
+msgid "view_filter_approved"
+msgstr ""
+
+#: trashpic.php:333
+msgid "view_filter_refused"
+msgstr ""
+
+#: trashpic.php:453
+msgid "only_registered_users_public"
+msgstr ""
+
+#: trashpic.php:453
+msgid "go_to_login_page"
+msgstr ""
+
+#: trashpic.php:624
 msgid "error_longitude_mandatory"
 msgstr ""
 
-#: trashpic.php:659
+#: trashpic.php:625
 msgid "error_latitude_mandatory"
 msgstr ""
 
-#: trashpic.php:686
+#: trashpic.php:691
 msgid "notice_success_new_report"
 msgstr ""
 
@@ -157,134 +172,178 @@ msgstr "Report label"
 msgid "report_link"
 msgstr "Report link"
 
-#: templates/trashpic-report_metabox.php:51 report_shortcode/report_form.php:8
+#: templates/trashpic-report_metabox.php:52
+#, fuzzy
+msgid "litter_numbers"
+msgstr "Report number"
+
+#: templates/trashpic-report_metabox.php:62
+msgid "location"
+msgstr ""
+
+#: templates/trashpic-report_metabox.php:75 report_shortcode/report_form.php:8
 msgid "latitude"
 msgstr "Latitude"
 
-#: templates/trashpic-report_metabox.php:62
-#: report_shortcode/report_form.php:10
+#: templates/trashpic-report_metabox.php:86
+#: report_shortcode/report_form.php:13
 msgid "longitude"
 msgstr "Longitude"
 
-#: templates/trashpic-report_metabox.php:112
-#: report_shortcode/report_form.php:31
-msgid "picture"
-msgstr "Image"
-
-#: templates/trashpic-report_metabox.php:121
-msgid "smile_phone"
+#: templates/trashpic-report_metabox.php:96 post-types/trashpic_report.php:211
+msgid "category"
 msgstr ""
 
-#: templates/trashpic-report_metabox.php:147
-#: report_shortcode/report_form.php:37
+#: templates/trashpic-report_metabox.php:120
+#: report_shortcode/report_form.php:10
 msgid "public_note"
 msgstr ""
 
-#: templates/trashpic-report_metabox.php:156
+#: templates/trashpic-report_metabox.php:145
+#: report_shortcode/report_form.php:34
+msgid "picture"
+msgstr "Image"
+
+#: templates/trashpic-report_metabox.php:154
+msgid "smile_phone"
+msgstr ""
+
+#: templates/trashpic-report_metabox.php:169
+#, fuzzy
+msgid "approve"
+msgstr "Approved"
+
+#: templates/trashpic-report_metabox.php:182
+#: post-types/trashpic_report.php:213
+msgid "investigated"
+msgstr "Investigated"
+
+#: templates/trashpic-report_metabox.php:195
+#: post-types/trashpic_report.php:214
+msgid "solved"
+msgstr ""
+
+#: templates/trashpic-report_metabox.php:211
 msgid "note"
 msgstr "Note"
 
-#: report_shortcode/report_form.php:46
+#: report_shortcode/report_form.php:20
+msgid "category_public_form"
+msgstr ""
+
+#: report_shortcode/report_form.php:42
 msgid "send_report"
 msgstr ""
 
-#: post-types/trashpic_report.php:103
+#: post-types/trashpic_report.php:102
 msgid "report_post_type_description"
 msgstr ""
 
-#: post-types/trashpic_report.php:123
+#: post-types/trashpic_report.php:122
 msgid "litter_type_tax_name"
 msgstr "Litter types"
 
-#: post-types/trashpic_report.php:124
+#: post-types/trashpic_report.php:123
 msgid "litter_type_tax_name_singular"
 msgstr "Litter type"
 
-#: post-types/trashpic_report.php:125
+#: post-types/trashpic_report.php:124
 msgid "search_litter_type"
 msgstr "Litter type search"
 
-#: post-types/trashpic_report.php:126
+#: post-types/trashpic_report.php:125
 msgid "all_litter_type"
 msgstr ""
 
-#: post-types/trashpic_report.php:127
+#: post-types/trashpic_report.php:126
 msgid "parent_litter_type"
 msgstr ""
 
-#: post-types/trashpic_report.php:128
+#: post-types/trashpic_report.php:127
 msgid "parent_litter_type_colon"
 msgstr ""
 
-#: post-types/trashpic_report.php:129
+#: post-types/trashpic_report.php:128
 msgid "edit_litter_type"
 msgstr "Modifica tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:130
+#: post-types/trashpic_report.php:129
 msgid "update_litter_type"
 msgstr "Update litter type"
 
-#: post-types/trashpic_report.php:131
+#: post-types/trashpic_report.php:130
 msgid "add_new_litter_type"
 msgstr "Add litter type"
 
-#: post-types/trashpic_report.php:132
+#: post-types/trashpic_report.php:131
 msgid "new_litter_type_name"
 msgstr "New litter type"
 
-#: post-types/trashpic_report.php:133
+#: post-types/trashpic_report.php:132
 msgid "litter_type_menu_name"
 msgstr "Litter types"
 
-#: post-types/trashpic_report.php:155
+#: post-types/trashpic_report.php:154
 #, fuzzy
 msgid "attribute_tax_name"
 msgstr "Litter types"
 
-#: post-types/trashpic_report.php:156
+#: post-types/trashpic_report.php:155
 #, fuzzy
 msgid "attribute_tax_name_singular"
 msgstr "Litter type"
 
-#: post-types/trashpic_report.php:157
+#: post-types/trashpic_report.php:156
 #, fuzzy
 msgid "search_attribute_type"
 msgstr "Litter type search"
 
-#: post-types/trashpic_report.php:158
+#: post-types/trashpic_report.php:157
 msgid "all_attribute_type"
 msgstr ""
 
-#: post-types/trashpic_report.php:159
+#: post-types/trashpic_report.php:158
 #, fuzzy
 msgid "parent_attribute_type"
 msgstr "Update litter type"
 
-#: post-types/trashpic_report.php:160
+#: post-types/trashpic_report.php:159
 msgid "parent_attribute_colon"
 msgstr ""
 
-#: post-types/trashpic_report.php:161
+#: post-types/trashpic_report.php:160
 #, fuzzy
 msgid "edit_attribute"
 msgstr "Modifica tipologia di rifiuti"
 
-#: post-types/trashpic_report.php:162
+#: post-types/trashpic_report.php:161
 #, fuzzy
 msgid "update_attribute"
 msgstr "Update litter type"
 
-#: post-types/trashpic_report.php:163
+#: post-types/trashpic_report.php:162
 #, fuzzy
 msgid "add_new_attribute"
 msgstr "Add litter type"
 
-#: post-types/trashpic_report.php:164
+#: post-types/trashpic_report.php:163
 #, fuzzy
 msgid "new_attribute_name"
 msgstr "New litter type"
 
-#: post-types/trashpic_report.php:165
+#: post-types/trashpic_report.php:164
 #, fuzzy
 msgid "attribute_menu_name"
 msgstr "Litter types"
+
+#: post-types/trashpic_report.php:209
+msgid "report_number"
+msgstr "Report number"
+
+#: post-types/trashpic_report.php:210
+msgid "label"
+msgstr ""
+
+#: post-types/trashpic_report.php:212
+msgid "approved"
+msgstr "Approved"

@@ -1,154 +1,190 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: trashpic\n"
-"POT-Creation-Date: 2014-03-11 13:28+0100\n"
-"PO-Revision-Date: 2014-03-11 13:50+0100\n"
-"Last-Translator: Lorenzo Novaro <novalore@19.coop>\n"
+"POT-Creation-Date: 2014-05-16 15:52+0100\n"
+"PO-Revision-Date: 2014-05-16 15:56+0100\n"
+"Last-Translator: coma <coma@19.coop>\n"
 "Language-Team: Diciannove <info@19.coop>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: /home/paolo/Workspace/smile-website/content/plugins/"
+"trashpic\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: settings.php:20 trashpic.php:126 templates/trashpic-report_metabox.php:139
-#: templates/trashpic-report_metabox.php:152
-#: templates/trashpic-report_metabox.php:165
+#: settings.php:20 templates/trashpic-report_metabox.php:160
+#: templates/trashpic-report_metabox.php:174
+#: templates/trashpic-report_metabox.php:187
+#: templates/trashpic-report_metabox.php:218
+#: post-types/trashpic_report.php:245
 msgid "yes"
 msgstr "S&igrave;"
 
-#: settings.php:21 trashpic.php:128 templates/trashpic-report_metabox.php:137
-#: templates/trashpic-report_metabox.php:150
-#: templates/trashpic-report_metabox.php:163
+#: settings.php:21 templates/trashpic-report_metabox.php:158
+#: templates/trashpic-report_metabox.php:172
+#: templates/trashpic-report_metabox.php:185
+#: templates/trashpic-report_metabox.php:216
+#: post-types/trashpic_report.php:247
 msgid "no"
 msgstr "No"
 
-#: settings.php:54
+#: settings.php:56
 msgid "default_latitude"
 msgstr "Centratura della mappa (Latitudine)"
 
-#: settings.php:63
+#: settings.php:65
 msgid "default_longitude"
 msgstr "Centratura della mappa (Longitudine)"
 
-#: settings.php:72
+#: settings.php:74
 msgid "default_zoom_level"
 msgstr "Livello di zoom al caricamento della mappa"
 
-#: settings.php:81
+#: settings.php:83
 msgid "trashpic_polygon"
 msgstr "Poligono area di segnalazione"
 
-#: settings.php:90
+#: settings.php:92
 msgid "trashpic_polygon_in_map"
 msgstr "Evidenzia il poligono nella pagina della mappa"
 
-#: settings.php:101
+#: settings.php:103
 msgid "trashpic_polygon_in_report"
 msgstr "Evidenzia il poligono nella pagina di segnalazione"
 
-#: settings.php:114 trashpic.php:506
+#: settings.php:116
 msgid "only_registered_users"
 msgstr ""
 "Permetti che le segnalazioni vengano effettuate solo da utenti registrati"
 
-#: settings.php:196
+#: settings.php:128
+msgid "send_mail_on_report"
+msgstr "Invia una mail all'inserimento di una segnalazione"
+
+#: settings.php:140
+msgid "send_mail_on_report_address"
+msgstr ""
+"Indirizzi a cui inviare la mail dopo l'inserimento di una segnalazione (in "
+"caso di più indirizzi itilizza la vrgola ',' come separatore)"
+
+#: settings.php:219
 msgid "insufficient_permissions"
 msgstr "Permessi insufficienti"
 
-#: trashpic.php:56
+#: trashpic.php:40
 msgid "Laterizi"
 msgstr ""
 
-#: trashpic.php:57
+#: trashpic.php:41
 msgid "Mobili"
 msgstr ""
 
-#: trashpic.php:58
+#: trashpic.php:42
 msgid "Materassi"
 msgstr ""
 
-#: trashpic.php:59
+#: trashpic.php:43
 msgid "Elettrodomestici"
 msgstr ""
 
-#: trashpic.php:60
+#: trashpic.php:44
 msgid "Vetri e finestre"
 msgstr ""
 
-#: trashpic.php:61
+#: trashpic.php:45
 msgid "Pneumatici"
 msgstr ""
 
-#: trashpic.php:62
+#: trashpic.php:46
 msgid "Legname lavorato"
 msgstr ""
 
-#: trashpic.php:63
+#: trashpic.php:47
 msgid "Carcasse di veicoli o parti"
 msgstr ""
 
-#: trashpic.php:64
+#: trashpic.php:48
 msgid "Rottami ferrosi"
 msgstr ""
 
-#: trashpic.php:65
+#: trashpic.php:49
 msgid "Oggetti in plastica"
 msgstr ""
 
-#: trashpic.php:66
+#: trashpic.php:50
 msgid "Altro"
 msgstr ""
 
-#: trashpic.php:97
-msgid "report_number"
-msgstr "Codice segnalazione"
-
-#: trashpic.php:98 templates/trashpic-report_metabox.php:74
-#: report_shortcode/report_form.php:17
-msgid "category"
-msgstr "Categoria pubblica"
-
-#: trashpic.php:99 templates/trashpic-report_metabox.php:159
-msgid "approved"
-msgstr "Segnalazione approvata"
-
-#: trashpic.php:100 templates/trashpic-report_metabox.php:146
-msgid "investigated"
-msgstr "Indagato"
-
-#: trashpic.php:171
+#: trashpic.php:117
 msgid "trashpic Contributor"
 msgstr "Segnalatore (Trashpic)"
 
-#: trashpic.php:251
+#: trashpic.php:172
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: trashpic.php:356
+#: trashpic.php:277
 msgid "all_category_filter"
 msgstr ""
 
-#: trashpic.php:410
+#: trashpic.php:331
 msgid "view_filter_pending"
 msgstr "Segnalazioni da gestire"
 
-#: trashpic.php:411
+#: trashpic.php:332
 msgid "view_filter_approved"
-msgstr "Segnalazioni approvate"
+msgstr "Mostrate sulla mappa"
 
-#: trashpic.php:412
+#: trashpic.php:333
 msgid "view_filter_refused"
-msgstr "Segnalazioni non approvate"
+msgstr "Non mostrate sulla mappa"
 
-#: trashpic.php:691
+#: trashpic.php:453
+msgid "only_registered_users_public"
+msgstr "Le segnalazioni possono essere fatte solo da utenti registrati"
+
+#: trashpic.php:453
+msgid "go_to_login_page"
+msgstr "Vai al login"
+
+#: trashpic.php:626
 msgid "error_longitude_mandatory"
 msgstr "Errore: La longitudine &egrave; obbligatoria"
 
-#: trashpic.php:692
+#: trashpic.php:627
 msgid "error_latitude_mandatory"
 msgstr "Errore: La latitudine &egrave; obbligatoria"
 
-#: trashpic.php:719
+#: trashpic.php:704
+msgid "mail_text_header"
+msgstr "E' stata inserita una nuova segnalazione"
+
+#: trashpic.php:705 post-types/trashpic_report.php:207
+#: post-types/trashpic_report.php:287
+msgid "report_number"
+msgstr "Codice segnalazione"
+
+#: trashpic.php:707 templates/trashpic-report_metabox.php:62
+#: post-types/trashpic_report.php:209 post-types/trashpic_report.php:288
+msgid "location"
+msgstr "Posizione"
+
+#: trashpic.php:708
+msgid "mail_text_footer"
+msgstr "Grazie"
+
+#: trashpic.php:709
+msgid "mail_text_signature"
+msgstr "Smile trashpic"
+
+#: trashpic.php:711
+msgid "mail_subject_on_report"
+msgstr "SMILE - Trashpic: E' stata inserita una nuova segnalazione"
+
+#: trashpic.php:724
 msgid "notice_success_new_report"
 msgstr "Segnalazione inviata correttamente!"
 
@@ -164,34 +200,67 @@ msgstr "Assegna un'etichetta a questo report"
 msgid "report_link"
 msgstr "Collega questo report con un altro"
 
-#: templates/trashpic-report_metabox.php:53 report_shortcode/report_form.php:8
+#: templates/trashpic-report_metabox.php:52
+msgid "litter_numbers"
+msgstr "Numero di rifiuti"
+
+#: templates/trashpic-report_metabox.php:75 report_shortcode/report_form.php:8
 msgid "latitude"
 msgstr "Latitudine"
 
-#: templates/trashpic-report_metabox.php:64
-#: report_shortcode/report_form.php:10
+#: templates/trashpic-report_metabox.php:86
+#: report_shortcode/report_form.php:13
 msgid "longitude"
 msgstr "Longitudine"
 
-#: templates/trashpic-report_metabox.php:98
-#: report_shortcode/report_form.php:37
+#: templates/trashpic-report_metabox.php:96
+msgid "category"
+msgstr "Categoria pubblica"
+
+#: templates/trashpic-report_metabox.php:120
+#: report_shortcode/report_form.php:10
 msgid "public_note"
 msgstr "Note del segnalatore"
 
-#: templates/trashpic-report_metabox.php:123
-#: report_shortcode/report_form.php:31
+#: templates/trashpic-report_metabox.php:145
+#: report_shortcode/report_form.php:34
 msgid "picture"
 msgstr "Immagine"
 
-#: templates/trashpic-report_metabox.php:132
+#: templates/trashpic-report_metabox.php:154
 msgid "smile_phone"
 msgstr "Tramite call center"
 
-#: templates/trashpic-report_metabox.php:171
+#: templates/trashpic-report_metabox.php:169
+msgid "approve"
+msgstr "Mostra sulla mappa"
+
+#: templates/trashpic-report_metabox.php:182
+msgid "investigated"
+msgstr "Indagato"
+
+#: templates/trashpic-report_metabox.php:195
+msgid "report_notified"
+msgstr "La segnalazione è già stata notificata"
+
+#: templates/trashpic-report_metabox.php:198
+msgid "report_notification"
+msgstr "Seleziona il checkbox per inviare la segnalazione al salvataggio"
+
+#: templates/trashpic-report_metabox.php:213
+#: post-types/trashpic_report.php:212
+msgid "solved"
+msgstr "Problema risolto"
+
+#: templates/trashpic-report_metabox.php:229
 msgid "note"
 msgstr "Note aggiuntive"
 
-#: report_shortcode/report_form.php:46
+#: report_shortcode/report_form.php:20
+msgid "category_public_form"
+msgstr ""
+
+#: report_shortcode/report_form.php:42
 msgid "send_report"
 msgstr "Invia la segnalazione"
 
@@ -286,3 +355,34 @@ msgstr "Nuovo attributo"
 #: post-types/trashpic_report.php:165
 msgid "attribute_menu_name"
 msgstr "Gestione attributi"
+
+#: post-types/trashpic_report.php:208
+msgid "label"
+msgstr "Etichetta"
+
+#: post-types/trashpic_report.php:210
+msgid "approved"
+msgstr "Mostrata sulla mappa"
+
+#: post-types/trashpic_report.php:211
+msgid "notified"
+msgstr "Segnalazione inviata"
+
+#: post-types/trashpic_report.php:286
+#, fuzzy
+msgid "notification_mail_text_header"
+msgstr "E' stata inserita una nuova segnalazione"
+
+#: post-types/trashpic_report.php:289
+#, fuzzy
+msgid "notification_mail_text_footer"
+msgstr "Grazie"
+
+#: post-types/trashpic_report.php:290
+#, fuzzy
+msgid "notification_mail_text_signature"
+msgstr "Smile trashpic"
+
+#: post-types/trashpic_report.php:291
+msgid "notification_mail_subject"
+msgstr ""

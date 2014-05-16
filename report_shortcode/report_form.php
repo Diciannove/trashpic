@@ -3,10 +3,6 @@
   <?php do_action( 'trashpic-error' ); ?>
 	<form action="" id="primaryPostForm" method="POST" enctype="multipart/form-data">
 		<fieldset class="gllpLatlonPicker">
-   	  <div class="gllpMap olMap"></div>
-   	  <br/>
-		  <input type="hidden" class="gllpZoom"/>
-		  <input type="hidden" class="gllpLocationName"/>
    	  <table style="width:100%">
    	  	<tr>
    	  		<td><label for="latitude"><?php _e('latitude', 'TRASHPIC-plugin') ?></label></td>
@@ -21,7 +17,7 @@
    	  		</td>
    	  	</tr>
    	  	<tr>
-   	  		<td><label for="category"><?php _e('category', 'TRASHPIC-plugin') ?></label></td>
+   	  		<td><label for="category"><?php _e('category_public_form', 'TRASHPIC-plugin') ?></label></td>
    	  		<td>		        		<?php 
 		        		global $trashpic_category;
 		        		
@@ -48,7 +44,10 @@
    	  	</tr>
    	  	
    	  </table>
-   	  
+   	  <hr/>
+   	  <div class="gllpMap olMap"></div>
+		  <input type="hidden" class="gllpZoom"/>
+		  <input type="hidden" class="gllpLocationName"/>
 			</fieldset>
 	</form>
 </div>

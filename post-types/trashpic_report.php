@@ -16,11 +16,17 @@ if(!class_exists('Trashpic_Report'))
 		private $_meta	= array(
 			'label',
 			'link',
-		  'latitude',
+			'litter_n',
+			'latitude',
 		  'longitude',
+		  'location',
+			'pilotarea',
+			'id_area',
 			'investigated',
 			'smile_phone',
 			'approved',
+			'notified',
+			'solved',
 			'note',
 			'public_note',
 			'picture',
@@ -176,9 +182,6 @@ if(!class_exists('Trashpic_Report'))
      	 
      	register_taxonomy( 'attribute', array( self::POST_TYPE ), $args );
      	
-     	
-     	
-     	
      } // END public function create_taxonomies()     
      
      
@@ -202,9 +205,11 @@ if(!class_exists('Trashpic_Report'))
      	$new_columns = array(
      			'cb' => '<input type="checkbox" />',
      			'title' => __('report_number', 'TRASHPIC-plugin'),
-     			'category' => __('category', 'TRASHPIC-plugin'),
+     			'label' => __('label', 'TRASHPIC-plugin'),
+     			'location' => __('location', 'TRASHPIC-plugin'),
      			'approved' => __('approved', 'TRASHPIC-plugin'),
-     			'investigated' => __('investigated', 'TRASHPIC-plugin'),
+     			'notified' => __('notified', 'TRASHPIC-plugin'),
+     			'solved' => __('solved', 'TRASHPIC-plugin'),
      	);
      	return array_merge( $new_columns,$columns);
      }
@@ -221,12 +226,19 @@ if(!class_exists('Trashpic_Report'))
      	global $post;
      	global $trashpic_category;
      	switch( $column ) {
+     		
+     		case 'label' :
+     		case 'location' :
+     			echo get_post_meta( $post_id, $column, true );
+     			break;
+     			
      		case 'category' :
      			$col = get_post_meta( $post_id, $column, true );
      			echo $trashpic_category[$col];
      			break;
-     		case 'investigated' :
+     		case 'notified' :
      		case 'approved' :
+     		case 'solved' :
      			/* Get the post meta. */
      			$col = get_post_meta( $post_id, $column, true );
      			if ( $col == '1' )
@@ -254,10 +266,6 @@ if(!class_exists('Trashpic_Report'))
     		
 	      foreach($this->_meta as $field_name)  {
 	      	
-	      	
-	      	
-	      	
-	      	
 	      	if($field_name=="picture" ){
 	      		if(!empty( $_FILES[$field_name]['name'] )){	
 	      			$upload = wp_upload_bits($_FILES[$field_name]['name'], null, file_get_contents($_FILES[$field_name]['tmp_name']));
@@ -268,7 +276,25 @@ if(!class_exists('Trashpic_Report'))
 	      			} 
 	      		}
 	      	} else  {
-	      	// Update the post's meta field
+
+	      		if($field_name=="notified"){
+	      			
+	      			if(isset($_POST['notification'])){
+	      				
+	      				/* mando mail */
+	      					$to = "p.selis@19.coop";
+	      					$message  = __('notification_mail_text_header','TRASHPIC-plugin')."\n";
+	      					$message .= __('report_number','TRASHPIC-plugin').": ".  $_POST['post_title']." \n";
+	      					$message .= __('location','TRASHPIC-plugin').":".  $_POST['location']." \n";
+	      					$message .= __('notification_mail_text_footer','TRASHPIC-plugin')."\n\n";
+	      					$message .= __('notification_mail_text_signature','TRASHPIC-plugin')."\n";
+	      					wp_mail( $to, __('notification_mail_subject','TRASHPIC-plugin'), $message );
+	      				
+	      				/* setto che la cosa è stata fatta */
+	      				$_POST["notified"] = 1;
+	      			}
+	      		}
+	      		
 	      		if($field_name=="approved"){
 	      			if( $_POST["approved"]=="") $_POST["approved"] = "-1";
 	      		}

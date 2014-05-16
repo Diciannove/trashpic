@@ -46,6 +46,28 @@
     
     
     <tr><td colspan="2"><hr/></td></tr>
+		
+		<tr valign="top">
+        <th >
+            <label for="litter_n"><?php echo _e('litter_numbers','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+            <input type="text" id=""litter_n"" name=""litter_n"" value="<?php echo @get_post_meta($post->ID, '"litter_n"', true); ?>" />
+        </td>
+    </tr>
+    
+		
+		<tr valign="top">
+        <th >
+            <label for="location"><?php echo _e('location','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+            <?php echo @get_post_meta($post->ID, 'location', true); ?>
+            <input type="hidden" id="location" name="location" value="<?php echo @get_post_meta($post->ID, 'location', true); ?>" />
+            <input type="hidden" id="pilotarea" name="pilotarea" value="<?php echo @get_post_meta($post->ID, 'pilotarea', true); ?>" />
+            <input type="hidden" id="id_area" name="id_area" value="<?php echo @get_post_meta($post->ID, 'id_area', true); ?>" />
+            </td>
+    </tr>
     
     
 		<tr valign="top">
@@ -133,38 +155,74 @@
         </th>
         <td >
             
-            <input type="radio" id="smile_phone1" name="smile_phone" value="0"    <?php echo @get_post_meta($post->ID, 'smile_phone', true) == '0' ? ' checked="checked"' : '' ?>" />
             <label for="smile_phone1"><?php echo _e('no','TRASHPIC-plugin')?></label>
-            <input type="radio" id="smile_phone2" name="smile_phone" value="1"    <?php echo @get_post_meta($post->ID, 'smile_phone', true) == '1' ? 'checked="checked"' : '' ?>" />
+        		<input type="radio" id="smile_phone1" name="smile_phone" value="0"    <?php echo @get_post_meta($post->ID, 'smile_phone', true) == '0' ? ' checked="checked"' : '' ?>" />
             <label for="smile_phone2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
+            <input type="radio" id="smile_phone2" name="smile_phone" value="1"    <?php echo @get_post_meta($post->ID, 'smile_phone', true) == '1' ? 'checked="checked"' : '' ?>" />
             
         </td>
     </tr>
+    <tr><td colspan="2"><hr/></td></tr>
+
+    <tr valign="top">
+        <th >
+            <label for="approved"><?php echo _e('approve','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+            <label for="approved1"><?php echo _e('no','TRASHPIC-plugin')?></label>
+        		<input type="radio" id="approved1" name="approved" value="0"    <?php echo @get_post_meta($post->ID, 'approved', true) == '0' ? ' checked="checked"' : '' ?>" />
+            <label for="approved2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
+            <input type="radio" id="approved2" name="approved" value="1"    <?php echo @get_post_meta($post->ID, 'approved', true) == '1' ? 'checked="checked"' : '' ?>" />
+         </td>
+    </tr>
+    
     
     <tr valign="top">
         <th >
-            <label for="longitude"><?php echo _e('investigated','TRASHPIC-plugin')?></label>
+            <label for="investigated"><?php echo _e('investigated','TRASHPIC-plugin')?></label>
         </th>
         <td >
-            <input type="radio" id="investigated1" name="investigated" value="0"    <?php echo @get_post_meta($post->ID, 'investigated', true) == '0' ? ' checked="checked"' : '' ?>" />
             <label for="investigated1"><?php echo _e('no','TRASHPIC-plugin')?></label>
-            <input type="radio" id="investigated2" name="investigated" value="1"    <?php echo @get_post_meta($post->ID, 'investigated', true) == '1' ? 'checked="checked"' : '' ?>" />
+        		<input type="radio" id="investigated1" name="investigated" value="0"    <?php echo @get_post_meta($post->ID, 'investigated', true) == '0' ? ' checked="checked"' : '' ?>" />
             <label for="investigated2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
+            <input type="radio" id="investigated2" name="investigated" value="1"    <?php echo @get_post_meta($post->ID, 'investigated', true) == '1' ? 'checked="checked"' : '' ?>" />
         </td>
     </tr>
 
-    <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">
         <th >
-            <label for="approved"><?php echo _e('approved','TRASHPIC-plugin')?></label>
+        		<?php if( @get_post_meta($post->ID, 'notified', true)=="1" ) {?>
+            	<label for="notified"><?php echo _e('report_notified','TRASHPIC-plugin')?></label>
+        		
+        		<?php } else {?>
+            	<label for="notified"><?php echo _e('report_notification','TRASHPIC-plugin')?></label>
+        		
+        		<?php } ?>
+                </th>
+        <td >
+        		<?php if( @get_post_meta($post->ID, 'notified', true)=="1" ) {?>
+            	<input type="hidden" id="notified" name="notified" value="1" />
+        		
+        		<?php } else {?>
+        		  <input type="checkbox" id="notification" name="notification" value="1" />
+        		<?php } ?>
+        </td>
+    </tr>
+    <tr valign="top">
+        <th >
+            <label for="solved"><?php echo _e('solved','TRASHPIC-plugin')?></label>
         </th>
         <td >
-            <input type="radio" id="approved1" name="approved" value="0"    <?php echo @get_post_meta($post->ID, 'approved', true) == '0' ? ' checked="checked"' : '' ?>" />
-            <label for="approved1"><?php echo _e('no','TRASHPIC-plugin')?></label>
-            <input type="radio" id="approved2" name="approved" value="1"    <?php echo @get_post_meta($post->ID, 'approved', true) == '1' ? 'checked="checked"' : '' ?>" />
-            <label for="approved2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
+            <label for="solved1"><?php echo _e('no','TRASHPIC-plugin')?></label>
+        		<input type="radio" id="solved1" name="solved" value="0"    <?php echo @get_post_meta($post->ID, 'solved', true) == '0' ? ' checked="checked"' : '' ?>" />
+            <label for="solved2"><?php echo _e('yes','TRASHPIC-plugin')?></label>
+        		<input type="radio" id="solved2" name="solved" value="1"    <?php echo @get_post_meta($post->ID, 'solved', true) == '1' ? 'checked="checked"' : '' ?>" />
          </td>
     </tr>
+    
+    
+    
+    
     <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">
         <th >

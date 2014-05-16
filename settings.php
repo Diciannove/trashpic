@@ -40,6 +40,8 @@ if(!class_exists('Trashpic_Settings')) {
          register_setting('trashpic-group', 'trashpic_polygon_in_map');
          register_setting('trashpic-group', 'trashpic_polygon_in_report');
          register_setting('trashpic-group', 'trashpic_only_registered_users');
+         register_setting('trashpic-group', 'trashpic_send_mail_on_report');
+         register_setting('trashpic-group', 'trashpic_send_mail_on_report_address');
           
          // add your settings section
          add_settings_section(
@@ -120,8 +122,29 @@ if(!class_exists('Trashpic_Settings')) {
                             'predef' => $trashpic_default_options['trashpic_only_registered_users'],
                             'options' => $this->sino , 
                             'description'=>'default: '.$trashpic_default_options['trashpic_only_registered_users']));
-                             
-         
+
+         add_settings_field(
+         										  'trashpic_send_mail_on_report',
+         	                    __('send_mail_on_report','TRASHPIC-plugin'),
+                              array(&$this, 'settings_field_radio'),
+                              'trashpic',
+                              'trashpic-section',
+                              array('field' => 'trashpic_send_mail_on_report',
+                              'description' => '',
+                              'predef' => $trashpic_default_options['trashpic_send_mail_on_report'],
+                              'options' => $this->sino ,
+                              'description'=>'default: '.$trashpic_default_options['trashpic_send_mail_on_report']));
+          
+         add_settings_field(
+         										'trashpic_send_mail_on_report_address',
+         										__('send_mail_on_report_address','TRASHPIC-plugin'),
+         										array(&$this, 'settings_field_input_text'),
+         										'trashpic',
+         										'trashpic-section',
+         										array('field' => 'trashpic_send_mail_on_report_address',
+         										'description'=>'default: '.$trashpic_default_options['trashpic_send_mail_on_report_address']));
+                  
+          
             // Possibly do additional admin_init tasks
         } // END public static function activate
         
