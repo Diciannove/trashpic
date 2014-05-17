@@ -198,7 +198,7 @@ msgstr "Assegna un'etichetta a questo report"
 
 #: templates/trashpic-report_metabox.php:14
 msgid "report_link"
-msgstr "Collega questo report con un altro"
+msgstr "Collega questa segnalazione con un'altra"
 
 #: templates/trashpic-report_metabox.php:52
 msgid "litter_numbers"
@@ -346,7 +346,7 @@ msgstr "Aggiorna attributo"
 
 #: post-types/trashpic_report.php:163
 msgid "add_new_attribute"
-msgstr "Aggiungi tipologia di rifiuti"
+msgstr "Aggiungi attributo"
 
 #: post-types/trashpic_report.php:164
 msgid "new_attribute_name"
