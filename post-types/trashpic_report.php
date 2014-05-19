@@ -324,7 +324,7 @@ if(!class_exists('Trashpic_Report'))
      	// Add this metabox to every selected post
      	add_meta_box(
      							 sprintf('trashpic_%s_section', self::POST_TYPE),
-     						   sprintf('%s Information', ucwords(str_replace("_", " ", self::POST_TYPE))),
+     						   sprintf(__('%s Information', 'TRASHPIC-plugin'), ucwords(str_replace("_", " ", self::POST_TYPE))),
      							 array(&$this, 'add_inner_meta_boxes'),
      							self::POST_TYPE
      							);	
