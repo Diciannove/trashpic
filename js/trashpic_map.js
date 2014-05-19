@@ -132,7 +132,7 @@ jQuery(document).ready(function () {
     	  else 	 
     		  var newic = iconr.clone();
 
-    	  alert(tmarkers[m].lat);
+    	  //alert(tmarkers[m].lat);
 
     	  var testlonLat = new OpenLayers.LonLat( tmarkers[m].lon ,tmarkers[m].lat )
           .transform( map.getProjectionObject(),new OpenLayers.Projection("EPSG:4326"));
@@ -142,7 +142,7 @@ jQuery(document).ready(function () {
                             map.getProjectionObject()),
                               newic
     	  					 );
-    	  alert(testlonLat.lat);
+    	  //alert(testlonLat.lat);
 	
     	  markers.addMarker(marker);
     	 marker.events.register("mousedown", marker, popupHandler(marker,tmarkers[m].img,tmarkers[m].n));
