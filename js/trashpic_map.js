@@ -10,7 +10,6 @@ jQuery(document).ready(function () {
     var polygon = trashpic_setting.polygon;
     var tmarkers = trashpic_setting.tmarkers;
     var map;
-    //alert(trashpic_setting);
     
    // var books = JSON.parse( trashpic_setting );
     
@@ -132,13 +131,20 @@ jQuery(document).ready(function () {
     		  var newic = icony.clone();
     	  else 	 
     		  var newic = iconr.clone();
-    		  
+
+    	  alert(tmarkers[m].lat);
+
+    	  var testlonLat = new OpenLayers.LonLat( tmarkers[m].lon ,tmarkers[m].lat )
+          .transform( map.getProjectionObject(),new OpenLayers.Projection("EPSG:4326"));
+
     	  var marker = new OpenLayers.Marker(new OpenLayers.LonLat(tmarkers[m].lon,tmarkers[m].lat).transform(
     			          new OpenLayers.Projection("EPSG:4326"), 
                             map.getProjectionObject()),
                               newic
     	  					 );
-    	 markers.addMarker(marker);
+    	  alert(testlonLat.lat);
+	
+    	  markers.addMarker(marker);
     	 marker.events.register("mousedown", marker, popupHandler(marker,tmarkers[m].img,tmarkers[m].n));
     	 
         }

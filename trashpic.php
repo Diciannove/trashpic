@@ -119,9 +119,18 @@ if(!class_exists('Trashpic'))
 			$role = get_role( 'administrator');
 			$role->add_cap('read_trashpic-report');
 			$role->add_cap('edit_trashpic-report');
+			$role->add_cap('edit_others_trashpic-report');
 			$role->add_cap('edit_trashpic-reports');
 			$role->add_cap('delete_trashpic-report');
+			$role->add_cap('delete_others_trashpic-report');
+			$role->add_cap('publish_trashpic-report');
+			$role->add_cap('read_private_trashpic-report');
+			$role->add_cap('edit_published_trashpic-report');
 				
+			
+				
+			
+			
 			
 		} 
 
@@ -134,8 +143,13 @@ if(!class_exists('Trashpic'))
 			$role = get_role( 'administrator');
 			$role->remove_cap('read_trashpic-report');
 			$role->remove_cap('edit_trashpic-report');
+			$role->remove_cap('edit_others_trashpic-report');
 			$role->remove_cap('edit_trashpic-reports');
 			$role->remove_cap('delete_trashpic-report');
+			$role->remove_cap('delete_others_trashpic-report');
+			$role->remove_cap('publish_trashpic-report');
+			$role->remove_cap('read_private_trashpic-report');
+			$role->remove_cap('edit_published_trashpic-report');
 				
 		} 
 		
@@ -487,9 +501,10 @@ function search_join($join){
 			$polygon = json_decode(get_trashpic_option( 'trashpic_polygon'));
 				
 			
+			
 			$par = array (
-					'latitude' => get_trashpic_option( 'trashpic_default_latitude') ,
-					'longitude' => get_trashpic_option( 'trashpic_default_longitude') ,
+					'latitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_latitude')) ,
+					'longitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_longitude')) ,
 					'zoom' => get_trashpic_option( 'trashpic_default_zoom_level') ,
 					'polygon' => $polygon
 			);
@@ -539,8 +554,8 @@ function search_join($join){
 			
 				
 			$par = array (
-					'latitude' => get_trashpic_option( 'trashpic_default_latitude') ,
-					'longitude' => get_trashpic_option( 'trashpic_default_longitude') ,
+					'latitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_latitude')) ,
+					'longitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_longitude')) ,
 					'zoom' => get_trashpic_option( 'trashpic_default_zoom_level') ,
 					'polygon' => $polygon,
 					'tmarkers' => $tpost
@@ -810,6 +825,17 @@ function search_join($join){
 		}
 	}
 	
+	
+	function add_trashpic_controller($controllers) {
+		$controllers[] = 'trashpic';
+		return $controllers;
+	}
+	add_filter('json_api_controllers', 'add_trashpic_controller');
+	
+	function set_trashpic_controller_path() {
+		return TRASHPIC_DIR."/json_controller/JSON_API_Trashpic_Controller.php";
+	}
+	add_filter('json_api_trashpic_controller_path', 'set_trashpic_controller_path');
 	
 }
 
