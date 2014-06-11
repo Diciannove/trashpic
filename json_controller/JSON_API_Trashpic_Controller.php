@@ -51,6 +51,27 @@ class JSON_API_Trashpic_Controller
 	
 	}
 	
+
+	
+	public function send_report()
+	{
+
+		$postTitle   = date("YmdB").rand(10,100);
+		/* prendo i campi del form */
+		$latitude    = $_REQUEST['latitude'];
+		$longitude   = $_REQUEST['longitude'];
+		$category    = "LAT";
+		$public_note = "CIAO TEST";
+		
+		insert_trashpic_report($postTitle,8,$latitude,$longitude,$category,$public_note,$_FILES);
+				
+		return array(
+				"status" => "ok"
+		);
+		
+		
+	}
+	
 	
 	
 }

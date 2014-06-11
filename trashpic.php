@@ -596,40 +596,16 @@ function search_join($join){
 				
 			}
 
-			$upload_overrides = array( 'test_form' => FALSE );
-			$file_array = array(
-					'name'      => $_FILES['file']['name'],
-					'type' 	    => $_FILES['file']['type'],
-					'tmp_name'	=> $_FILES['file']['tmp_name'],
-					'error'	    => $_FILES['file']['error'],
-					'size'     	=> $_FILES['file']['size'],
-			);
-
-				
-			if ( !empty( $file_array['name'] ) ) {
-				$uploaded_file = wp_handle_upload( $file_array, $upload_overrides );
-				$wp_filetype = wp_check_filetype( basename( $uploaded_file['file'] ), null );
-
-				if($uploaded_file){
-					echo $file_array['name'];
-					
-					die();
-				}
-			
-				
-				
-			}
-			
 			
 			/* recupero l'id dell'utente*/
 			global $current_user;
-			$user_id		= $current_user->ID;
+			$user_id		 = $current_user->ID;
 			/* genero un id univoco della segnalazione*/
-			$postTitle = date("YmdB").rand(10,100);
+			$postTitle   = date("YmdB").rand(10,100);
 			/* prendo i campi del form */
-			$latitude = trim($_POST['latitude']);
-			$longitude = trim($_POST['longitude']);
-			$category = trim($_POST['category']);
+			$latitude    = trim($_POST['latitude']);
+			$longitude   = trim($_POST['longitude']);
+			$category    = trim($_POST['category']);
 			$public_note = trim($_POST['public_note']);
 				
 			
@@ -643,101 +619,18 @@ function search_join($join){
 			//if (empty($category))  $error_array[] =__('error_category_mandatory','TRASHPIC-plugin');
 				
 			if (count($error_array) == 0){
-	
-			 $post_information = array(
-			 		'post_title' => $postTitle,
-			 		'post_type' => 'trashpic-report',
-			    'post_status' => 'publish',
-			 		'post_author' => $logged_in_user
-			 		
-			 );
-	
-			 $post_id = wp_insert_post($post_information);
-	
-			 if($post_id) {
-			 	
-			 	include(TRASHPIC_DIR."/pointLocation.php");
-			 		
-			 	/* Cerco di capire in quale comune si trova la segnalazione */
-			 	$pointLocation = new pointLocation();
-				global $wpdb; 			 		
-			 	
-				/* verifico che la segnalazione sia nell'area pilota*/
-				$pilotArea=false;
-				$polygons = $wpdb->get_results("SELECT id,name,email,map	FROM olpa_trashpic_map where name ='pilotArea' ");
-				//$point = "$latitude,$longitude";
-				$point = "$longitude,$latitude";
-				foreach ( $polygons as $p )
-				{
-					$pol = explode(" ", $p->map);
-					$ret = $pointLocation->pointInPolygon($point, $pol);
-					if($ret == 'inside') $pilotArea=true;
-				}
-				
-				/* verifico che la segnalazione si trovi in uno specifico comune */
-				$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name !='pilotArea' ");
-			 	$point = "$longitude,$latitude";
-			 	//echo $point."<br>";
-			 	foreach ( $polygons as $p )	{
-			 			$pol = explode(" ", $p->map);
-			 			$ret = $pointLocation->pointInPolygon($point, $pol);
-			 			if($ret == 'inside'){
-			 				$map = $p->name;
-			 				$id_area = $p->id;
-			 				break;
-			 			}
-			 	}
-			 	
-			 	if($pilotArea){
-			 		$location = "Area pilota - ";
-			 		$pilotarea = "1";
-			 	} else $pilotarea = "0";
-			 	
-			 	if($map){
-			 		$location .= $map;
-			 	} else $location = "ND";
-			 		
-			 		
-			 	__update_post_meta( $post_id, 'location', $location);
-			 	__update_post_meta( $post_id, 'latitude', $latitude);
-			 	__update_post_meta( $post_id, 'longitude', $longitude);
-			 	__update_post_meta( $post_id, 'category', $category);
-			 	__update_post_meta( $post_id, 'approved', '-1');
-			 	__update_post_meta( $post_id, 'solved', '0');
-			 	__update_post_meta( $post_id, 'notified', '0');
-			 	__update_post_meta( $post_id, 'pilotarea', $pilotarea);
-			 	__update_post_meta( $post_id, 'id_area', $id_area);
-			 		
-			 	
-			 	__update_post_meta( $post_id, 'public_note', $public_note);
-			 	__update_post_meta_img( $post_id, 'picture', $_FILES);
-			 		
-			 	/* mando la mail di avvenuto inserimento */
-			 	if(get_trashpic_option( 'trashpic_send_mail_on_report')){
-			 		
-			 		$to = explode(',',get_trashpic_option( 'trashpic_send_mail_on_report_address'));
-			 		$message  = __('mail_text_header','TRASHPIC-plugin')."\n";
-			 		$message .= __('report_number','TRASHPIC-plugin').": $postTitle \n";
-			 		$message .= "Link: http://life-smile.eu/wp/wp-admin/post.php?post=".$post_id."&action=edit&lang=it \n";
-			 		$message .= __('location','TRASHPIC-plugin').":  $location \n";
-			 		$message .= __('mail_text_footer','TRASHPIC-plugin')."\n\n";
-			 		$message .= __('mail_text_signature','TRASHPIC-plugin')."\n";
-			 		add_filter( 'wp_mail_content_type', 'set_html_content_type' );
-			 		wp_mail( $to, __('mail_subject_on_report','TRASHPIC-plugin'), $message );
-			 		
-			 		function set_html_content_type() {
-			 			return 'text/html';
-			 		}
-			 		
 
-			 	}
-			 			
-			 }
+				
+				insert_trashpic_report($postTitle,8,$latitude,$longitude,$category,$public_note,$_FILES);
+				
 	
 				global $notice_array;
 				$notice_array = array();
 				$notice_array[] = __('notice_success_new_report','TRASHPIC-plugin');
 				add_action('trashpic-notice', 'trashpic_notices');
+				
+				
+				
 			} else {
 				add_action('trashpic-notice', 'trashpic_errors');
 			}
@@ -745,6 +638,139 @@ function search_join($join){
 	}
 	
 	add_action('init','add_trashpic_report');
+	
+	
+	
+	
+	
+	function insert_trashpic_report($postTitle,$logged_in_user,$latitude,$longitude,$category,$public_note,$files){
+		
+		
+		$upload_overrides = array( 'test_form' => FALSE );
+		$file_array = array(
+				'name'      => $files['file']['name'],
+				'type' 	    => $files['file']['type'],
+				'tmp_name'	=> $files['file']['tmp_name'],
+				'error'	    => $files['file']['error'],
+				'size'     	=> $files['file']['size'],
+		);
+		
+		
+		if ( !empty( $file_array['name'] ) ) {
+			$uploaded_file = wp_handle_upload( $file_array, $upload_overrides );
+			$wp_filetype = wp_check_filetype( basename( $uploaded_file['file'] ), null );
+		
+			if($uploaded_file){
+				echo $file_array['name'];
+				die();
+			}
+		}
+			
+		
+		
+		
+		$post_information = array(
+				'post_title' => $postTitle,
+				'post_type' => 'trashpic-report',
+				'post_status' => 'publish',
+				'post_author' => $logged_in_user
+		
+		);
+		
+		$post_id = wp_insert_post($post_information);
+		
+		if($post_id) {
+				
+			include(TRASHPIC_DIR."/pointLocation.php");
+		
+			/* Cerco di capire in quale comune si trova la segnalazione */
+			$pointLocation = new pointLocation();
+			global $wpdb;
+				
+			/* verifico che la segnalazione sia nell'area pilota*/
+			$pilotArea=false;
+			$polygons = $wpdb->get_results("SELECT id,name,email,map	FROM olpa_trashpic_map where name ='pilotArea' ");
+			//$point = "$latitude,$longitude";
+			$point = "$longitude,$latitude";
+			foreach ( $polygons as $p )
+			{
+				$pol = explode(" ", $p->map);
+				$ret = $pointLocation->pointInPolygon($point, $pol);
+				if($ret == 'inside') $pilotArea=true;
+			}
+		
+			/* verifico che la segnalazione si trovi in uno specifico comune */
+			$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name !='pilotArea' ");
+			$point = "$longitude,$latitude";
+			//echo $point."<br>";
+			foreach ( $polygons as $p )	{
+				$pol = explode(" ", $p->map);
+				$ret = $pointLocation->pointInPolygon($point, $pol);
+				if($ret == 'inside'){
+					$map = $p->name;
+					$id_area = $p->id;
+					break;
+				}
+			}
+				
+			if($pilotArea){
+				$location = "Area pilota - ";
+				$pilotarea = "1";
+			} else $pilotarea = "0";
+				
+			if($map){
+				$location .= $map;
+			} else $location = "ND";
+		
+		
+			__update_post_meta( $post_id, 'location', $location);
+			__update_post_meta( $post_id, 'latitude', $latitude);
+			__update_post_meta( $post_id, 'longitude', $longitude);
+			__update_post_meta( $post_id, 'category', $category);
+			__update_post_meta( $post_id, 'approved', '-1');
+			__update_post_meta( $post_id, 'solved', '0');
+			__update_post_meta( $post_id, 'notified', '0');
+			__update_post_meta( $post_id, 'pilotarea', $pilotarea);
+			__update_post_meta( $post_id, 'id_area', $id_area);
+		
+				
+			__update_post_meta( $post_id, 'public_note', $public_note);
+			__update_post_meta_img( $post_id, 'picture', $files);
+		
+			/* mando la mail di avvenuto inserimento */
+			if(get_trashpic_option( 'trashpic_send_mail_on_report')){
+		
+				$to = explode(',',get_trashpic_option( 'trashpic_send_mail_on_report_address'));
+				$message  = __('mail_text_header','TRASHPIC-plugin')."\n";
+				$message .= __('report_number','TRASHPIC-plugin').": $postTitle \n";
+				$message .= "Link: http://life-smile.eu/wp/wp-admin/post.php?post=".$post_id."&action=edit&lang=it \n";
+				$message .= __('location','TRASHPIC-plugin').":  $location \n";
+				$message .= __('mail_text_footer','TRASHPIC-plugin')."\n\n";
+				$message .= __('mail_text_signature','TRASHPIC-plugin')."\n";
+				add_filter( 'wp_mail_content_type', 'set_html_content_type' );
+				wp_mail( $to, __('mail_subject_on_report','TRASHPIC-plugin'), $message );
+		
+				function set_html_content_type() {
+					return 'text/html';
+				}
+		
+		
+			}
+			 
+		}
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
