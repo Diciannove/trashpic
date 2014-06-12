@@ -60,13 +60,17 @@ class JSON_API_Trashpic_Controller
 		/* prendo i campi del form */
 		$latitude    = $_REQUEST['latitude'];
 		$longitude   = $_REQUEST['longitude'];
-		$category    = "LAT";
-		$public_note = "CIAO TEST";
+		$category    = $_REQUEST['category'];
+		$public_note = $_REQUEST['public_note'];
+		$userid = $_REQUEST['userid'];
 		
-		insert_trashpic_report($postTitle,8,$latitude,$longitude,$category,$public_note,$_FILES);
+		insert_trashpic_report($postTitle,$userid,$latitude,$longitude,$category,$public_note,$_FILES);
 				
+		
 		return array(
-				"status" => "ok"
+				"status" => "ok",
+				"files" => print_r($_FILES,true),
+				"request" => print_r($_REQUEST,true),
 		);
 		
 		

@@ -2,7 +2,7 @@
 /*
 Plugin Name: TrashPic
 Plugin URI: http://www.life-smile.eu
-Version: 0.5
+Version: 0.9
 Author: Paolo Selis - Lorenzo Novaro
 Author URI: http://19.coop
 Description: Monitoring system
@@ -622,7 +622,6 @@ function search_join($join){
 
 				
 				insert_trashpic_report($postTitle,8,$latitude,$longitude,$category,$public_note,$_FILES);
-				
 	
 				global $notice_array;
 				$notice_array = array();
