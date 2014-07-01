@@ -23,10 +23,16 @@
   }
   .Cell {
       display: table-cell;
-      border: solid;
-      border-width: thin;
+      border-left: solid;
+      border-top: solid;
+      border-bottom: solid;
+      border-width: 1px;
       padding-left: 5px;
       padding-right: 5px;
+  }
+  .Cell:last-child {
+      border-right: solid;
+      border-width: 1px;
   }
     .Colore {
       min-width: 120px;
