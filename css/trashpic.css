@@ -2,6 +2,10 @@
 .trashpic_metabox_table{width:90%;margin:20px}
 table.trashpic_metabox_table td,th{padding-bottom:8px;border-bottom:1px solid #fff;}
 table.trashpic_metabox_table th{border-right:1px solid #fff;}
+
+table.form-table th{padding:0px}
+table.form-table td{padding:0px}
+
 .trashpic_phase1{background-color:#CCCCCC;}
 .trashpic_phase2{background-color:#80aa50;}
 .trashpic_phase3{background-color:#ca8050;}

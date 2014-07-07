@@ -734,24 +734,22 @@ function search_join($join){
 		
 				
 			__update_post_meta( $post_id, 'public_note', $public_note);
+			if (!empty($files))
 			__update_post_meta_img( $post_id, 'picture', $files);
 		
 			/* mando la mail di avvenuto inserimento */
 			if(get_trashpic_option( 'trashpic_send_mail_on_report')){
 		
 				$to = explode(',',get_trashpic_option( 'trashpic_send_mail_on_report_address'));
-				$message  = __('mail_text_header','TRASHPIC-plugin')."\n";
-				$message .= __('report_number','TRASHPIC-plugin').": $postTitle \n";
-				$message .= "Link: http://life-smile.eu/wp/wp-admin/post.php?post=".$post_id."&action=edit&lang=it \n";
-				$message .= __('location','TRASHPIC-plugin').":  $location \n";
-				$message .= __('mail_text_footer','TRASHPIC-plugin')."\n\n";
-				$message .= __('mail_text_signature','TRASHPIC-plugin')."\n";
+				$message  = __('mail_text_header','TRASHPIC-plugin')."<br>";
+				$message .= __('report_number','TRASHPIC-plugin').": $postTitle <br>";
+				$message .= "<a href='http://life-smile.eu/wp-admin/post.php?post=".$post_id."&action=edit&lang=it'>Vai alla segnalazione</a><br>";
+				$message .= __('location','TRASHPIC-plugin').":  $location <br>";
+				$message .= __('mail_text_footer','TRASHPIC-plugin')."<br><br>";
+				$message .= __('mail_text_signature','TRASHPIC-plugin')."<br>";
 				add_filter( 'wp_mail_content_type', 'set_html_content_type' );
 				wp_mail( $to, __('mail_subject_on_report','TRASHPIC-plugin'), $message );
-		
-				function set_html_content_type() {
-					return 'text/html';
-				}
+				remove_filter( ‘wp_mail_content_type’, ‘set_html_content_type’ );
 		
 		
 			}
@@ -767,6 +765,9 @@ function search_join($join){
 	
 	
 	
+	function set_html_content_type() {
+		return 'text/html';
+	}
 	
 	
 	
@@ -794,6 +795,9 @@ function search_join($join){
 	
 	
 	function __update_post_meta_img( $post_id, $field_name, $file ) {
+		
+		if($file[$field_name]['tmp_name']) exec('convert '.$file[$field_name]['tmp_name'].' -auto-orient '.$file[$field_name]['tmp_name']);
+		
 		$upload = wp_upload_bits($file[$field_name]['name'], null, file_get_contents($file[$field_name]['tmp_name']));
 		if(isset($upload['error']) && $upload['error'] != 0) {
 			wp_die('There was an error uploading your file. The error is: ' . $upload['error']);
@@ -818,6 +822,7 @@ function search_join($join){
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
 			wp_update_attachment_metadata( $attach_id, $attach_data );
+			exec('convert -auto-orient ' .$filename .' ' .$destinazione);
 		}
 		
 		

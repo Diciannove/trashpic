@@ -27,6 +27,7 @@ class JSON_API_Trashpic_Controller
 		
 			if(!$link){
 				$tpost[$p]["id"]  = $p;
+				$tpost[$p]["date_creation"] = get_the_time( "d/m/Y", $p ); ;
 				$tpost[$p]["lat"] = get_post_meta($p,"latitude",true);
 				$tpost[$p]["lon"] = get_post_meta($p,"longitude",true);
 				$tpost[$p]["solved"] = get_post_meta($p,"solved",true);
@@ -58,8 +59,8 @@ class JSON_API_Trashpic_Controller
 
 		$postTitle   = date("YmdB").rand(10,100);
 		/* prendo i campi del form */
-		$latitude    = $_REQUEST['latitude'];
-		$longitude   = $_REQUEST['longitude'];
+		$latitude    = substr($_REQUEST['latitude'],0,8);
+		$longitude   = substr($_REQUEST['longitude'],0,7);
 		$category    = $_REQUEST['category'];
 		$public_note = $_REQUEST['public_note'];
 		$userid = $_REQUEST['userid'];
