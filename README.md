@@ -8,3 +8,5 @@ Web application per il monitoraggio dei rifiuti
 1:
 2:
 3:
+
+*Moderazione segnalazione:*
