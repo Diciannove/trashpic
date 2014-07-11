@@ -59,8 +59,13 @@ class JSON_API_Trashpic_Controller
 
 		$postTitle   = date("YmdB").rand(10,100);
 		/* prendo i campi del form */
-		$latitude    = substr($_REQUEST['latitude'],0,8);
-		$longitude   = substr($_REQUEST['longitude'],0,7);
+
+		$latitude    = trim(substr($_REQUEST['latitude'],0,8));
+		$longitude   = trim(substr($_REQUEST['longitude'],0,7));
+
+
+		//$latitude    = trim($_REQUEST['latitude']);
+		//$longitude   = trim($_REQUEST['longitude']);
 		$category    = $_REQUEST['category'];
 		$public_note = $_REQUEST['public_note'];
 		$userid = $_REQUEST['userid'];
@@ -70,8 +75,6 @@ class JSON_API_Trashpic_Controller
 		
 		return array(
 				"status" => "ok",
-				"files" => print_r($_FILES,true),
-				"request" => print_r($_REQUEST,true),
 		);
 		
 		

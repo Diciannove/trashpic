@@ -1,6 +1,21 @@
-<table class="form-table" cellpadding="0" cellspacing="0">
+<table class="form-table trashpic_metabox_table" cellpadding="0" cellspacing="0" >
 <tbody>
-
+   <tr valign="top">
+        <th >
+            <label for="label"><?php echo _e('report_author','TRASHPIC-plugin')?></label>
+        </th>
+        <td >
+        <?php 
+        	$ud = get_userdata( $post->post_author)->data;
+        	//print_r($ud->data);
+        	
+        	echo "" . $ud->display_name. "<br/>";
+        	//echo "" . $ud->user_nicename ."<br/>";
+        	echo "" . $ud->user_email."<br/>";
+        ?>
+        </td>
+    </tr>
+	 <tr><td colspan="2"><hr/></td></tr>
    <tr valign="top">
         <th >
             <label for="label"><?php echo _e('report_label','TRASHPIC-plugin')?></label>
@@ -9,6 +24,7 @@
             <input type="text" id="label" name="label" value="<?php echo @get_post_meta($post->ID, 'label', true); ?>" />
         </td>
     </tr>
+    <tr><td colspan="2"><hr/></td></tr>
    <tr valign="top">
         <th >
             <label for="link"><?php echo _e('report_link','TRASHPIC-plugin')?></label>
@@ -52,9 +68,10 @@
             <label for="litter_n"><?php echo _e('litter_numbers','TRASHPIC-plugin')?></label>
         </th>
         <td >
-            <input type="text" id=""litter_n"" name=""litter_n"" value="<?php echo @get_post_meta($post->ID, '"litter_n"', true); ?>" />
+            <input type="text" id="litter_n" name="litter_n" value="<?php echo @get_post_meta($post->ID, '"litter_n"', true); ?>" />
         </td>
     </tr>
+    <tr><td colspan="2"><hr/></td></tr>
     
 		
 		<tr valign="top">
@@ -69,6 +86,7 @@
             </td>
     </tr>
     
+    <tr><td colspan="2"><hr/></td></tr>
     
 		<tr valign="top">
         <th >
@@ -78,8 +96,13 @@
             <input type="text" id="latitude" name="latitude" value="<?php echo @get_post_meta($post->ID, 'latitude', true); ?>" />
         </td>
     </tr>
+    <?php 
+
+     $lat = @get_post_meta($post->ID, 'latitude', true); 
+     $lon = @get_post_meta($post->ID, 'longitude', true);  	
+     ?>
     
-    
+    <tr><td colspan="2"><hr/></td></tr>
     
     <tr valign="top">
         <th >
@@ -89,7 +112,10 @@
             <input type="text" id="longitude" name="longitude" value="<?php echo @get_post_meta($post->ID, 'longitude', true); ?>" />
         </td>
     </tr>
-    <tr><td colspan="2"><hr/></td></tr>
+    <tr><td colspan="2">
+	<a target='_blank' href='http://www.openstreetmap.org/?mlat=<?php echo $lat?>&mlon=<?php echo $lon?>'&zoom=13#map=13/<?php echo $lat?>/<?php echo $lon?>'>Map Link</a>
+
+<hr/></td></tr>
     
     <tr valign="top">
         <th >
@@ -176,6 +202,7 @@
          </td>
     </tr>
     
+    <tr><td colspan="2"><hr/></td></tr>
     
     <tr valign="top">
         <th >
@@ -188,6 +215,7 @@
             <input type="radio" id="investigated2" name="investigated" value="1"    <?php echo @get_post_meta($post->ID, 'investigated', true) == '1' ? 'checked="checked"' : '' ?>" />
         </td>
     </tr>
+    <tr><td colspan="2"><hr/></td></tr>
 
     <tr valign="top">
         <th >
@@ -208,6 +236,7 @@
         		<?php } ?>
         </td>
     </tr>
+    <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">
         <th >
             <label for="solved"><?php echo _e('solved','TRASHPIC-plugin')?></label>
@@ -219,9 +248,6 @@
         		<input type="radio" id="solved2" name="solved" value="1"    <?php echo @get_post_meta($post->ID, 'solved', true) == '1' ? 'checked="checked"' : '' ?>" />
          </td>
     </tr>
-    
-    
-    
     
     <tr><td colspan="2"><hr/></td></tr>
     <tr valign="top">

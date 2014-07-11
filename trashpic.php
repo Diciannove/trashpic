@@ -2,7 +2,7 @@
 /*
 Plugin Name: TrashPic
 Plugin URI: http://www.life-smile.eu
-Version: 0.9
+Version: 0.9.1
 Author: Paolo Selis - Lorenzo Novaro
 Author URI: http://19.coop
 Description: Monitoring system
@@ -267,6 +267,8 @@ if(class_exists('Trashpic'))
 		 * Redirect to the edit.php on post save or publish.
 		*/
 		function wpse_124132_redirect_post_location( $location ) {
+					
+	    if (isset($_POST['post_type']) && post_type_exists($_POST['post_type']) && in_array(strtolower($_POST['post_type']), array('trashpic-report'))) {
 		
 			if ( isset( $_POST['save'] )  ){
 				
@@ -275,7 +277,7 @@ if(class_exists('Trashpic'))
 				
 				return admin_url( "edit.php?post_type=trashpic-report".$par);
 			}
-				
+	}			
 				
 			return $location;
 		}		
@@ -399,6 +401,7 @@ function search_join($join){
 		
 		function my_special_list( $q ) {
 			//echo "entro";
+			if($_GET['post_type']=='trashpic-report'){
 			
 			if(is_admin()) $scr = get_current_screen();
 			if ( is_admin() && ( $scr->base === 'edit' ) && $q->is_main_query() ) {
@@ -414,6 +417,7 @@ function search_join($join){
 				
 				if ( $pre === 'pre' ) {
 					// adjust meta query to fit your needs
+					
 					$meta_query = array( 'key' => 'approved', 'value' =>'-1', );
 					$q->set( 'meta_query', array($meta_query) );
 				}
@@ -435,6 +439,7 @@ function search_join($join){
 				}
 				
 			}
+     }
 		}		
 		
 		
@@ -473,6 +478,7 @@ function search_join($join){
 		
 		//$content = "".TRASHPIC_URL_JS.'/OpenLayers.js';
 		ob_start();
+		define ('WPLANG', 'en_EN');
 		include(TRASHPIC_DIR."/report_shortcode/report_form.php");
 		$content .= ob_get_clean();
 		return $content;
@@ -584,6 +590,81 @@ function search_join($join){
 	 * Intercetto il submit del form e faccio il salvataggio
 	*/
 	function add_trashpic_report(){
+			
+		if ( $_POST['action'] == 'editpost' && $_POST['post_type'] == 'trashpic-report' ){
+
+			//print_r($_POST);
+			//exit;	
+                      /* in questo caso sto salvando nuovamente il post dall'area amministrativa*/
+			$latitude    = substr(trim($_POST['latitude']),0,8);
+			$longitude   = substr(trim($_POST['longitude']),0,7);
+			
+			include(TRASHPIC_DIR."/pointLocation.php");
+		
+			/* Cerco di capire in quale comune si trova la segnalazione */
+			$pointLocation = new pointLocation();
+			global $wpdb;
+				
+			/* verifico che la segnalazione sia nell'area pilota*/
+			$pilotArea=false;
+			$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name ='pilotArea' ");
+			//$point = "$latitude,$longitude";
+			$point = "$longitude,$latitude";
+			//echo $point;
+			foreach ( $polygons as $p )
+			{
+				$pol = explode(" ", $p->map);
+				//print_r($pol);
+				$ret = $pointLocation->pointInPolygon($point, $pol);
+				///echo $ret;
+				if($ret == 'inside') $pilotArea=true;
+
+				if($pilotArea) echo "ciao";
+			}
+		
+			/* verifico che la segnalazione si trovi in uno specifico comune */
+			$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name !='pilotArea' ");
+			$point = "$longitude,$latitude";
+			foreach ( $polygons as $p )	{
+				
+				$pol = explode(" ", $p->map);
+//				print_r($pol);
+				$ret = $pointLocation->pointInPolygon($point, $pol);
+				//echo $ret."<br>";
+				if($ret == 'inside'){
+					$map = $p->name;
+					$id_area = $p->id;
+					break;
+				}
+			}
+				
+			if($pilotArea){
+				$location = "Area pilota - ";
+				$pilotarea = "1";
+			} else $pilotarea = "0";
+				
+			if($map){
+				$location .= $map;
+			} else $location .= "ND";
+
+			$_POST['location'] = $location;
+			$_POST['pilotarea'] = $pilotarea;
+			$_POST['id_area'] = $id_area;
+
+//			__update_post_meta( $_POST['post_ID'], 'pilotarea', $pilotarea);
+//			__update_post_meta( $_POST['post_ID'], 'id_area', $id_area);
+		
+	//		$category    = trim($_POST['category']);
+	//		$public_note = trim($_POST['public_note']);
+		//	echo $category.$public_note;
+		
+		//	echo $location;
+		//	exit;
+
+		}
+
+
+
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'trashpic_report' ){
 	
 			if(get_trashpic_option( 'trashpic_only_registered_users')){
@@ -688,7 +769,7 @@ function search_join($join){
 				
 			/* verifico che la segnalazione sia nell'area pilota*/
 			$pilotArea=false;
-			$polygons = $wpdb->get_results("SELECT id,name,email,map	FROM olpa_trashpic_map where name ='pilotArea' ");
+			$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name ='pilotArea' ");
 			//$point = "$latitude,$longitude";
 			$point = "$longitude,$latitude";
 			foreach ( $polygons as $p )
@@ -719,7 +800,7 @@ function search_join($join){
 				
 			if($map){
 				$location .= $map;
-			} else $location = "ND";
+			} else $location .= "ND";
 		
 		
 			__update_post_meta( $post_id, 'location', $location);
@@ -734,8 +815,8 @@ function search_join($join){
 		
 				
 			__update_post_meta( $post_id, 'public_note', $public_note);
-			if (!empty($files))
-			__update_post_meta_img( $post_id, 'picture', $files);
+			if (!empty($files)) 
+ 		        __update_post_meta_img( $post_id, 'picture', $files);
 		
 			/* mando la mail di avvenuto inserimento */
 			if(get_trashpic_option( 'trashpic_send_mail_on_report')){
@@ -747,9 +828,11 @@ function search_join($join){
 				$message .= __('location','TRASHPIC-plugin').":  $location <br>";
 				$message .= __('mail_text_footer','TRASHPIC-plugin')."<br><br>";
 				$message .= __('mail_text_signature','TRASHPIC-plugin')."<br>";
+
 				add_filter( 'wp_mail_content_type', 'set_html_content_type' );
 				wp_mail( $to, __('mail_subject_on_report','TRASHPIC-plugin'), $message );
-				remove_filter( ‘wp_mail_content_type’, ‘set_html_content_type’ );
+		
+				remove_filter( 'wp_mail_content_type', 'set_html_content_type' );
 		
 		
 			}
@@ -762,6 +845,9 @@ function search_join($join){
 		
 		
 	}
+	
+	
+	
 	
 	
 	
@@ -795,9 +881,9 @@ function search_join($join){
 	
 	
 	function __update_post_meta_img( $post_id, $field_name, $file ) {
-		
+
 		if($file[$field_name]['tmp_name']) exec('convert '.$file[$field_name]['tmp_name'].' -auto-orient '.$file[$field_name]['tmp_name']);
-		
+
 		$upload = wp_upload_bits($file[$field_name]['name'], null, file_get_contents($file[$field_name]['tmp_name']));
 		if(isset($upload['error']) && $upload['error'] != 0) {
 			wp_die('There was an error uploading your file. The error is: ' . $upload['error']);

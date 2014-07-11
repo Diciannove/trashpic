@@ -259,7 +259,6 @@ if(!class_exists('Trashpic_Report'))
      	// verify if this is an auto save routine.
       // If it is our form has not been submitted, so we dont want to do anything
       if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)  {
-      	
         return;
       }
     	if($_POST['post_type'] == self::POST_TYPE && current_user_can('edit_post', $post_id))  {
@@ -278,17 +277,91 @@ if(!class_exists('Trashpic_Report'))
 	      	} else  {
 
 	      		if($field_name=="notified"){
-	      			
 	      			if(isset($_POST['notification'])){
 	      				
-	      				/* mando mail */
-	      					$to = "p.selis@19.coop";
-	      					$message  = __('notification_mail_text_header','TRASHPIC-plugin')."\n";
-	      					$message .= __('report_number','TRASHPIC-plugin').": ".  $_POST['post_title']." \n";
-	      					$message .= __('location','TRASHPIC-plugin').":".  $_POST['location']." \n";
-	      					$message .= __('notification_mail_text_footer','TRASHPIC-plugin')."\n\n";
-	      					$message .= __('notification_mail_text_signature','TRASHPIC-plugin')."\n";
-	      					wp_mail( $to, __('notification_mail_subject','TRASHPIC-plugin'), $message );
+	      				  $headers[] = 'From:  "Life-smile.eu website" <monitoring@life-smile.eu>';
+	      				  //$headers[] = 'Bcc: monitoring@life-smile.eu';
+	      				   
+	      				/* mando mail in base all'area in cui si trova il rifiuto */
+	      				  $idarea = $_POST['id_area'];
+	      				  if($idarea==1){
+	      				  	$to_recipients = array(
+	      				  			'r.balbis@ataspa.it',
+	      				  			'ambiente@comunepietraligure.it',
+	      				  			'monitoring@life-smile.eu'
+	      				  	);
+	      				  	
+	      				  } else if ($idarea==2) {
+	      				  	// tovo
+	      				  	$to_recipients = array(
+	      				  			'ligurialogisticaponente@idealservice.it',
+	      				  			'utc@comune.tovo-san-giacomo.sv.it',
+	      				  			'monitoring@life-smile.eu'
+	      				  	);
+	      				  	
+	      				  }	else if	($idarea==3) {
+	      				  	// magliolo
+	      				  	$to_recipients = array(
+	      				  			'ligurialogisticaponente@idealservice.it',
+	      				  			'utc@comune.magliolo.sv.it',
+	      				  			'monitoring@life-smile.eu'
+	      				  	);
+	      				  }else if	($idarea==4) {
+	      				  	// borgio
+	      				  	$to_recipients = array(
+	      				  			'monitoring@life-smile.eu'
+	      				  	);
+	      				  	
+	      				  }else if	($idarea==5) {
+	      				  	// loano
+	      				  	$to_recipients = array(
+	      				  			'monitoring@life-smile.eu'
+	      				  	);
+	      				  	
+	      				  }else if	($idarea==6) {
+	      				  	// giustenice
+	      				  	$to_recipients = array(
+	      				  			'r.balbis@ataspa.it',
+	      				  			'ufficiotecnico@comune.giustenice.sv.it',
+	      				  			'monitoring@life-smile.eu'
+	      				  	);
+	      				  	
+	      				  }
+	      					
+	      				  $to = 'monitoring@life-smile.eu';
+	      					$lat=$_POST['latitude'];
+	      					$lon=$_POST['longitude'];
+	      				  $message  = "E' stata segnalata la presenza di un rifiuto sul sito Life-smile.eu<br><br>";
+	      					$message .= "<b>Numero identificativo segnalazione</b>: ".  $_POST['post_title']." <br>";
+	      					$message .= "<b>Posizione</b><br>Latitudine:".$lat."<br>Longitudine:".$lon."<br> <a target='_blank' href='http://www.openstreetmap.org/?mlat=".$lat."&mlon=".$lon."'&zoom=13#map=13/".$lat."/".$lon."'>visualizza mappa</a><br/>";
+	      					
+	      					if($_POST['public_note'] || $_POST['note']){
+	      						$message .= "<b>Note</b>";
+	      						if($_POST['public_note']) $message .= "<br>";
+	      						$message .= $_POST['public_note'];
+	      						if($_POST['note']) $message .= "<br>";
+	      						$message .= $_POST['note'];
+	      					}
+	      					
+	      					$message .= "<br><br>Una volta risolta la segnalazione rispondete a questa mail in modo da rendere pubblica l'informazione sul sito Life-smile.eu";
+	      					$message .= "<br><br>Smile trashpic";
+	      					
+	      					$img = @get_post_meta($post_id, 'picture', true);
+	      					//print_r($img);
+	      					if($img['file']) $attach = $img['file']; 
+
+	      					
+	      					add_filter( 'wp_mail_content_type', 'set_html_content_type' );
+	      					wp_mail( $to, "Segnalazione da Life-smile.eu", $message,$headers,$attach );
+	      					remove_filter( ‘wp_mail_content_type’, ‘set_html_content_type’ );
+	      					
+	      					
+	      					//$message  = __('notification_mail_text_header','TRASHPIC-plugin')."\n";
+	      					//$message .= __('report_number','TRASHPIC-plugin').": ".  $_POST['post_title']." \n";
+	      					//$message .= __('location','TRASHPIC-plugin').":".  $_POST['location']." \n";
+	      					//$message .= __('notification_mail_text_footer','TRASHPIC-plugin')."\n\n";
+	      					//$message .= __('notification_mail_text_signature','TRASHPIC-plugin')."\n";
+	      					//wp_mail( $to_recipients, __('notification_mail_subject','TRASHPIC-plugin'), $message,$headers );
 	      				
 	      				/* setto che la cosa è stata fatta */
 	      				$_POST["notified"] = 1;
@@ -297,11 +370,43 @@ if(!class_exists('Trashpic_Report'))
 	      		
 	      		if($field_name=="approved"){
 	      			if( $_POST["approved"]=="") $_POST["approved"] = "-1";
+	      			else{
+	      				/* Questa mail la invio solo alla prima approvazione/rifiuto */
+	      				$approved = @get_post_meta($post_id, 'approved', true);
+	      				if($approved == "-1"){
+		      				/* mi servono i dati dell'utente */
+		      				$ud = get_userdata( get_post_field( 'post_author', $post_id ))->data;
+		      				$headers[] = 'From:  "Life-smile.eu website" <monitoring@life-smile.eu>';
+		      				
+		      				$message  = "Grazie per aver inviato una segnalazione al sito Life-smile.eu<br>";
+		      				if($_POST["approved"] == "1"){
+		      					$message .= "<b>Numero identificativo della segnalazione</b>: ".  $_POST['post_title']." <br>";
+			      				$message  .= "<br>La sua segnalazione è stata registrata e inviata alle autorità competenti per la rimozione";
+		      				} else if($_POST["approved"] == "0") {
+		      					$message .= "<b>Numero identificativo della segnalazione</b>: ".  $_POST['post_title']." <br>";
+		      					$message  .= "La segnalazione è stata rifiutata con le seguenti motivazioni:<br>";
+		      					$message  .= $_POST['note'];
+		      				}
+		      				$message .= "<br><br>Smile trashpic";
+		      				$to = 'monitoring@life-smile.eu';
+		      				
+		      				add_filter( 'wp_mail_content_type', 'set_html_content_type' );
+		      				wp_mail( $to, "Smile trashpic", $message,$headers);
+		      				remove_filter( ‘wp_mail_content_type’, ‘set_html_content_type’ );
+	      				
+	      				}
+	      			
+	      			} 
+	      			
+	      			
+	      			
 	      		}
-	      		
-     					update_post_meta($post_id, $field_name, $_POST[$field_name]);
+	      		update_post_meta($post_id, $field_name, $_POST[$field_name]);
 	      	}
      		}
+     		
+     		
+     		
      	} else {
      		
      		return;
