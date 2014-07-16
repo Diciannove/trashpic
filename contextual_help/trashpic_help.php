@@ -8,9 +8,9 @@ class trashpic_help {
 	 */
 	public $tabs = array(
 			'PAG1' => array('title'   => 'Sommario' ,'content' => 'file1.html'),
-			'PAG2' => array('title'   => 'Polimeri artificiali' ,'content' => 'file2.html'),
-			'PAG3' => array('title'   => 'Gomma' ,'content' => 'file3.html'),
-			'PAG4' => array('title'   => 'Abbigliamento e tessili' ,'content' => 'file4.html')
+			'PAG2' => array('title'   => 'Polimeri artificiali 1-4' ,'content' => 'file2.html'),
+			'PAG3' => array('title'   => 'Polimeri artificiali 5-8' ,'content' => 'file3.html'),
+			'PAG4' => array('title'   => 'Polimeri artificiali 9-13' ,'content' => 'file4.html')
 	);
 
 	/**
