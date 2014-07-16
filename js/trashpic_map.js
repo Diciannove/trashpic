@@ -93,9 +93,12 @@ jQuery(document).ready(function () {
        map.addLayer(markers);		
        var size = new OpenLayers.Size(21,25);
        var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-       var iconr = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
-       var icong = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-green.png',size,offset);
-       var icony = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-gold.png',size,offset);
+       var iconr = new OpenLayers.Icon('http://www.openstreetmap.org/assets/marker-red.png',size,offset);
+       var icong = new OpenLayers.Icon('http://www.openstreetmap.org/assets/marker-green.png',size,offset);
+       var icony = new OpenLayers.Icon('http://www.openstreetmap.org/assets/marker-yellow.png',size,offset);
+       //var iconr = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+       //var icong = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-green.png',size,offset);
+       //var icony = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker-gold.png',size,offset);
 
        
        var popupHandler = function(marker,img,num){
