@@ -78,13 +78,47 @@
         <th >
             <label for="location"><?php echo _e('location','TRASHPIC-plugin')?></label>
         </th>
-        <td >
-            <?php echo @get_post_meta($post->ID, 'location', true); ?>
+         <td >
             <input type="hidden" id="location" name="location" value="<?php echo @get_post_meta($post->ID, 'location', true); ?>" />
-            <input type="hidden" id="pilotarea" name="pilotarea" value="<?php echo @get_post_meta($post->ID, 'pilotarea', true); ?>" />
-            <input type="hidden" id="id_area" name="id_area" value="<?php echo @get_post_meta($post->ID, 'id_area', true); ?>" />
+            <?php
+
+            $pi = @get_post_meta($post->ID, 'pilotarea', true);
+            $val[1] = "Area pilota";
+            $val[0] = "Fuori area Pilota";
+            echo "<select id='pilotarea' name='pilotarea'>";
+
+            foreach ($val as $k=>$v){
+                if($k==$pi)
+                   echo "<option value='".$k."' selected>".$v."</option>";
+                else
+                   echo "<option value='".$k."'>".$v."</option>";
+            }
+            echo "</select>";
+
+            $ar = @get_post_meta($post->ID, 'id_area', true);
+            $aval[] = "ND";
+            $aval[1] = "Pietra Ligure";
+            $aval[2] = "Tovo San Giacomo";
+            $aval[3] = "Magliolo";
+            $aval[4] = "Borgio Verezzi";
+            $aval[5] = "Loano";
+            $aval[6] = "Giustenice";
+
+
+            echo "Comune <select id='id_area' name='id_area'>";
+            foreach ($aval as $k=>$v){
+                if($k==$ar)
+                        echo "<option value='".$k."' selected>".$v."</option>";
+                else
+                        echo "<option value='".$k."'>".$v."</option>";
+            }
+            echo "</select>";
+
+
+            ?>
             </td>
-    </tr>
+        
+            </tr>
     
     <tr><td colspan="2"><hr/></td></tr>
     

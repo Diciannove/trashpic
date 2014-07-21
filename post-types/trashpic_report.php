@@ -26,7 +26,9 @@ if(!class_exists('Trashpic_Report'))
 			'smile_phone',
 			'approved',
 			'notified',
+			'notified_date',
 			'solved',
+			'solved_date',
 			'note',
 			'public_note',
 			'picture',
@@ -262,6 +264,11 @@ if(!class_exists('Trashpic_Report'))
         return;
       }
     	if($_POST['post_type'] == self::POST_TYPE && current_user_can('edit_post', $post_id))  {
+
+    		if($_POST['solved']=="1"){
+    			$_POST['solved_date'] = date("Y-m-d H:i:s");
+    		}
+    		
     		
 	      foreach($this->_meta as $field_name)  {
 	      	
@@ -287,24 +294,21 @@ if(!class_exists('Trashpic_Report'))
 	      				  if($idarea==1){
 	      				  	$to_recipients = array(
 	      				  			'r.balbis@ataspa.it',
-	      				  			'ambiente@comunepietraligure.it',
-	      				  			'monitoring@life-smile.eu'
+	      				  			'ambiente@comunepietraligure.it'
 	      				  	);
 	      				  	
 	      				  } else if ($idarea==2) {
 	      				  	// tovo
 	      				  	$to_recipients = array(
 	      				  			'ligurialogisticaponente@idealservice.it',
-	      				  			'utc@comune.tovo-san-giacomo.sv.it',
-	      				  			'monitoring@life-smile.eu'
+	      				  			'utc@comune.tovo-san-giacomo.sv.it'
 	      				  	);
 	      				  	
 	      				  }	else if	($idarea==3) {
 	      				  	// magliolo
 	      				  	$to_recipients = array(
 	      				  			'ligurialogisticaponente@idealservice.it',
-	      				  			'utc@comune.magliolo.sv.it',
-	      				  			'monitoring@life-smile.eu'
+	      				  			'utc@comune.magliolo.sv.it'
 	      				  	);
 	      				  }else if	($idarea==4) {
 	      				  	// borgio
@@ -322,18 +326,18 @@ if(!class_exists('Trashpic_Report'))
 	      				  	// giustenice
 	      				  	$to_recipients = array(
 	      				  			'r.balbis@ataspa.it',
-	      				  			'ufficiotecnico@comune.giustenice.sv.it',
-	      				  			'monitoring@life-smile.eu'
+	      				  			'ufficiotecnico@comune.giustenice.sv.it'
 	      				  	);
 	      				  	
 	      				  }
 	      					
-	      				  $to = 'monitoring@life-smile.eu';
+	      				  $to = $to_recipients;
+	      				  $to = "p.selis@19.coop";
 	      					$lat=$_POST['latitude'];
 	      					$lon=$_POST['longitude'];
 	      				  $message  = "E' stata segnalata la presenza di un rifiuto sul sito Life-smile.eu<br><br>";
 	      					$message .= "<b>Numero identificativo segnalazione</b>: ".  $_POST['post_title']." <br>";
-	      					$message .= "<b>Posizione</b><br>Latitudine:".$lat."<br>Longitudine:".$lon."<br> <a target='_blank' href='http://www.openstreetmap.org/?mlat=".$lat."&mlon=".$lon."'&zoom=13#map=13/".$lat."/".$lon."'>visualizza mappa</a><br/>";
+	      					$message .= "<b>Posizione</b><br>Latitudine:".$lat."<br>Longitudine:".$lon."<br> <a target='_blank' href='http://www.openstreetmap.org/?mlat=".$lat."&mlon=".$lon."'&zoom=13#map=13/".$lat."/".$lon."'>visualizza mappa</a><br>";
 	      					
 	      					if($_POST['public_note'] || $_POST['note']){
 	      						$message .= "<b>Note</b>";
@@ -343,7 +347,7 @@ if(!class_exists('Trashpic_Report'))
 	      						$message .= $_POST['note'];
 	      					}
 	      					
-	      					$message .= "<br><br>Una volta risolta la segnalazione rispondete a questa mail in modo da rendere pubblica l'informazione sul sito Life-smile.eu";
+	      					$message .= "<br><br>Una volta risolta la segnalazione rispondete a questa mail (opzione rispondi a tutti) in modo da rendere pubblica l'informazione di risoluzione della segnalazione sul sito Life-smile.eu";
 	      					$message .= "<br><br>Smile trashpic";
 	      					
 	      					$img = @get_post_meta($post_id, 'picture', true);
@@ -355,18 +359,14 @@ if(!class_exists('Trashpic_Report'))
 	      					wp_mail( $to, "Segnalazione da Life-smile.eu", $message,$headers,$attach );
 	      					remove_filter( ‘wp_mail_content_type’, ‘set_html_content_type’ );
 	      					
-	      					
-	      					//$message  = __('notification_mail_text_header','TRASHPIC-plugin')."\n";
-	      					//$message .= __('report_number','TRASHPIC-plugin').": ".  $_POST['post_title']." \n";
-	      					//$message .= __('location','TRASHPIC-plugin').":".  $_POST['location']." \n";
-	      					//$message .= __('notification_mail_text_footer','TRASHPIC-plugin')."\n\n";
-	      					//$message .= __('notification_mail_text_signature','TRASHPIC-plugin')."\n";
-	      					//wp_mail( $to_recipients, __('notification_mail_subject','TRASHPIC-plugin'), $message,$headers );
-	      				
 	      				/* setto che la cosa è stata fatta */
 	      				$_POST["notified"] = 1;
+	      				$_POST["notified_date"] = date("Y-m-d H:i:s");
+	      				
 	      			}
 	      		}
+	      		
+	      		
 	      		
 	      		if($field_name=="approved"){
 	      			if( $_POST["approved"]=="") $_POST["approved"] = "-1";
@@ -376,22 +376,27 @@ if(!class_exists('Trashpic_Report'))
 	      				if($approved == "-1"){
 		      				/* mi servono i dati dell'utente */
 		      				$ud = get_userdata( get_post_field( 'post_author', $post_id ))->data;
-		      				$headers[] = 'From:  "Life-smile.eu website" <monitoring@life-smile.eu>';
+	      				  //$headers2[] = 'Bcc: monitoring@life-smile.eu';
 		      				
 		      				$message  = "Grazie per aver inviato una segnalazione al sito Life-smile.eu<br>";
 		      				if($_POST["approved"] == "1"){
 		      					$message .= "<b>Numero identificativo della segnalazione</b>: ".  $_POST['post_title']." <br>";
-			      				$message  .= "<br>La sua segnalazione è stata registrata e inviata alle autorità competenti per la rimozione";
+			      				$message  .= "<br>La sua segnalazione è stata registrata e inviata ai soggetti competenti per la rimozione";
+			      				$message  .= "<br>Può seguire sul sito <a href='http://life-smile.eu/'>life-smile.eu</a> lo stato della sua segnalazione";
+			      				
 		      				} else if($_POST["approved"] == "0") {
 		      					$message .= "<b>Numero identificativo della segnalazione</b>: ".  $_POST['post_title']." <br>";
-		      					$message  .= "La segnalazione è stata rifiutata con le seguenti motivazioni:<br>";
+		      					$message  .= "La sua segnalazione è stata rifiutata con le seguenti motivazioni:<br>";
 		      					$message  .= $_POST['note'];
 		      				}
 		      				$message .= "<br><br>Smile trashpic";
-		      				$to = 'monitoring@life-smile.eu';
+		      				//$to = $ud->user_email;
+		      				$to = "p.selis@19.coop";
+		      				
+		      				
 		      				
 		      				add_filter( 'wp_mail_content_type', 'set_html_content_type' );
-		      				wp_mail( $to, "Smile trashpic", $message,$headers);
+		      				wp_mail( $to, "Smile trashpic", $message,$headers2);
 		      				remove_filter( ‘wp_mail_content_type’, ‘set_html_content_type’ );
 	      				
 	      				}

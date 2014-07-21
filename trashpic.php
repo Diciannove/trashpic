@@ -593,73 +593,23 @@ function search_join($join){
 			
 		if ( $_POST['action'] == 'editpost' && $_POST['post_type'] == 'trashpic-report' ){
 
-			//print_r($_POST);
-			//exit;	
-                      /* in questo caso sto salvando nuovamente il post dall'area amministrativa*/
-			$latitude    = substr(trim($_POST['latitude']),0,8);
-			$longitude   = substr(trim($_POST['longitude']),0,7);
-			
-			include(TRASHPIC_DIR."/pointLocation.php");
-		
-			/* Cerco di capire in quale comune si trova la segnalazione */
-			$pointLocation = new pointLocation();
 			global $wpdb;
+			$pilotarea = $_POST['pilotarea'];
+			$id_area = $_POST['id_area']; 
 				
-			/* verifico che la segnalazione sia nell'area pilota*/
-			$pilotArea=false;
-			$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name ='pilotArea' ");
-			//$point = "$latitude,$longitude";
-			$point = "$longitude,$latitude";
-			//echo $point;
-			foreach ( $polygons as $p )
-			{
-				$pol = explode(" ", $p->map);
-				//print_r($pol);
-				$ret = $pointLocation->pointInPolygon($point, $pol);
-				///echo $ret;
-				if($ret == 'inside') $pilotArea=true;
-
-				if($pilotArea) echo "ciao";
-			}
-		
-			/* verifico che la segnalazione si trovi in uno specifico comune */
-			$polygons = $wpdb->get_results("SELECT id,name,email,map FROM olpa_trashpic_map where name !='pilotArea' ");
-			$point = "$longitude,$latitude";
-			foreach ( $polygons as $p )	{
-				
-				$pol = explode(" ", $p->map);
-//				print_r($pol);
-				$ret = $pointLocation->pointInPolygon($point, $pol);
-				//echo $ret."<br>";
-				if($ret == 'inside'){
-					$map = $p->name;
-					$id_area = $p->id;
-					break;
-				}
-			}
-				
-			if($pilotArea){
+			if($pilotarea){
 				$location = "Area pilota - ";
-				$pilotarea = "1";
-			} else $pilotarea = "0";
+			} 
 				
-			if($map){
-				$location .= $map;
+			if($id_area){
+				$map = $wpdb->get_results("SELECT name FROM olpa_trashpic_map where id ='".$id_area."' ");
+				$location .= $map[0]->name;
+				
+				
 			} else $location .= "ND";
-
+			
 			$_POST['location'] = $location;
-			$_POST['pilotarea'] = $pilotarea;
-			$_POST['id_area'] = $id_area;
-
-//			__update_post_meta( $_POST['post_ID'], 'pilotarea', $pilotarea);
-//			__update_post_meta( $_POST['post_ID'], 'id_area', $id_area);
-		
-	//		$category    = trim($_POST['category']);
-	//		$public_note = trim($_POST['public_note']);
-		//	echo $category.$public_note;
-		
-		//	echo $location;
-		//	exit;
+				
 
 		}
 
@@ -702,7 +652,7 @@ function search_join($join){
 			if (count($error_array) == 0){
 
 				
-				insert_trashpic_report($postTitle,8,$latitude,$longitude,$category,$public_note,$_FILES);
+				insert_trashpic_report($postTitle,$user_id,$latitude,$longitude,$category,$public_note,$_FILES);
 	
 				global $notice_array;
 				$notice_array = array();
