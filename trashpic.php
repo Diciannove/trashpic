@@ -9,7 +9,6 @@ Description: Monitoring system
 */
 
 
-// La pagina non può essere caricata direttamente
 if (!function_exists('is_admin')) {
 	header('Status: 403 Forbidden');
 	exit();
@@ -20,7 +19,7 @@ load_plugin_textdomain('TRASHPIC-plugin', false, dirname( plugin_basename( __FIL
 
 
 /* Definisco alcuni valori che possono tornarmi utili*/
-define( 'TRASHPIC_VERSION', '0.5' );
+define( 'TRASHPIC_VERSION', '0.9' );
 define( 'TRASHPIC_RELEASE_DATE', date_i18n( 'F j, Y', '1375505016' ) );
 define( 'TRASHPIC_DIR', WP_PLUGIN_DIR . '/trashpic' );
 define( 'TRASHPIC_URL', WP_PLUGIN_URL . '/trashpic' );
@@ -126,11 +125,6 @@ if(!class_exists('Trashpic'))
 			$role->add_cap('publish_trashpic-report');
 			$role->add_cap('read_private_trashpic-report');
 			$role->add_cap('edit_published_trashpic-report');
-				
-			
-				
-			
-			
 			
 		} 
 
@@ -167,7 +161,6 @@ if(!class_exists('Trashpic'))
 if(class_exists('Trashpic'))
 {
 	
-	
 	// Installation and uninstallation hooks
 	register_activation_hook(__FILE__, array('Trashpic', 'activate'));
 	register_deactivation_hook(__FILE__, array('Trashpic', 'deactivate'));
@@ -178,8 +171,6 @@ if(class_exists('Trashpic'))
 	// Add a link to the settings page onto the plugin page
 	if(isset($trashpic))
 	{
-		
-		
 		
 		// Add the settings link to the plugins page
 		function plugin_settings_link($links) {
@@ -377,27 +368,7 @@ function search_join($join){
 	return $join .= " LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) ";
 }
 		
-		/*
-		$test = '[
-		 {"lon": 8.23432, "lat": 44.19632},
-		 {"lon": 8.23741, "lat": 44.18968},
-		 {"lon": 8.22883, "lat": 44.18007},
-		 {"lon": 8.23329, "lat": 44.16998},
-		 {"lon": 8.27998, "lat": 44.14609},
-		 {"lon": 8.30127, "lat": 44.15520},
-		 {"lon": 8.28410, "lat": 44.18106},
-		 {"lon": 8.25595, "lat": 44.20124}
-	   ]';
-		 	*/
-		 //print_r(json_decode($test));
-		//add_action('get_posts', 'my_special_test');
-		//function my_special_list( $q ) {
-		//	if(is_admin()) $scr = get_current_screen();
-		//}
-		
 		add_action('pre_get_posts', 'my_special_list');
-		//add_action('app_get_posts', 'my_special_list');
-		//add_action('rif_get_posts', 'my_special_list');
 		
 		function my_special_list( $q ) {
 			//echo "entro";
@@ -422,15 +393,12 @@ function search_join($join){
 					$q->set( 'meta_query', array($meta_query) );
 				}
 				
-				//$app = filter_input(INPUT_GET, 'app', FILTER_SANITIZE_STRING);
-				
 				if ( $pre === 'app' ) {
 					// adjust meta query to fit your needs
 					$meta_query = array( 'key' => 'approved', 'value' => '1', );
 					$q->set( 'meta_query', array($meta_query) );
 				}
 				
-				//$pre = filter_input(INPUT_GET, 'rif', FILTER_SANITIZE_STRING);
 				
 				if ( $pre === 'rif' ) {
 					// adjust meta query to fit your needs
@@ -485,15 +453,6 @@ function search_join($join){
 	
 	}
 	add_shortcode( 'trashpic_report', 'trashpic_submit_report_shortcode' );
-	
-	/**
-	 * Ora devo includere gli script necessari al form
-	 * ma per evitare che venano inclusi in tutte le pagine
-	 * verific che ci sia il mio shortcode
-	*/
-	
-	
-
 	
 	
 	function trashpic_submit_report_shortcode_include() {
@@ -557,8 +516,6 @@ function search_join($join){
 				
 			}
 			
-			
-				
 			$par = array (
 					'latitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_latitude')) ,
 					'longitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_longitude')) ,
@@ -668,9 +625,6 @@ function search_join($join){
 	}
 	
 	add_action('init','add_trashpic_report');
-	
-	
-	
 	
 	
 	function insert_trashpic_report($postTitle,$logged_in_user,$latitude,$longitude,$category,$public_note,$files){
@@ -789,26 +743,12 @@ function search_join($join){
 			 
 		}
 		
-		
-		
-		
-		
-		
 	}
-	
-	
-	
-	
 	
 	
 	function set_html_content_type() {
 		return 'text/html';
 	}
-	
-	
-	
-	
-	
 	
 	/**
 	 * Updates post meta for a post. It also automatically deletes or adds the value to field_name if specified
@@ -904,5 +844,4 @@ function search_join($join){
 	add_filter('json_api_trashpic_controller_path', 'set_trashpic_controller_path');
 	
 }
-
 ?>

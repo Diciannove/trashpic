@@ -1,16 +1,22 @@
 <?php 
 
-class JSON_API_Trashpic_Controller
-{
-	public function hello_world()
-	{
+class JSON_API_Trashpic_Controller {
+	
+	/**
+	 * 
+	 * @return multitype:string
+	 */
+	public function hello_world() {
 		return array(
-				"message" => "Hello, world"
+				"message" => "Trashpic!"
 		);
 	}
 	
-	public function get_public_reports()
-	{
+	/**
+	 * 
+	 * @return multitype:number
+	 */
+	public function get_public_reports() {
 		
 		$posts = get_posts(array(
 				'post_type'   => 'trashpic-report',
@@ -42,8 +48,11 @@ class JSON_API_Trashpic_Controller
 		);
 	}
 	
-	public function get_map_parmas()
-	{
+	/**
+	 * 
+	 * @return multitype:mixed number
+	 */
+	public function get_map_parmas() {
 		return array(
 				'latitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_latitude')) ,
 				'longitude' => str_replace(",", ".",get_trashpic_option( 'trashpic_default_longitude')) ,
@@ -53,19 +62,16 @@ class JSON_API_Trashpic_Controller
 	}
 	
 
-	
-	public function send_report()
-	{
+	/**
+	 * 
+	 * @return multitype:string
+	 */
+	public function send_report() 	{
 
 		$postTitle   = date("YmdB").rand(10,100);
-		/* prendo i campi del form */
 
 		$latitude    = trim(substr($_REQUEST['latitude'],0,8));
 		$longitude   = trim(substr($_REQUEST['longitude'],0,7));
-
-
-		//$latitude    = trim($_REQUEST['latitude']);
-		//$longitude   = trim($_REQUEST['longitude']);
 		$category    = $_REQUEST['category'];
 		$public_note = $_REQUEST['public_note'];
 		$userid = $_REQUEST['userid'];
@@ -79,11 +85,5 @@ class JSON_API_Trashpic_Controller
 		
 		
 	}
-	
-	
-	
 }
-
-
-
 ?>
