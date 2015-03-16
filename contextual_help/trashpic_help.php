@@ -7,10 +7,6 @@ class trashpic_help {
 	 * @var unknown
 	 */
 	public $tabs = array(
-			'PAG1' => array('title'   => 'Sommario' ,'content' => 'file1.html'),
-			'PAG2' => array('title'   => 'Polimeri artificiali 1-4' ,'content' => 'file2.html'),
-			'PAG3' => array('title'   => 'Polimeri artificiali 5-8' ,'content' => 'file3.html'),
-			'PAG4' => array('title'   => 'Polimeri artificiali 9-12' ,'content' => 'file4.html')
 	);
 
 	/**
