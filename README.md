@@ -1,12 +1,3 @@
 
-Web application per il monitoraggio dei rifiuti
+Life Smile Wordpress plugin
 ===============================================
-**Sviluppata per l'area pilota del Maremola nell'ambito del progetto Life+ SMILE**
-
-*Utilizzo:*
-
-1:
-2:
-3:
-
-*Moderazione segnalazione:*
