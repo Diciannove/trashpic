@@ -19,4 +19,4 @@ The project involves 4 Municipalities in Liguria Region: Pietra Ligure, Magliolo
 
 ## The partners
 
-![Regione Liguria](http://life-smile.eu/wp-content/uploads/2015/03/Liguria1.jpg)
+![Regione Liguria](http://life-smile.eu/wp-content/uploads/2015/03/Liguria1.jpg) ![Pietra Ligure Municipality](http://life-smile.eu/wp-content/uploads/2015/03/pietra.png) ![Liguria Ricerhe](http://life-smile.eu/wp-content/uploads/2015/03/Logo_Liguria_Ricerche-trasparente.png) ![Arpal](http://life-smile.eu/wp-content/uploads/2015/03/arpal-Logo1.jpg) ![OLPA](http://life-smile.eu/wp-content/uploads/2015/03/OLPAbassa.png) ![Legambiente Liguria](http://life-smile.eu/wp-content/uploads/2015/03/logo-legambiente.jpg)
