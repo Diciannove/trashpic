@@ -3,7 +3,7 @@
 # Wordpress plugin for litter monitoring
 
 _Development cofinanced by the Life+ Programme_ - _SMILE project LIFE12_ **_ENV/IT/000289_**
-(www.life-smile.eu)
+(www.life-smile.eu) ![Logo_life](http://life-smile.eu/wp-content/uploads/2013/10/life_logo_mini.png)
 
 SMILE – Strategies for Marine Litter and Environmental prevention of sea pollution in coastal areas – is a European project financed by the European Commission aiming to decrease marine litter in coastal areas.
 
